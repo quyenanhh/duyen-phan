@@ -15,9 +15,6 @@ function fmtDate(iso) {
 function PersonRosterIcon() {
   return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" /><circle cx="10" cy="7" r="4" /><path d="M21 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>;
 }
-function InboxIcon() {
-  return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z" /></svg>;
-}
 function CalendarIcon() {
   return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>;
 }
@@ -36,14 +33,12 @@ export default function StaffList({ ctx }) {
     setDeleteStaffId, setPauseStaffId, setStaffProfileId
   } = ctx;
 
-  const [tab, setTab] = useState('roster'); // roster | applications | schedule
+  const [tab, setTab] = useState('roster'); // roster | schedule
   const [staffAddOpen, setStaffAddOpen] = useState(false);
 
-  const roster = staffRecords.filter(s => s.approved);
-  const applications = staffRecords.filter(s => !s.approved).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+  const roster = staffRecords;
 
   const staffCount = roster.length;
-  const pendingCount = applications.length;
   const staffShiftTotal = roster.reduce((sum, s) => sum + (s.shifts || 0), 0);
   const staffPayrollTotal = fmtVnd(roster.reduce((sum, s) => sum + (s.salary || 0), 0));
 
@@ -57,40 +52,25 @@ export default function StaffList({ ctx }) {
   });
   const branchOptions = [...new Set(roster.map(s => s.branch).filter(Boolean))];
 
-  function approve(s) {
-    setStaffRecords(recs => recs.map(x => (x.id === s.id ? { ...x, approved: true } : x)));
-    flash('Đã duyệt tài khoản ' + s.name + ' — đã thêm vào danh sách nhân viên.');
-    if (supabaseEnabled) {
-      updateProfileRow(s.id, { approved: true }).catch(err => {
-        console.error('[Supabase] Duyệt tài khoản thất bại:', err);
-        flash('Không lưu được trên máy chủ — thay đổi chỉ có trên trình duyệt này.');
-      });
-    }
-  }
-
   return (
     <div style={{ flex: 1, minWidth: 0, background: 'var(--surface-page)' }}>
       <div className="toolbar">
         <div style={{ flex: 1 }}>
           <h2 style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.01em' }}>Nhân viên</h2>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Nhân viên tự đăng ký tại trang Đăng ký — quản lý duyệt đơn tại đây trước khi được thêm vào danh sách. Hoặc quản lý tạo thẳng tài khoản kèm mật khẩu tạm thời.</div>
+          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Nhân viên tự đăng ký tại trang Đăng ký và được thêm vào danh sách ngay. Hoặc quản lý tạo thẳng tài khoản kèm mật khẩu tạm thời.</div>
         </div>
         <button type="button" className="btn btn-primary btn-md" onClick={() => setStaffAddOpen(true)}>+ Thêm nhân viên</button>
       </div>
 
       <div style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-          <SummaryCard icon={<PersonRosterIcon />} tone="green" label="Số nhân viên" value={staffCount} />
-          <SummaryCard icon={<InboxIcon />} tone="amber" label="Đơn chờ duyệt" value={pendingCount} accent={pendingCount > 0} accentColor="var(--danger)" />
-          <SummaryCard icon={<CalendarIcon />} tone="blue" label="Số ca làm / tuần" value={staffShiftTotal} />
-          <SummaryCard icon={<WalletIcon />} tone="red" label="Quỹ lương / tháng" value={staffPayrollTotal} />
+          <SummaryCard icon={<PersonRosterIcon />} tone="brand" label="Số nhân viên" value={staffCount} />
+          <SummaryCard icon={<CalendarIcon />} tone="brand" label="Số ca làm / tuần" value={staffShiftTotal} />
+          <SummaryCard icon={<WalletIcon />} tone="warn" label="Quỹ lương / tháng" value={staffPayrollTotal} />
         </div>
 
         <div style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--surface-page)', border: '1px solid var(--border)', borderRadius: 999, alignSelf: 'flex-start' }}>
           <button type="button" className={`tabp ${tab === 'roster' ? 'active' : ''}`} onClick={() => setTab('roster')}>Danh sách nhân viên</button>
-          <button type="button" className={`tabp ${tab === 'applications' ? 'active' : ''}`} onClick={() => setTab('applications')}>
-            Đơn xin vào làm{pendingCount > 0 ? ` (${pendingCount})` : ''}
-          </button>
           <button type="button" className={`tabp ${tab === 'schedule' ? 'active' : ''}`} onClick={() => setTab('schedule')}>Lịch ca làm</button>
         </div>
 
@@ -119,7 +99,7 @@ export default function StaffList({ ctx }) {
               <span style={{ fontSize: 13, color: 'var(--text-muted)', paddingBottom: 10 }}>{filtered.length} / {staffCount} nhân viên</span>
             </div>
             {roster.length === 0 ? (
-              <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)' }}>Chưa có nhân viên nào được duyệt. Xem tab "Đơn xin vào làm" nếu có đơn đăng ký mới.</div>
+              <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)' }}>Chưa có nhân viên nào trong danh sách.</div>
             ) : filtered.length === 0 ? (
               <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)' }}>Không tìm thấy nhân viên phù hợp.</div>
             ) : (
@@ -161,36 +141,6 @@ export default function StaffList({ ctx }) {
         )}
 
         {tab === 'schedule' && <StaffScheduleTable roster={roster} branchOptions={branchOptions} staffFilterBranch={staffFilterBranch} setStaffFilterBranch={setStaffFilterBranch} />}
-
-        {tab === 'applications' && (
-          <section className="panel panel-flush">
-            {applications.length === 0 ? (
-              <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)' }}>Không có đơn xin vào làm nào đang chờ duyệt.</div>
-            ) : (
-              <table style={{ width: '100%', fontSize: 'var(--fs-body-sm)' }}>
-                <thead><tr><th>Họ và tên</th><th>Vai trò xin ứng tuyển</th><th>Chi nhánh</th><th>Số điện thoại</th><th>Ngày đăng ký</th><th style={{ textAlign: 'right' }}>Thao tác</th></tr></thead>
-                <tbody>
-                  {applications.map(s => {
-                    const [roleBg, roleColor] = STAFF_ROLE_STYLE[s.role] || STAFF_ROLE_STYLE['Nhân viên'];
-                    return (
-                      <tr className="row" key={s.id} style={{ cursor: 'pointer' }} onClick={() => setStaffProfileId(s.id)}>
-                        <td style={{ fontWeight: 600 }}>{s.name || '— chưa cập nhật —'}</td>
-                        <td><span className="badge" style={{ background: roleBg, color: roleColor }}>{s.role}</span></td>
-                        <td>{s.branch || '—'}</td>
-                        <td>{s.phone || '—'}</td>
-                        <td>{fmtDate(s.createdAt)}</td>
-                        <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
-                          <button type="button" className="btn btn-primary btn-md" style={{ height: 32, padding: '0 10px' }} title="Duyệt — thêm vào danh sách nhân viên" onClick={e => { e.stopPropagation(); approve(s); }}>Duyệt</button>
-                          <button type="button" className="btn btn-secondary btn-md" style={{ height: 32, padding: '0 10px', marginLeft: 6, color: 'var(--danger-text)' }} title="Từ chối đơn" onClick={e => { e.stopPropagation(); setDeleteStaffId(s.id); }}>Từ chối</button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            )}
-          </section>
-        )}
       </div>
 
       <StaffProfileDialog ctx={ctx} />
@@ -590,10 +540,9 @@ function StaffProfileDialog({ ctx }) {
               <h4 style={{ marginTop: 24, fontSize: 13, fontWeight: 600, letterSpacing: '.04em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Tài khoản đăng nhập</h4>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 14 }}>
                 <InfoBox label="Email đăng nhập" value={p.account || '— chưa cập nhật —'} />
-                <InfoBox label="Trạng thái duyệt" value={p.approved ? 'Đã duyệt' : 'Chờ quản lý duyệt'} />
               </div>
 
-              {p.approved && p.role !== 'Quản lý' && <StaffKpi p={p} />}
+              {p.role !== 'Quản lý' && <StaffKpi p={p} />}
             </>
           )}
 
@@ -677,9 +626,9 @@ function StaffKpi({ p }) {
         <EmptyKpiBox text={`Chưa có hoạt động nào trong ${period === 'week' ? '7 ngày qua' : 'tháng này'}.`} />
       ) : (
         <div style={{ marginTop: 14, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-          <SummaryCard icon={<PackageIcon />} tone="blue" label={countLabel} value={count} />
-          <SummaryCard icon={<WalletIcon />} tone="green" label={revenueLabel} value={fmtVnd(revenue)} />
-          <SummaryCard icon={<ItemsMiniIcon />} tone="clay" label="món" value={itemCount} />
+          <SummaryCard icon={<PackageIcon />} tone="brand" label={countLabel} value={count} />
+          <SummaryCard icon={<WalletIcon />} tone="brand" label={revenueLabel} value={fmtVnd(revenue)} />
+          <SummaryCard icon={<ItemsMiniIcon />} tone="neutral" label="món" value={itemCount} />
         </div>
       )}
     </>
@@ -707,12 +656,11 @@ function DeleteStaffDialog({ ctx }) {
   const { staffRecords, deleteStaffId, setDeleteStaffId, setStaffRecords, flash } = ctx;
   const rec = staffRecords.find(s => s.id === deleteStaffId);
   if (!rec) return null;
-  const isApplication = !rec.approved;
   function cancel() { setDeleteStaffId(null); }
   function confirm() {
     setStaffRecords(recs => recs.filter(x => x.id !== deleteStaffId));
     setDeleteStaffId(null);
-    flash(isApplication ? 'Đã từ chối đơn xin vào làm của ' + rec.name + '.' : 'Đã xoá ' + rec.name + ' khỏi danh sách nhân viên.');
+    flash('Đã xoá ' + rec.name + ' khỏi danh sách nhân viên.');
     if (supabaseEnabled) {
       deleteProfileRow(rec.id).catch(err => {
         console.error('[Supabase] Xoá hồ sơ thất bại:', err);
@@ -724,16 +672,12 @@ function DeleteStaffDialog({ ctx }) {
     <div className="modal-backdrop" style={{ position: 'fixed', inset: 0, background: 'rgba(46,42,34,.38)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, zIndex: 62 }} onClick={cancel}>
       <div role="alertdialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel panel-flush modal-pop" style={{ width: '100%', maxWidth: 420 }}>
         <div style={{ padding: 24 }}>
-          <h3 style={{ fontSize: 'var(--fs-h3)', fontWeight: 600 }}>{isApplication ? `Từ chối đơn xin vào làm của ${rec.name}?` : `Xoá ${rec.name} khỏi hệ thống?`}</h3>
-          <p style={{ marginTop: 8, fontSize: 'var(--fs-body-sm)', color: 'var(--text-muted)' }}>
-            {isApplication
-              ? 'Đơn đăng ký sẽ bị xoá và người này sẽ không đăng nhập được nữa. Không thể hoàn tác.'
-              : 'Nhân viên sẽ mất toàn bộ quyền truy cập và bị xoá khỏi danh sách. Không thể hoàn tác.'}
-          </p>
+          <h3 style={{ fontSize: 'var(--fs-h3)', fontWeight: 600 }}>Xoá {rec.name} khỏi hệ thống?</h3>
+          <p style={{ marginTop: 8, fontSize: 'var(--fs-body-sm)', color: 'var(--text-muted)' }}>Nhân viên sẽ mất toàn bộ quyền truy cập và bị xoá khỏi danh sách. Không thể hoàn tác.</p>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '0 24px 24px' }}>
           <button type="button" className="btn btn-secondary btn-md" onClick={cancel}>Huỷ</button>
-          <button type="button" className="btn btn-danger btn-md" onClick={confirm}>{isApplication ? 'Từ chối đơn' : 'Xoá nhân viên'}</button>
+          <button type="button" className="btn btn-danger btn-md" onClick={confirm}>Xoá nhân viên</button>
         </div>
       </div>
     </div>

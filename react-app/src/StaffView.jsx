@@ -1,12 +1,38 @@
+import { useState } from 'react';
 import { STAFF_WEEK_DAYS, STAFF_WEEK_PATTERN, STAFF_SHIFT_CELL } from './data.js';
+import { supabaseEnabled, updateProfileRow } from './lib/profilesApi.js';
+
+const SHIFT_OPTIONS = [['am', 'Ca sáng'], ['pm', 'Ca chiều'], ['off', 'Nghỉ']];
 
 export default function StaffView({ ctx }) {
-  const { userName, userRoleLabel, userBranch, userWeek, staffCode, openSecurity, logout } = ctx;
+  const { loggedId, userName, userRoleLabel, userBranch, userWeek, setUserWeek, staffCode, openSecurity, logout, flash } = ctx;
   const weekPattern = userWeek || STAFF_WEEK_PATTERN;
   const staffWeek = STAFF_WEEK_DAYS.map(([day, date], i) => {
     const [bg, border, text, label] = STAFF_SHIFT_CELL[weekPattern[i]] || STAFF_SHIFT_CELL.off;
     return { day, date, bg, border, text, label };
   });
+
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(weekPattern);
+  const [saving, setSaving] = useState(false);
+
+  function startEdit() { setDraft(weekPattern); setEditing(true); }
+  function cancelEdit() { setEditing(false); }
+  function setDay(i, val) { setDraft(d => d.map((v, idx) => (idx === i ? val : v))); }
+
+  async function saveShift() {
+    setUserWeek(draft);
+    setEditing(false);
+    flash('Đã cập nhật ca làm.');
+    if (supabaseEnabled && loggedId) {
+      setSaving(true);
+      try { await updateProfileRow(loggedId, { week: draft }); }
+      catch (err) {
+        console.error('[Supabase] Cập nhật ca làm thất bại:', err);
+        flash('Không lưu được lên máy chủ — thay đổi chỉ có trên trình duyệt này.');
+      } finally { setSaving(false); }
+    }
+  }
 
   return (
     <div style={{ flex: 1, minWidth: 0, background: 'var(--surface-page)' }}>
@@ -20,24 +46,45 @@ export default function StaffView({ ctx }) {
         <section className="panel" style={{ padding: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
             <h3 style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.01em' }}>Ca làm tuần này</h3>
-            <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>31/08 – 06/09/2026</span>
+            {editing ? (
+              <span style={{ display: 'flex', gap: 8 }}>
+                <button type="button" className="btn btn-secondary btn-md" onClick={cancelEdit}>Huỷ</button>
+                <button type="button" className="btn btn-primary btn-md" onClick={saveShift} disabled={saving}>{saving ? 'Đang lưu…' : 'Lưu ca làm'}</button>
+              </span>
+            ) : (
+              <button type="button" className="btn btn-secondary btn-md" onClick={startEdit}>Sửa ca làm</button>
+            )}
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: 8, marginTop: 20 }}>
-            {staffWeek.map((d, i) => (
-              <div key={i} style={{ border: `1px solid ${d.border}`, background: d.bg, borderRadius: 8, padding: '12px 8px', textAlign: 'center', minHeight: 96, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={{ fontSize: 11, letterSpacing: '.06em', textTransform: 'uppercase', fontWeight: 600, color: 'var(--text-muted)' }}>{d.day}</span>
-                <span style={{ fontSize: 12, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>{d.date}</span>
-                <span style={{ marginTop: 'auto', fontSize: 13, fontWeight: 600, color: d.text }}>{d.label}</span>
-              </div>
-            ))}
-          </div>
+          {editing ? (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: 8, marginTop: 20 }}>
+              {STAFF_WEEK_DAYS.map(([day, date], i) => (
+                <div key={i} style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '10px 8px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <span style={{ fontSize: 11, letterSpacing: '.06em', textTransform: 'uppercase', fontWeight: 600, color: 'var(--text-muted)' }}>{day}</span>
+                  <span style={{ fontSize: 12, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>{date}</span>
+                  <select value={draft[i]} onChange={e => setDay(i, e.target.value)} style={{ marginTop: 4, fontSize: 12, padding: '4px 2px', borderRadius: 6, border: '1px solid var(--border-strong)' }}>
+                    {SHIFT_OPTIONS.map(([v, label]) => <option key={v} value={v}>{label}</option>)}
+                  </select>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: 8, marginTop: 20 }}>
+              {staffWeek.map((d, i) => (
+                <div key={i} style={{ border: `1px solid ${d.border}`, background: d.bg, borderRadius: 8, padding: '12px 8px', textAlign: 'center', minHeight: 96, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <span style={{ fontSize: 11, letterSpacing: '.06em', textTransform: 'uppercase', fontWeight: 600, color: 'var(--text-muted)' }}>{d.day}</span>
+                  <span style={{ fontSize: 12, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>{d.date}</span>
+                  <span style={{ marginTop: 'auto', fontSize: 13, fontWeight: 600, color: d.text }}>{d.label}</span>
+                </div>
+              ))}
+            </div>
+          )}
           <Legend />
         </section>
         <section className="panel" style={{ padding: 24 }}>
           <h3 style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.01em' }}>Nơi làm việc</h3>
           <div style={{ marginTop: 12, fontSize: 14, color: 'var(--text-muted)' }}>Chi nhánh phụ trách</div>
           <div style={{ marginTop: 4, fontSize: 17, fontWeight: 600 }}>{userBranch || '— chưa được gán chi nhánh, liên hệ quản lý —'}</div>
-          <p style={{ marginTop: 16, fontSize: 13, color: 'var(--text-subtle)' }}>Bạn chỉ xem được lịch và ca làm của chính mình. Liên hệ quản lý chi nhánh nếu cần đổi ca.</p>
+          <p style={{ marginTop: 16, fontSize: 13, color: 'var(--text-subtle)' }}>Bạn có thể tự sửa ca làm của mình theo tuần ở trên.</p>
         </section>
         <section className="panel" style={{ padding: 24 }}>
           <h3 style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.01em' }}>Tài khoản</h3>

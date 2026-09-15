@@ -44,9 +44,9 @@ export default function Branches({ ctx }) {
 
       <div style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-          <SummaryCard icon={<StoreIcon />} tone="green" label="Tổng chi nhánh" value={branchCount} />
-          <SummaryCard icon={<CheckCircleIcon />} tone="blue" label="Đang mở" value={`${openCount} / ${branchCount}`} />
-          <SummaryCard icon={<PersonIcon />} tone="clay" label="Tổng nhân sự" value={staffTotal} />
+          <SummaryCard icon={<StoreIcon />} tone="brand" label="Tổng chi nhánh" value={branchCount} />
+          <SummaryCard icon={<CheckCircleIcon />} tone="brand" label="Đang mở" value={`${openCount} / ${branchCount}`} />
+          <SummaryCard icon={<PersonIcon />} tone="neutral" label="Tổng nhân sự" value={staffTotal} />
         </div>
 
         <section className="panel panel-flush">

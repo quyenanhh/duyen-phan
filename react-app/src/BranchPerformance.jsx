@@ -121,10 +121,10 @@ export default function BranchPerformance({ ctx }) {
         ) : (
           <>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              <SummaryCard icon={<CoinIcon />} tone="green" label="Tổng doanh thu" value={fmtVnd(totalRevenue)} hint={(revenueGrowth >= 0 ? '+' : '') + fmtPct(revenueGrowth) + '% so với kỳ trước'} />
-              <SummaryCard icon={<PackageMiniIcon />} tone="clay" label="Tổng đơn" value={String(totalOrders)} hint={activeBranches + '/' + rows.length + ' chi nhánh có đơn'} />
-              <SummaryCard icon={<ReceiptIcon />} tone="gray" label="Tổng chi phí" value={fmtVnd(totalExpense)} hint={fmtPct(costRatioPct) + '% doanh thu'} />
-              <SummaryCard icon={<TrendIcon />} tone={profit >= 0 ? 'green' : 'red'} label="Lợi nhuận ước tính" value={fmtVnd(profit)} hint={fmtPct(profitMarginPct) + '% biên lợi nhuận'} negative={profit < 0} />
+              <SummaryCard icon={<CoinIcon />} tone="brand" label="Tổng doanh thu" value={fmtVnd(totalRevenue)} hint={(revenueGrowth >= 0 ? '+' : '') + fmtPct(revenueGrowth) + '% so với kỳ trước'} />
+              <SummaryCard icon={<PackageMiniIcon />} tone="neutral" label="Tổng đơn" value={String(totalOrders)} hint={activeBranches + '/' + rows.length + ' chi nhánh có đơn'} />
+              <SummaryCard icon={<ReceiptIcon />} tone="neutral" label="Tổng chi phí" value={fmtVnd(totalExpense)} hint={fmtPct(costRatioPct) + '% doanh thu'} />
+              <SummaryCard icon={<TrendIcon />} tone={profit >= 0 ? 'brand' : 'warn'} label="Lợi nhuận ước tính" value={fmtVnd(profit)} hint={fmtPct(profitMarginPct) + '% biên lợi nhuận'} negative={profit < 0} />
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,2fr) minmax(220px,1fr)', gap: 16, alignItems: 'stretch' }}>

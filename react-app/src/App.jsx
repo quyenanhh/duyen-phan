@@ -54,6 +54,7 @@ export default function App() {
   const [loggedEmail, setLoggedEmail] = useState('');
   const [loggedPhone, setLoggedPhone] = useState('');
   const [loggedPin, setLoggedPin] = useState('');
+  const [loggedAvatarUrl, setLoggedAvatarUrl] = useState('');
   const [userRole, setUserRole] = useState('Quản lý');
   const [userBranch, setUserBranch] = useState('');
   const [userWeek, setUserWeek] = useState(null);
@@ -146,6 +147,9 @@ export default function App() {
   const [orderFilterBranch, setOrderFilterBranch] = useState('');
   const [orderProfileId, setOrderProfileId] = useState(null);
   const [deleteOrderId, setDeleteOrderId] = useState(null);
+  const [orderAddOpen, setOrderAddOpen] = useState(false);
+  const [orderAddForm, setOrderAddForm] = useState(null);
+  const [orderAddErrors, setOrderAddErrors] = useState({});
 
   // tables (sơ đồ bàn)
   const [tableRecords, setTableRecords] = useState([]);
@@ -257,13 +261,7 @@ export default function App() {
 
     if (!profile) {
       await signOut();
-      setErrors({ password: 'Không tìm thấy hồ sơ nhân sự cho tài khoản này — có thể đã bị từ chối hoặc xoá. Liên hệ quản lý.' });
-      setAuthLoading(false);
-      return;
-    }
-    if (!profile.approved) {
-      await signOut();
-      setErrors({ password: 'Tài khoản đang chờ quản lý duyệt, vui lòng quay lại sau.' });
+      setErrors({ password: 'Không tìm thấy hồ sơ nhân sự cho tài khoản này — có thể đã bị xoá. Liên hệ quản lý.' });
       setAuthLoading(false);
       return;
     }
@@ -274,6 +272,7 @@ export default function App() {
     setLoggedName((profile && profile.name) || fallbackName);
     setLoggedPhone((profile && profile.phone) || '');
     setLoggedPin((profile && profile.approvalPin) || '');
+    setLoggedAvatarUrl((profile && profile.avatarUrl) || '');
     setUserRole((profile && profile.role) || 'Quản lý');
     setUserBranch((profile && profile.branch) || '');
     setUserWeek((profile && profile.week) || null);
@@ -415,7 +414,7 @@ export default function App() {
     regName, setRegName, regEmail, setRegEmail, regPhone, setRegPhone, regBranch, setRegBranch,
     regRole, setRegRole, regPassword, setRegPassword, regConfirm, setRegConfirm, agree, setAgree,
     regErrors, setRegErrors, submitRegister, success, backToLogin,
-    loggedName, loggedEmail, loggedPhone, loggedPin, userRole, userBranch, userWeek, isLoggedIn, userInitials, userName, userRoleLabel, staffCode,
+    loggedId, loggedName, loggedEmail, loggedPhone, loggedPin, loggedAvatarUrl, setLoggedAvatarUrl, userRole, userBranch, userWeek, setUserWeek, isLoggedIn, userInitials, userName, userRoleLabel, staffCode,
     newPassword, setNewPassword, newConfirm, setNewConfirm, submitNewPassword,
     managerTab, setManagerTab, staffTab, setStaffTab, range, setRange,
     tableRecords, setTableRecords, tablesLoading,
@@ -432,6 +431,7 @@ export default function App() {
     menuAddErrors, setMenuAddErrors, deleteMenuId, setDeleteMenuId,
     orderRecords, setOrderRecords, orderQuery, setOrderQuery, orderFilterStatus, setOrderFilterStatus,
     orderFilterBranch, setOrderFilterBranch, orderProfileId, setOrderProfileId, deleteOrderId, setDeleteOrderId,
+    orderAddOpen, setOrderAddOpen, orderAddForm, setOrderAddForm, orderAddErrors, setOrderAddErrors,
     expenseRecords, setExpenseRecords, expenseQuery, setExpenseQuery, expenseFilterCategory, setExpenseFilterCategory,
     expenseAddOpen, setExpenseAddOpen, expenseAddForm, setExpenseAddForm, expenseAddErrors, setExpenseAddErrors,
     deleteExpenseId, setDeleteExpenseId,

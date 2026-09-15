@@ -3,7 +3,7 @@ import { LeafIcon, ChevronRight, LoginArrowIcon } from './icons.jsx';
 
 export default function SiteHeader({ ctx, active }) {
   const {
-    theme, toggleTheme, isLoggedIn, goAuth, goLanding, goMenu, goBranchesPublic, goAbout, goContact, userInitials, userName,
+    theme, toggleTheme, isLoggedIn, goAuth, goLanding, goMenu, goBranchesPublic, goAbout, goContact, userInitials, userName, loggedAvatarUrl,
     landingAcctMenuOpen, setLandingAcctMenuOpen, userRoleLabel,
     openProfileFromLanding, openSecurityFromLanding, switchAccount, logout
   } = ctx;
@@ -42,7 +42,11 @@ export default function SiteHeader({ ctx, active }) {
           {isLoggedIn && (
             <span style={{ position: 'relative' }}>
               <a onClick={() => setLandingAcctMenuOpen(v => !v)} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '4px 12px 4px 4px', borderRadius: 999, background: 'var(--surface-brand-soft)' }}>
-                <span style={{ width: 28, height: 28, flex: '0 0 auto', borderRadius: 999, background: 'var(--clay-100)', color: 'var(--text-accent)', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 12 }}>{userInitials}</span>
+                {loggedAvatarUrl ? (
+                  <img src={loggedAvatarUrl} alt={userName} style={{ width: 28, height: 28, flex: '0 0 auto', borderRadius: 999, objectFit: 'cover' }} />
+                ) : (
+                  <span style={{ width: 28, height: 28, flex: '0 0 auto', borderRadius: 999, background: 'var(--clay-100)', color: 'var(--text-accent)', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 12 }}>{userInitials}</span>
+                )}
                 <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-brand)' }}>{userName}</span>
               </a>
               {landingAcctMenuOpen && (
@@ -50,7 +54,11 @@ export default function SiteHeader({ ctx, active }) {
                   <div style={{ position: 'fixed', inset: 0, zIndex: 29 }} onClick={() => setLandingAcctMenuOpen(false)} />
                   <div onClick={e => e.stopPropagation()} style={{ position: 'absolute', top: 'calc(100% + 10px)', right: 0, width: 300, background: 'var(--surface-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', boxShadow: 'var(--shadow-modal)', padding: 20, zIndex: 30, textAlign: 'left' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <span style={{ width: 40, height: 40, flex: '0 0 auto', borderRadius: 999, background: 'var(--clay-100)', color: 'var(--text-accent)', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 14 }}>{userInitials}</span>
+                      {loggedAvatarUrl ? (
+                        <img src={loggedAvatarUrl} alt={userName} style={{ width: 40, height: 40, flex: '0 0 auto', borderRadius: 999, objectFit: 'cover' }} />
+                      ) : (
+                        <span style={{ width: 40, height: 40, flex: '0 0 auto', borderRadius: 999, background: 'var(--clay-100)', color: 'var(--text-accent)', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 14 }}>{userInitials}</span>
+                      )}
                       <div style={{ minWidth: 0 }}>
                         <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userName}</div>
                         <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{userRoleLabel}</div>

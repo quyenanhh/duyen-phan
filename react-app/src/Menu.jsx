@@ -68,9 +68,9 @@ export default function Menu({ ctx }) {
 
       <div style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-          <SummaryCard icon={<ListSmallIcon />} tone="blue" label="Tổng số món" value={menuCount} />
-          <SummaryCard icon={<CheckCircleIcon />} tone="green" label="Đang bán" value={availableCount} />
-          <SummaryCard icon={<XCircleIcon />} tone="red" label="Hết hàng" value={soldoutCount} accent={soldoutCount > 0} accentColor="var(--danger)" />
+          <SummaryCard icon={<ListSmallIcon />} tone="neutral" label="Tổng số món" value={menuCount} />
+          <SummaryCard icon={<CheckCircleIcon />} tone="brand" label="Đang bán" value={availableCount} />
+          <SummaryCard icon={<XCircleIcon />} tone="warn" label="Hết hàng" value={soldoutCount} accent={soldoutCount > 0} accentColor="var(--danger)" />
         </div>
 
         <section className="panel panel-flush">
@@ -101,51 +101,46 @@ export default function Menu({ ctx }) {
           {filtered.length === 0 ? (
             <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--text-muted)' }}>Không tìm thấy món phù hợp.</div>
           ) : (
-            <div style={{ padding: '4px 24px 24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 18 }}>
-              {filtered.map(m => (
-                <MenuItemCard key={m.id} item={m}
-                  onEdit={() => openEdit(m)}
-                  onToggleStatus={() => toggleStatus(m)}
-                  onToggleVisible={() => toggleVisible(m)}
-                  onDelete={() => setDeleteMenuId(m.id)} />
-              ))}
-            </div>
+            <table style={{ width: '100%', fontSize: 'var(--fs-body-sm)' }}>
+              <thead><tr><th>Món</th><th>Danh mục</th><th style={{ textAlign: 'right' }}>Giá</th><th>Trạng thái</th><th>Hiển thị</th><th style={{ textAlign: 'right' }}>Thao tác</th></tr></thead>
+              <tbody>
+                {filtered.map(m => {
+                  const Art = pickDishArt(m);
+                  const [stBg, stColor, stLabel] = MENU_STATUS_STYLE[m.status] || MENU_STATUS_STYLE.available;
+                  const isSoldout = m.status === 'soldout';
+                  const isVisible = m.visible !== false;
+                  const toggleTitle = isSoldout ? 'Mở bán lại' : 'Đánh dấu hết hàng';
+                  return (
+                    <tr className="row" key={m.id} style={{ cursor: 'pointer' }} onClick={() => openEdit(m)}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <div className="photo-card" style={{ width: 40, height: 40, flex: '0 0 auto', padding: 6, opacity: isSoldout ? .55 : 1 }}><Art /></div>
+                          <span style={{ fontWeight: 600 }}>{m.name}</span>
+                        </div>
+                      </td>
+                      <td style={{ color: 'var(--text-muted)' }}>{m.category}</td>
+                      <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(m.price)}</td>
+                      <td><span className="badge" style={{ background: stBg, color: stColor }}><span className="dot" />{stLabel}</span></td>
+                      <td>{isVisible ? <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>Công khai</span> : <span className="badge" style={{ background: '#F0EBE3', color: '#8A948F' }}>Đã ẩn</span>}</td>
+                      <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        <button type="button" className="icon-btn" style={{ width: 30, height: 30 }} title="Sửa món" onClick={e => { e.stopPropagation(); openEdit(m); }}><EditIcon size={14} /></button>
+                        <button type="button" className="icon-btn" style={{ width: 30, height: 30, color: 'var(--text-accent)' }} title={toggleTitle} onClick={e => { e.stopPropagation(); toggleStatus(m); }}><PowerIcon size={14} /></button>
+                        <button type="button" className="icon-btn" style={{ width: 30, height: 30, color: isVisible ? 'var(--text-muted)' : 'var(--brand)' }} title={isVisible ? 'Ẩn khỏi thực đơn công khai' : 'Hiện trên thực đơn công khai'} onClick={e => { e.stopPropagation(); toggleVisible(m); }}>
+                          {isVisible ? <EyeIcon size={14} /> : <EyeOffIcon size={14} />}
+                        </button>
+                        <button type="button" className="icon-btn" style={{ width: 30, height: 30, color: 'var(--danger)' }} title="Xoá món" onClick={e => { e.stopPropagation(); setDeleteMenuId(m.id); }}><TrashIcon size={14} /></button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           )}
         </section>
       </div>
 
       <MenuAddDialog ctx={ctx} />
       <DeleteMenuDialog ctx={ctx} />
-    </div>
-  );
-}
-
-function MenuItemCard({ item, onEdit, onToggleStatus, onToggleVisible, onDelete }) {
-  const Art = pickDishArt(item);
-  const [stBg, stColor, stLabel] = MENU_STATUS_STYLE[item.status] || MENU_STATUS_STYLE.available;
-  const isSoldout = item.status === 'soldout';
-  const isVisible = item.visible !== false;
-  const toggleTitle = isSoldout ? 'Mở bán lại' : 'Đánh dấu hết hàng';
-  return (
-    <div className="panel panel-flush" style={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ position: 'relative' }}>
-        <div className="photo-card" style={{ height: 140, borderRadius: 0, padding: 16, opacity: isSoldout ? .55 : 1 }}><Art /></div>
-        <span className="badge" style={{ position: 'absolute', left: 10, top: 10, background: stBg, color: stColor }}><span className="dot" />{stLabel}</span>
-        {!isVisible && <span className="badge" style={{ position: 'absolute', right: 10, top: 10, background: '#F0EBE3', color: '#8A948F' }}>Đã ẩn</span>}
-        <span style={{ position: 'absolute', right: 10, bottom: 10, background: 'var(--surface-card)', boxShadow: 'var(--shadow-card)', borderRadius: 999, padding: '4px 10px', fontSize: 12.5, fontWeight: 600, fontVariantNumeric: 'tabular-nums', color: 'var(--text-accent)' }}>{fmtVnd(item.price)}</span>
-      </div>
-      <div style={{ padding: '14px 16px 4px', flex: 1 }}>
-        <h3 style={{ fontSize: 14.5, fontWeight: 600, lineHeight: 1.3 }}>{item.name}</h3>
-        <span style={{ display: 'block', marginTop: 4, fontSize: 12, color: 'var(--text-muted)' }}>{item.category}</span>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '8px 8px 8px 0', borderTop: '1px solid var(--border-soft)', marginTop: 10 }}>
-        <button type="button" className="icon-btn" style={{ width: 30, height: 30 }} title="Sửa món" onClick={onEdit}><EditIcon /></button>
-        <button type="button" className="icon-btn" style={{ width: 30, height: 30, color: 'var(--text-accent)' }} title={toggleTitle} onClick={onToggleStatus}><PowerIcon /></button>
-        <button type="button" className="icon-btn" style={{ width: 30, height: 30, color: isVisible ? 'var(--text-muted)' : 'var(--brand)' }} title={isVisible ? 'Ẩn khỏi thực đơn công khai' : 'Hiện trên thực đơn công khai'} onClick={onToggleVisible}>
-          {isVisible ? <EyeIcon /> : <EyeOffIcon />}
-        </button>
-        <button type="button" className="icon-btn" style={{ width: 30, height: 30, color: 'var(--danger)' }} title="Xoá món" onClick={onDelete}><TrashIcon /></button>
-      </div>
     </div>
   );
 }

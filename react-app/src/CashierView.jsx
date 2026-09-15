@@ -88,9 +88,9 @@ export default function CashierView({ ctx }) {
           ) : (
             <>
               <div style={{ marginTop: 20, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-                <SummaryCard icon={<ReceiptIcon />} tone="blue" label="Giao dịch" value={count} />
-                <SummaryCard icon={<CoinIcon />} tone="green" label="Tổng thu" value={fmtVnd(totalCollected)} />
-                <SummaryCard icon={<TagIcon />} tone="clay" label="Đã giảm giá" value={fmtVnd(totalDiscount)} />
+                <SummaryCard icon={<ReceiptIcon />} tone="brand" label="Giao dịch" value={count} />
+                <SummaryCard icon={<CoinIcon />} tone="brand" label="Tổng thu" value={fmtVnd(totalCollected)} />
+                <SummaryCard icon={<TagIcon />} tone="neutral" label="Đã giảm giá" value={fmtVnd(totalDiscount)} />
               </div>
 
               <div style={{ marginTop: 16, display: 'flex', gap: 12, flexWrap: 'wrap' }}>

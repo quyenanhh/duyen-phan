@@ -16,7 +16,7 @@ import { LogoutIcon } from './icons.jsx';
 export default function Dashboard({ ctx }) {
   const {
     goLanding, userRole, managerTab, setManagerTab, staffTab, setStaffTab,
-    userInitials, userName, userRoleLabel, openProfile, logout, orderRecords, orderingTableId, checkoutTableId, staffRecords
+    userInitials, userName, userRoleLabel, loggedAvatarUrl, openProfile, logout, orderRecords, orderingTableId, checkoutTableId
   } = ctx;
 
   const isManager = userRole === 'Quản lý';
@@ -24,7 +24,6 @@ export default function Dashboard({ ctx }) {
   const isCashier = userRole === 'Thu ngân';
   const isKitchen = userRole === 'Bếp';
   const pendingOrders = orderRecords.filter(o => o.st === 'pending' || o.st === 'processing').length;
-  const pendingApplications = staffRecords.filter(s => !s.approved).length;
 
   const dashNavLabel = isStaff ? 'Lịch làm của tôi' : isCashier ? 'Doanh thu' : 'Tổng quan';
   const scheduleLabel = isStaff || isKitchen ? 'Lịch làm của tôi' : 'Ca trực của tôi';
@@ -92,7 +91,6 @@ export default function Dashboard({ ctx }) {
               <button className={`nav-item ${managerTab === 'staffList' ? 'active' : ''}`} onClick={() => setManagerTab('staffList')}>
                 <span className="nav-medallion"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg></span>
                 <span style={{ flex: 1, textAlign: 'left' }}>Nhân viên</span>
-                {pendingApplications > 0 && <span className="seal-badge">{pendingApplications}</span>}
               </button>
               <button className={`nav-item ${managerTab === 'finance' ? 'active' : ''}`} onClick={() => setManagerTab('finance')}>
                 <span className="nav-medallion"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3" /><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4" /><path d="M17 12h3a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-3a2 2 0 0 1 0-4z" /></svg></span>
@@ -103,7 +101,11 @@ export default function Dashboard({ ctx }) {
         </div>
         <div style={{ padding: 12, borderTop: '1px solid var(--border-soft)', display: 'flex', alignItems: 'center', gap: 10 }}>
           <span className="nav-item" style={{ flex: 1, minWidth: 0, padding: '6px 8px', gap: 10 }} onClick={openProfile} title="Xem thông tin tài khoản">
-            <span style={{ width: 32, height: 32, flex: '0 0 auto', borderRadius: 999, background: 'var(--clay-100)', color: 'var(--text-accent)', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 12 }}>{userInitials}</span>
+            {loggedAvatarUrl ? (
+              <img src={loggedAvatarUrl} alt={userName} style={{ width: 32, height: 32, flex: '0 0 auto', borderRadius: 999, objectFit: 'cover' }} />
+            ) : (
+              <span style={{ width: 32, height: 32, flex: '0 0 auto', borderRadius: 999, background: 'var(--clay-100)', color: 'var(--text-accent)', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 12 }}>{userInitials}</span>
+            )}
             <span style={{ flex: 1, minWidth: 0, fontSize: 13, lineHeight: 1.35 }}>
               <span style={{ display: 'block', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userName}</span>
               <span style={{ display: 'block', color: 'var(--text-muted)' }}>{userRoleLabel}</span>

@@ -25,10 +25,16 @@ const BUBBLE_POS = [
   { x: 0.82, y: 0.68 }, { x: 0.55, y: 0.82 }, { x: 0.14, y: 0.72 }
 ];
 
+// Ngày trong order_time có dạng "HH:MM dd/MM/yyyy" — lấy phần ngày ở cuối để so sánh kỳ.
+function parseOrderDate(orderTime) {
+  const parts = (orderTime || '').trim().split(' ');
+  return parseVnDate(parts[parts.length - 1]);
+}
+
 export default function Finance({ ctx }) {
   const {
     expenseRecords, expenseQuery, setExpenseQuery, expenseFilterCategory, setExpenseFilterCategory,
-    setExpenseAddOpen, setExpenseAddForm, setExpenseAddErrors, setDeleteExpenseId, menuRecords
+    setExpenseAddOpen, setExpenseAddForm, setExpenseAddErrors, setDeleteExpenseId, menuRecords, orderRecords
   } = ctx;
 
   const [period, setPeriod] = useState('month'); // week | month
@@ -55,14 +61,22 @@ export default function Finance({ ctx }) {
 
   const start = periodStartDate(period);
   const prevStart = previousPeriodStart(period, start);
-  const revenue = paidOrders.reduce((sum, o) => sum + (o.total - o.discount), 0);
-  const orderCount = paidOrders.length;
+
+  // Đơn giao hàng hoàn tất (bảng "orders") cộng vào doanh thu cùng với đơn tại bàn đã thanh toán.
+  const completedDeliveryOrders = orderRecords.filter(o => o.st === 'completed');
+  const periodDeliveryOrders = completedDeliveryOrders.filter(o => { const d = parseOrderDate(o.t); return d && d >= start; });
+  const prevDeliveryOrders = completedDeliveryOrders.filter(o => { const d = parseOrderDate(o.t); return d && d >= prevStart && d < start; });
+  const deliveryRevenue = periodDeliveryOrders.reduce((sum, o) => sum + (o.totalRaw || 0), 0);
+  const prevDeliveryRevenue = prevDeliveryOrders.reduce((sum, o) => sum + (o.totalRaw || 0), 0);
+
+  const revenue = paidOrders.reduce((sum, o) => sum + (o.total - o.discount), 0) + deliveryRevenue;
+  const orderCount = paidOrders.length + periodDeliveryOrders.length;
   const periodExpenses = expenseRecords.filter(e => { const d = parseVnDate(e.date); return d && d >= start; });
   const expenseTotal = periodExpenses.reduce((sum, e) => sum + e.amount, 0);
   const profit = revenue - expenseTotal;
 
-  const prevRevenue = prevOrders.reduce((sum, o) => sum + (o.total - o.discount), 0);
-  const prevOrderCount = prevOrders.length;
+  const prevRevenue = prevOrders.reduce((sum, o) => sum + (o.total - o.discount), 0) + prevDeliveryRevenue;
+  const prevOrderCount = prevOrders.length + prevDeliveryOrders.length;
   const prevExpenses = expenseRecords.filter(e => { const d = parseVnDate(e.date); return d && d >= prevStart && d < start; }).reduce((sum, e) => sum + e.amount, 0);
   const prevProfit = prevRevenue - prevExpenses;
 
@@ -79,9 +93,13 @@ export default function Finance({ ctx }) {
   });
   const dayRevenue = last7.map(d => {
     const next = new Date(d); next.setDate(next.getDate() + 1);
-    return paidOrders
+    const tableRev = paidOrders
       .filter(o => { const t = new Date(o.paidAt); return t >= d && t < next; })
       .reduce((sum, o) => sum + (o.total - o.discount), 0);
+    const deliveryRev = completedDeliveryOrders
+      .filter(o => { const t = parseOrderDate(o.t); return t && t >= d && t < next; })
+      .reduce((sum, o) => sum + (o.totalRaw || 0), 0);
+    return tableRev + deliveryRev;
   });
   const maxDay = Math.max(1, ...dayRevenue);
   const chart = buildChart(last7.map(d => d.toLocaleDateString('vi-VN', { weekday: 'short' })), dayRevenue.map(v => (v / maxDay) * 100), null);
@@ -91,6 +109,7 @@ export default function Finance({ ctx }) {
   // Phương thức thanh toán.
   const byMethod = {};
   paidOrders.forEach(o => { const k = o.paymentMethod || 'Khác'; byMethod[k] = (byMethod[k] || 0) + (o.total - o.discount); });
+  periodDeliveryOrders.forEach(o => { const k = o.payment || 'Khác'; byMethod[k] = (byMethod[k] || 0) + (o.totalRaw || 0); });
   const paymentSegments = Object.entries(byMethod).map(([label, value]) => ({ label, value, color: PAYMENT_COLORS[label] || '#8A9690' }));
 
   // Chi phí theo hạng mục.
@@ -101,6 +120,7 @@ export default function Finance({ ctx }) {
   // Món bán chạy.
   const itemQty = {};
   paidOrders.forEach(o => o.items.forEach(([name, qty]) => { itemQty[name] = (itemQty[name] || 0) + qty; }));
+  periodDeliveryOrders.forEach(o => o.items.forEach(([name, qty]) => { itemQty[name] = (itemQty[name] || 0) + qty; }));
   const topItems = Object.entries(itemQty).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([name, qty]) => {
     const menuItem = menuRecords.find(m => m.name === name);
     return { name, qty, category: menuItem && menuItem.category };
@@ -152,10 +172,10 @@ export default function Finance({ ctx }) {
         ) : (
           <>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              <SummaryCard icon={<CoinIcon />} tone="green" label="Tổng doanh thu" value={loading ? '…' : fmtVnd(revenue)} trend={pctTrend(revenue, prevRevenue)} />
-              <SummaryCard icon={<PackageMiniIcon />} tone="clay" label="Tổng đơn" value={loading ? '…' : String(orderCount)} trend={pctTrend(orderCount, prevOrderCount)} />
-              <SummaryCard icon={<ReceiptIcon />} tone="gray" label="Tổng chi phí" value={loading ? '…' : fmtVnd(expenseTotal)} trend={pctTrend(expenseTotal, prevExpenses)} trendGoodDirection="down" />
-              <SummaryCard icon={<TrendIcon />} tone={profit >= 0 ? 'green' : 'red'} label="Lợi nhuận ước tính" value={loading ? '…' : fmtVnd(profit)} negative={!loading && profit < 0} trend={pctTrend(profit, prevProfit)} />
+              <SummaryCard icon={<CoinIcon />} tone="brand" label="Tổng doanh thu" value={loading ? '…' : fmtVnd(revenue)} trend={pctTrend(revenue, prevRevenue)} />
+              <SummaryCard icon={<PackageMiniIcon />} tone="neutral" label="Tổng đơn" value={loading ? '…' : String(orderCount)} trend={pctTrend(orderCount, prevOrderCount)} />
+              <SummaryCard icon={<ReceiptIcon />} tone="neutral" label="Tổng chi phí" value={loading ? '…' : fmtVnd(expenseTotal)} trend={pctTrend(expenseTotal, prevExpenses)} trendGoodDirection="down" />
+              <SummaryCard icon={<TrendIcon />} tone={profit >= 0 ? 'brand' : 'warn'} label="Lợi nhuận ước tính" value={loading ? '…' : fmtVnd(profit)} negative={!loading && profit < 0} trend={pctTrend(profit, prevProfit)} />
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(240px, 1fr) minmax(0, 2fr)', gap: 16 }}>

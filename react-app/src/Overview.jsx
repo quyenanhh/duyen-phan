@@ -156,10 +156,10 @@ export default function Overview({ ctx }) {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16 }}>
-          <SummaryCard icon={<InboxSmallIcon />} tone="gray" label="Đơn chờ xử lý" value={pendingCount} hint="Chưa gửi bếp" />
-          <SummaryCard icon={<FlameIcon />} tone="amber" label="Đơn đang phục vụ" value={progressCount} hint="Đang chuẩn bị / đã phục vụ" />
-          <SummaryCard icon={<ListIcon />} tone="blue" label="Tổng số đơn" value={totalCount} hint={RANGES.find(r => r.id === range)?.label} />
-          <SummaryCard icon={<TableSmallIcon />} tone="green" label="Bàn còn trống" value={`${availableTables}/${totalTables}`} hint="Hiện tại" />
+          <SummaryCard icon={<InboxSmallIcon />} tone="neutral" label="Đơn chờ xử lý" value={pendingCount} hint="Chưa gửi bếp" />
+          <SummaryCard icon={<FlameIcon />} tone="brand" label="Đơn đang phục vụ" value={progressCount} hint="Đang chuẩn bị / đã phục vụ" />
+          <SummaryCard icon={<ListIcon />} tone="brand" label="Tổng số đơn" value={totalCount} hint={RANGES.find(r => r.id === range)?.label} />
+          <SummaryCard icon={<TableSmallIcon />} tone="brand" label="Bàn còn trống" value={`${availableTables}/${totalTables}`} hint="Hiện tại" />
         </div>
 
         {!supabaseEnabled ? (

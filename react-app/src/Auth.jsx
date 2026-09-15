@@ -133,9 +133,7 @@ export default function Auth({ ctx }) {
               <h1 style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.01em', marginTop: 16 }}>{success.type === 'register' ? 'Tạo tài khoản thành công' : 'Đăng nhập thành công'}</h1>
               <p style={{ marginTop: 8, fontSize: 'var(--fs-body-sm)', color: 'var(--text-muted)' }}>
                 {success.type === 'register'
-                  ? (success.role === 'Quản lý'
-                    ? `Email xác thực đã được gửi tới ${success.email}. Đăng nhập để bắt đầu sử dụng.`
-                    : `Tài khoản ${success.role} đã được tạo và đang chờ quản lý chi nhánh xác nhận trước khi sử dụng.`)
+                  ? `Email xác thực đã được gửi tới ${success.email}. Đăng nhập để bắt đầu sử dụng.`
                   : ''}
               </p>
               <button type="button" className="btn btn-primary btn-lg btn-block" style={{ marginTop: 24, borderRadius: 'var(--radius-pill)', height: 50 }} onClick={backToLogin}>Đăng nhập ngay</button>
@@ -196,7 +194,6 @@ export default function Auth({ ctx }) {
                         {regErrors.regRole && <span className="err-msg">{regErrors.regRole}</span>}
                       </label>
                     </div>
-                    <p style={{ fontSize: 12, color: 'var(--text-subtle)', marginTop: -2 }}>Với vai trò Nhân viên/Bếp/Thu ngân: tài khoản sẽ cần quản lý chi nhánh xác nhận trước khi dùng được.</p>
                     <label className="field-wrap">
                       <label>Mật khẩu</label>
                       <span className="field" style={pillField('regPassword')(regErrors)}>
