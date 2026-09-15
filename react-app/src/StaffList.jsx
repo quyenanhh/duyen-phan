@@ -63,7 +63,7 @@ export default function StaffList({ ctx }) {
       </div>
 
       <div style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
           <SummaryCard icon={<PersonRosterIcon />} tone="brand" label="Số nhân viên" value={staffCount} />
           <SummaryCard icon={<CalendarIcon />} tone="brand" label="Số ca làm / tuần" value={staffShiftTotal} />
           <SummaryCard icon={<WalletIcon />} tone="warn" label="Quỹ lương / tháng" value={staffPayrollTotal} />
@@ -625,7 +625,7 @@ function StaffKpi({ p }) {
       ) : count === 0 ? (
         <EmptyKpiBox text={`Chưa có hoạt động nào trong ${period === 'week' ? '7 ngày qua' : 'tháng này'}.`} />
       ) : (
-        <div style={{ marginTop: 14, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        <div style={{ marginTop: 14, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
           <SummaryCard icon={<PackageIcon />} tone="brand" label={countLabel} value={count} />
           <SummaryCard icon={<WalletIcon />} tone="brand" label={revenueLabel} value={fmtVnd(revenue)} />
           <SummaryCard icon={<ItemsMiniIcon />} tone="neutral" label="món" value={itemCount} />

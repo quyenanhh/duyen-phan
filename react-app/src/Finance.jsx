@@ -171,7 +171,7 @@ export default function Finance({ ctx }) {
           <section className="panel" style={{ padding: 24, textAlign: 'center', color: 'var(--danger-text)' }}>Không tải được dữ liệu, thử làm mới lại.</section>
         ) : (
           <>
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
               <SummaryCard icon={<CoinIcon />} tone="brand" label="Tổng doanh thu" value={loading ? '…' : fmtVnd(revenue)} trend={pctTrend(revenue, prevRevenue)} />
               <SummaryCard icon={<PackageMiniIcon />} tone="neutral" label="Tổng đơn" value={loading ? '…' : String(orderCount)} trend={pctTrend(orderCount, prevOrderCount)} />
               <SummaryCard icon={<ReceiptIcon />} tone="neutral" label="Tổng chi phí" value={loading ? '…' : fmtVnd(expenseTotal)} trend={pctTrend(expenseTotal, prevExpenses)} trendGoodDirection="down" />

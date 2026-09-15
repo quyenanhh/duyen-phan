@@ -33,7 +33,7 @@ export default function ProfileDialog({ ctx }) {
 
   return (
     <div className="modal-backdrop" style={{ position: 'fixed', inset: 0, background: 'rgba(46,42,34,.38)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, zIndex: 60 }} onClick={closeProfile}>
-      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel panel-flush modal-pop" style={{ width: '100%', maxWidth: 420 }}>
+      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel panel-flush modal-pop" style={{ width: '100%', maxWidth: 420, maxHeight: '88vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, padding: '24px 24px 0' }}>
           <h3 style={{ flex: 1, fontSize: 'var(--fs-h3)', fontWeight: 600 }}>Thông tin cá nhân</h3>
           <button type="button" className="icon-btn" style={{ width: 32, height: 32 }} onClick={closeProfile}><XIcon /></button>

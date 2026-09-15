@@ -11,7 +11,7 @@ export default function SummaryCard({ icon, tone = 'brand', label, value, hint, 
   const [bg, fg] = SUMMARY_TINTS[tone] || SUMMARY_TINTS.brand;
   const isGood = trend && (trendGoodDirection === 'up' ? trend.up : !trend.up);
   return (
-    <div className="panel" style={{ position: 'relative', overflow: 'hidden', padding: '20px 22px', flex: '1 1 240px', maxWidth: 320, minWidth: 200, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div className="panel" style={{ position: 'relative', overflow: 'hidden', padding: '20px 22px', width: '100%', borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div aria-hidden style={{ position: 'absolute', right: -2, bottom: -6, width: 34, height: 34, transform: 'scale(3.2)', transformOrigin: 'bottom right', color: fg, opacity: .07, pointerEvents: 'none' }}>
         {icon}
       </div>

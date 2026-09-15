@@ -67,7 +67,7 @@ export default function Menu({ ctx }) {
       </div>
 
       <div style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
           <SummaryCard icon={<ListSmallIcon />} tone="neutral" label="Tổng số món" value={menuCount} />
           <SummaryCard icon={<CheckCircleIcon />} tone="brand" label="Đang bán" value={availableCount} />
           <SummaryCard icon={<XCircleIcon />} tone="warn" label="Hết hàng" value={soldoutCount} accent={soldoutCount > 0} accentColor="var(--danger)" />

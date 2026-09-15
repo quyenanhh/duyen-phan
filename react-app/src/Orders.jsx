@@ -63,7 +63,7 @@ export default function Orders({ ctx }) {
       </div>
 
       <div style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
           <SummaryCard icon={<PackageIcon />} tone="brand" label="Tổng đơn" value={orderCount} />
           <SummaryCard icon={<TruckIcon />} tone="brand" label="Đang giao" value={deliveringCount} />
           <SummaryCard icon={<CheckCircleIcon />} tone="brand" label="Hoàn tất" value={completedCount} />

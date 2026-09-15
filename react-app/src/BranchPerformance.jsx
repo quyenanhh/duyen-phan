@@ -120,7 +120,7 @@ export default function BranchPerformance({ ctx }) {
           </div>
         ) : (
           <>
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
               <SummaryCard icon={<CoinIcon />} tone="brand" label="Tổng doanh thu" value={fmtVnd(totalRevenue)} hint={(revenueGrowth >= 0 ? '+' : '') + fmtPct(revenueGrowth) + '% so với kỳ trước'} />
               <SummaryCard icon={<PackageMiniIcon />} tone="neutral" label="Tổng đơn" value={String(totalOrders)} hint={activeBranches + '/' + rows.length + ' chi nhánh có đơn'} />
               <SummaryCard icon={<ReceiptIcon />} tone="neutral" label="Tổng chi phí" value={fmtVnd(totalExpense)} hint={fmtPct(costRatioPct) + '% doanh thu'} />

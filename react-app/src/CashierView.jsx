@@ -87,7 +87,7 @@ export default function CashierView({ ctx }) {
             <EmptyBlock text="Chưa có giao dịch nào trong ca này." sub="Giao dịch thanh toán mới sẽ hiển thị tại đây." />
           ) : (
             <>
-              <div style={{ marginTop: 20, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              <div style={{ marginTop: 20, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
                 <SummaryCard icon={<ReceiptIcon />} tone="brand" label="Giao dịch" value={count} />
                 <SummaryCard icon={<CoinIcon />} tone="brand" label="Tổng thu" value={fmtVnd(totalCollected)} />
                 <SummaryCard icon={<TagIcon />} tone="neutral" label="Đã giảm giá" value={fmtVnd(totalDiscount)} />
