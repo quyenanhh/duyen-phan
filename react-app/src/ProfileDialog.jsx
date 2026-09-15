@@ -33,12 +33,12 @@ export default function ProfileDialog({ ctx }) {
 
   return (
     <div className="modal-backdrop" style={{ position: 'fixed', inset: 0, background: 'rgba(46,42,34,.38)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, zIndex: 60 }} onClick={closeProfile}>
-      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel panel-flush modal-pop" style={{ width: '100%', maxWidth: 420, maxHeight: '88vh', overflowY: 'auto' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, padding: '24px 24px 0' }}>
+      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel panel-flush modal-pop" style={{ width: '100%', maxWidth: 420, maxHeight: '88vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, padding: '24px 24px 0', flex: '0 0 auto' }}>
           <h3 style={{ flex: 1, fontSize: 'var(--fs-h3)', fontWeight: 600 }}>Thông tin cá nhân</h3>
           <button type="button" className="icon-btn" style={{ width: 32, height: 32 }} onClick={closeProfile}><XIcon /></button>
         </div>
-        <div style={{ padding: '20px 24px 0', display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', minHeight: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <span style={{ position: 'relative', width: 80, height: 80 }}>
               {loggedAvatarUrl ? (
@@ -92,7 +92,7 @@ export default function ProfileDialog({ ctx }) {
           )}
           <a onClick={changePassword} className="foot-link" style={{ cursor: 'pointer', fontWeight: 600 }}>Đổi mật khẩu</a>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: 24 }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: 24, flex: '0 0 auto' }}>
           <button type="button" className="btn btn-secondary btn-md" onClick={closeProfile}>Huỷ</button>
           <button type="button" className="btn btn-primary btn-md" onClick={saveProfile}>Lưu thay đổi</button>
         </div>

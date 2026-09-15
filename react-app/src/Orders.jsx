@@ -150,8 +150,8 @@ function OrderProfileDialog({ ctx, onEdit }) {
 
   return (
     <div className="modal-backdrop" style={{ position: 'fixed', inset: 0, background: 'rgba(46,42,34,.38)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, zIndex: 60 }} onClick={close}>
-      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel modal-pop" style={{ width: '100%', maxWidth: 560, maxHeight: '88vh', overflowY: 'auto' }}>
-        <div style={{ background: 'var(--green-100)', padding: '28px 96px 28px 28px', position: 'relative' }}>
+      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel modal-pop" style={{ width: '100%', maxWidth: 560, maxHeight: '88vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: 'var(--green-100)', padding: '28px 96px 28px 28px', position: 'relative', flex: '0 0 auto' }}>
           <div style={{ position: 'absolute', top: 16, right: 16, display: 'flex', gap: 8 }}>
             <button type="button" className="icon-btn" style={{ width: 32, height: 32, background: 'var(--surface-card)' }} title="Sửa đơn hàng" onClick={edit}><EditIcon /></button>
             <button type="button" className="icon-btn" style={{ width: 32, height: 32, background: 'var(--surface-card)' }} onClick={close}><XIcon /></button>
@@ -164,7 +164,7 @@ function OrderProfileDialog({ ctx, onEdit }) {
             </div>
           </div>
         </div>
-        <div style={{ padding: 24 }}>
+        <div style={{ padding: 24, overflowY: 'auto', minHeight: 0 }}>
           <h4 style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.04em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Thông tin giao hàng</h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 14 }}>
             <InfoBox label="Khách hàng" value={o.customer} />
@@ -332,15 +332,15 @@ function OrderFormDialog({ ctx }) {
 
   return (
     <div className="modal-backdrop" style={{ position: 'fixed', inset: 0, background: 'rgba(46,42,34,.38)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, zIndex: 60 }} onClick={close}>
-      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel panel-flush modal-pop" style={{ width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, padding: '24px 24px 0' }}>
+      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel panel-flush modal-pop" style={{ width: '100%', maxWidth: 560, maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, padding: '24px 24px 0', flex: '0 0 auto' }}>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontSize: 'var(--fs-h3)', fontWeight: 600 }}>{isEdit ? 'Sửa đơn ' + orderAddForm.code : 'Tạo đơn hàng mới'}</h3>
             <p style={{ marginTop: 6, fontSize: 'var(--fs-body-sm)', color: 'var(--text-muted)' }}>{isEdit ? 'Cập nhật thông tin đơn hàng.' : 'Mã đơn tự sinh: ' + orderAddForm.code}</p>
           </div>
           <button type="button" className="icon-btn" style={{ width: 32, height: 32 }} onClick={close}><XIcon /></button>
         </div>
-        <div style={{ padding: '20px 24px 0', display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', minHeight: 0 }}>
           <div style={{ display: 'flex', gap: 12 }}>
             <label className="field-wrap" style={{ flex: 1 }}>
               <label>Khách hàng</label>
@@ -404,7 +404,7 @@ function OrderFormDialog({ ctx }) {
               style={{ width: '100%', resize: 'vertical', padding: '10px 12px', borderRadius: 'var(--radius-control)', border: '1px solid var(--border-strong)', fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-body-sm)', color: 'var(--text-body)', background: 'var(--surface-card)' }} />
           </label>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: 24 }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: 24, flex: '0 0 auto' }}>
           <button type="button" className="btn btn-secondary btn-md" onClick={close}>Huỷ</button>
           <button type="button" className="btn btn-primary btn-md" onClick={submit}>{isEdit ? 'Lưu thay đổi' : 'Tạo đơn hàng'}</button>
         </div>

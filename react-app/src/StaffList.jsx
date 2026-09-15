@@ -57,7 +57,7 @@ export default function StaffList({ ctx }) {
       <div className="toolbar">
         <div style={{ flex: 1 }}>
           <h2 style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.01em' }}>Nhân viên</h2>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Nhân viên tự đăng ký tại trang Đăng ký và được thêm vào danh sách ngay. Hoặc quản lý tạo thẳng tài khoản kèm mật khẩu tạm thời.</div>
+          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Quản lý tạo tài khoản trực tiếp tại đây, kèm mật khẩu tạm thời cho lần đăng nhập đầu tiên.</div>
         </div>
         <button type="button" className="btn btn-primary btn-md" onClick={() => setStaffAddOpen(true)}>+ Thêm nhân viên</button>
       </div>
@@ -437,8 +437,8 @@ function StaffProfileDialog({ ctx }) {
 
   return (
     <div className="modal-backdrop" style={{ position: 'fixed', inset: 0, background: 'rgba(46,42,34,.38)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, zIndex: 60 }} onClick={close}>
-      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel modal-pop" style={{ width: '100%', maxWidth: 560, maxHeight: '88vh', overflowY: 'auto' }}>
-        <div style={{ background: 'var(--green-100)', padding: '28px 92px 28px 28px', position: 'relative' }}>
+      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel modal-pop" style={{ width: '100%', maxWidth: 560, maxHeight: '88vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: 'var(--green-100)', padding: '28px 92px 28px 28px', position: 'relative', flex: '0 0 auto' }}>
           <div style={{ position: 'absolute', top: 16, right: 16, display: 'flex', gap: 8 }}>
             {!editOpen && (
               <>
@@ -478,7 +478,7 @@ function StaffProfileDialog({ ctx }) {
             </div>
           </div>
         </div>
-        <div style={{ padding: 24 }}>
+        <div style={{ padding: 24, overflowY: 'auto', minHeight: 0 }}>
           {editOpen ? (
             <>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

@@ -142,12 +142,6 @@ export const EXPENSE_LIST = [
   { date: '03/09/2026', branch: 'Toàn hệ thống', category: 'Khác', amount: 3200000, note: 'Sửa chữa thiết bị bếp chi nhánh Quận 10.' }
 ].map((e, i) => ({ ...e, id: i + 1 }));
 
-export const LOGIN_ROLES = ['Quản lý', 'Nhân viên', 'Bếp', 'Thu ngân'];
-export const LOGIN_ROLE_HINT = {
-  'Quản lý': 'Xem toàn bộ hệ thống: tổng quan, chi nhánh, thực đơn, nhân viên, doanh thu.',
-  'Nhân viên': 'Chỉ xem được lịch đi làm và ca làm của chính mình.',
-  'Thu ngân': 'Xem tổng kết doanh thu theo ngày, tháng, năm.'
-};
 
 export const STAFF_WEEK_DAYS = [['T2', '31/08'], ['T3', '01/09'], ['T4', '02/09'], ['T5', '03/09'], ['T6', '04/09'], ['T7', '05/09'], ['CN', '06/09']];
 export const STAFF_WEEK_PATTERN = ['am', 'am', 'am', 'off', 'am', 'am', 'off'];
@@ -163,9 +157,9 @@ export const STAFF_LIST = [
 ].map((s, i) => ({ ...s, id: i + 1 }));
 
 export const STAFF_STATUS_STYLE = { active: ['#E7ECE5', '#2E3B35', 'Đang làm'], paused: ['#F6DED7', '#8E3421', 'Tạm nghỉ'] };
-export const STAFF_ROLE_STYLE = { 'Nhân viên': ['#E7ECE5', '#2E3B35'], 'Thu ngân': ['#F7E9CC', '#8C5E14'], 'Bếp': ['#DFE7EF', '#3F5C79'] };
+export const STAFF_ROLE_STYLE = { 'Quản lý': ['#DCE5D2', '#3A5430'], 'Nhân viên': ['#E7ECE5', '#2E3B35'], 'Thu ngân': ['#F7E9CC', '#8C5E14'], 'Bếp': ['#DFE7EF', '#3F5C79'] };
 export const STAFF_CHECKIN_STYLE = { true: ['#E7ECE5', '#2E3B35', 'Đã chấm ca'], false: ['#F7E9CC', '#8C5E14', 'Chưa chấm ca'] };
-export const STAFF_ROLES = ['Nhân viên', 'Bếp', 'Thu ngân'];
+export const STAFF_ROLES = ['Quản lý', 'Nhân viên', 'Bếp', 'Thu ngân'];
 export const CONTRACT_TYPES = ['Toàn thời gian', 'Bán thời gian', 'Thời vụ'];
 
 export const VIET_MAP = {

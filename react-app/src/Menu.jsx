@@ -204,15 +204,15 @@ function MenuAddDialog({ ctx }) {
 
   return (
     <div className="modal-backdrop" style={{ position: 'fixed', inset: 0, background: 'rgba(46,42,34,.38)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, zIndex: 60 }} onClick={close}>
-      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel panel-flush modal-pop" style={{ width: '100%', maxWidth: 480, maxHeight: '90vh', overflowY: 'auto' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, padding: '24px 24px 0' }}>
+      <div role="dialog" aria-modal="true" onClick={e => e.stopPropagation()} className="panel panel-flush modal-pop" style={{ width: '100%', maxWidth: 480, maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, padding: '24px 24px 0', flex: '0 0 auto' }}>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontSize: 'var(--fs-h3)', fontWeight: 600 }}>{isEdit ? 'Sửa món' : 'Thêm món'}</h3>
             <p style={{ marginTop: 6, fontSize: 'var(--fs-body-sm)', color: 'var(--text-muted)' }}>{isEdit ? 'Cập nhật thông tin món trong thực đơn.' : 'Nhập thông tin món mới vào thực đơn.'}</p>
           </div>
           <button type="button" className="icon-btn" style={{ width: 32, height: 32 }} onClick={close}><XIcon /></button>
         </div>
-        <div style={{ padding: '20px 24px 0', display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', minHeight: 0 }}>
           <label className="field-wrap">
             <label>Ảnh món</label>
             <DishPreview name={menuAddForm.name} category={menuAddForm.category} />
@@ -257,7 +257,7 @@ function MenuAddDialog({ ctx }) {
               style={{ width: '100%', resize: 'vertical', padding: '10px 12px', borderRadius: 'var(--radius-control)', border: '1px solid var(--border-strong)', fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-body-sm)', color: 'var(--text-body)', background: 'var(--surface-card)' }} />
           </label>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: 24 }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: 24, flex: '0 0 auto' }}>
           <button type="button" className="btn btn-secondary btn-md" onClick={close}>Huỷ</button>
           <button type="button" className="btn btn-primary btn-md" onClick={submit}>{isEdit ? 'Lưu thay đổi' : 'Thêm món'}</button>
         </div>

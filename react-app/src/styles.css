@@ -135,7 +135,11 @@ a:hover{color:var(--text-link-hover)}
 .panel-flush{overflow:hidden}
 .toolbar{display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:var(--surface-card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
 .modal-backdrop{animation:backdropFade var(--dur-base) var(--ease-out)}
-.modal-pop{animation:modalPop var(--dur-base) var(--ease-out)}
+.modal-pop{animation:modalPop var(--dur-base) var(--ease-out);scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
+.modal-pop::-webkit-scrollbar{width:8px}
+.modal-pop::-webkit-scrollbar-track{background:transparent;margin-block:14px}
+.modal-pop::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:999px}
+.modal-pop::-webkit-scrollbar-thumb:hover{background:var(--text-subtle)}
 
 /* — dashboard — */
 .sidebar-w{width:248px}

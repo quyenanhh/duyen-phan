@@ -14,7 +14,7 @@ import {
 } from './data.js';
 import { initials } from './utils.js';
 import { listBranches, supabaseEnabled } from './lib/branchesApi.js';
-import { signInWithPassword, signUp, signOut, checkEmailExists, updatePassword } from './lib/authApi.js';
+import { signInWithPassword, signOut, checkEmailExists, updatePassword } from './lib/authApi.js';
 import { getMyProfile, listProfiles, updateProfileRow, deleteProfileRow } from './lib/profilesApi.js';
 import { listMenuItems } from './lib/menuApi.js';
 import { listExpenses } from './lib/expensesApi.js';
@@ -25,7 +25,6 @@ import { listActiveTableOrders } from './lib/tableOrdersApi.js';
 export default function App() {
   // page routing
   const [page, setPage] = useState('landing'); // landing | auth | dashboard | changePassword
-  const [mode, setMode] = useState('login'); // login | register
   const [theme, setTheme] = useState('light');
 
   // login form
@@ -34,19 +33,6 @@ export default function App() {
   const [remember, setRemember] = useState(true);
   const [errors, setErrors] = useState({});
   const [authLoading, setAuthLoading] = useState(false);
-
-  // register form
-  const [regName, setRegName] = useState('');
-  const [regEmail, setRegEmail] = useState('');
-  const [regPhone, setRegPhone] = useState('');
-  const [regBranch, setRegBranch] = useState('');
-  const [regRole, setRegRole] = useState('');
-  const [regPassword, setRegPassword] = useState('');
-  const [regConfirm, setRegConfirm] = useState('');
-  const [agree, setAgree] = useState(true);
-  const [regErrors, setRegErrors] = useState({});
-
-  const [success, setSuccess] = useState(null);
 
   // session
   const [loggedId, setLoggedId] = useState('');
@@ -209,7 +195,7 @@ export default function App() {
     if (e) e.preventDefault();
     setLandingAcctMenuOpen(false);
     if (isLoggedIn) { setPage('dashboard'); return; }
-    setPage('auth'); setMode('login'); setSuccess(null); setErrors({});
+    setPage('auth'); setErrors({});
   }
   function goLanding() { setPage('landing'); }
   function goMenu(e) { if (e) e.preventDefault(); setPage('menu'); window.scrollTo(0, 0); }
@@ -219,7 +205,7 @@ export default function App() {
   function toggleTheme() { setTheme(t => (t === 'dark' ? 'light' : 'dark')); }
   function logout() {
     signOut();
-    setPage('auth'); setMode('login'); setPassword(''); setErrors({}); setIsLoggedIn(false);
+    setPage('auth'); setPassword(''); setErrors({}); setIsLoggedIn(false);
   }
   function switchAccount() { setLandingAcctMenuOpen(false); logout(); }
 
@@ -288,50 +274,6 @@ export default function App() {
     }
     setIsLoggedIn(true);
     setPage('dashboard');
-  }
-
-  async function submitRegister() {
-    const errs = {};
-    if (!regName.trim()) errs.regName = 'Nhập họ và tên';
-    if (!regEmail.trim()) errs.regEmail = 'Nhập email';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(regEmail.trim())) errs.regEmail = 'Email không hợp lệ';
-    if (!regPhone.trim()) errs.regPhone = 'Nhập số điện thoại';
-    else if (!/^0\d{9}$/.test(regPhone.replace(/[\s.-]/g, ''))) errs.regPhone = 'Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)';
-    if (!regBranch) errs.regBranch = 'Chọn chi nhánh phụ trách';
-    if (!regRole) errs.regRole = 'Chọn chức vụ';
-    if (!regPassword.trim()) errs.regPassword = 'Nhập mật khẩu';
-    else if (regPassword.length < 8) errs.regPassword = 'Cần tối thiểu 8 ký tự';
-    if (regConfirm !== regPassword) errs.regConfirm = 'Mật khẩu xác nhận không khớp';
-    if (!agree) errs.agree = 'Cần đồng ý điều khoản để tiếp tục';
-    if (Object.keys(errs).length) { setRegErrors(errs); return; }
-
-    if (!supabaseEnabled) {
-      setRegErrors({ regEmail: 'Chưa cấu hình Supabase Auth — xem HUONG_DAN_SUPABASE.md' });
-      return;
-    }
-
-    setRegErrors({});
-    setAuthLoading(true);
-    const trimmedEmail = regEmail.trim();
-    const { error } = await signUp(trimmedEmail, regPassword, {
-      full_name: regName.trim(), phone: regPhone.trim(), branch: regBranch, role: regRole
-    });
-    setAuthLoading(false);
-
-    if (error) {
-      if (/already|đã đăng ký/i.test(error.message)) setRegErrors({ regEmail: 'Email này đã có tài khoản trong hệ thống' });
-      else setRegErrors({ regEmail: error.message });
-      return;
-    }
-    setSuccess({ type: 'register', email: trimmedEmail, role: regRole });
-  }
-
-  function backToLogin() {
-    setSuccess(null); setMode('login');
-    setEmail(success && success.type === 'register' ? success.email : email);
-    setPassword(''); setErrors({});
-    setRegName(''); setRegEmail(''); setRegPhone(''); setRegBranch(''); setRegRole('');
-    setRegPassword(''); setRegConfirm(''); setAgree(true); setRegErrors({});
   }
 
   async function submitNewPassword() {
@@ -408,12 +350,9 @@ export default function App() {
   }
 
   const ctx = {
-    page, setPage, mode, setMode, theme, toggleTheme, goAuth, goLanding, goMenu, goBranchesPublic, goAbout, goContact, logout, switchAccount,
+    page, setPage, theme, toggleTheme, goAuth, goLanding, goMenu, goBranchesPublic, goAbout, goContact, logout, switchAccount,
     email, setEmail, password, setPassword, remember, setRemember, errors, setErrors,
     submitLogin, authLoading,
-    regName, setRegName, regEmail, setRegEmail, regPhone, setRegPhone, regBranch, setRegBranch,
-    regRole, setRegRole, regPassword, setRegPassword, regConfirm, setRegConfirm, agree, setAgree,
-    regErrors, setRegErrors, submitRegister, success, backToLogin,
     loggedId, loggedName, loggedEmail, loggedPhone, loggedPin, loggedAvatarUrl, setLoggedAvatarUrl, userRole, userBranch, userWeek, setUserWeek, isLoggedIn, userInitials, userName, userRoleLabel, staffCode,
     newPassword, setNewPassword, newConfirm, setNewConfirm, submitNewPassword,
     managerTab, setManagerTab, staffTab, setStaffTab, range, setRange,
