@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Đăng nhập & Đăng ký quản trị" description="Cặp màn hình auth cho khu vực quản trị: cột thương hiệu xanh lá + form đăng ký/đăng nhập có trạng thái lỗi." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+<script src="../../image-slot.js"></script>
+<style>body{margin:0;background:#FAF7F2}@media (max-width:900px){[data-auth-brand]{display:none}}</style>
+</helmet>
+<div style="font-family:'Be Vietnam Pro',system-ui,sans-serif;color:#2E2A22;background:#FAF7F2;font-size:15px;line-height:1.6;min-height:100vh;display:flex">
+
+<aside data-auth-brand="true" style="flex:0 0 45%;position:relative;background:#3A5430;display:flex;flex-direction:column;gap:32px;padding:48px 56px;color:#FFFDFA">
+<div style="font-family:Lora,Georgia,serif;font-size:26px;font-weight:600;letter-spacing:-0.01em">Duyên Phần</div>
+<div>
+<div style="font-size:13px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#DCB98E">Hệ thống quản trị chuỗi</div>
+<p style="margin:18px 0 0;font-family:Lora,Georgia,serif;font-size:42px;line-height:1.22;font-weight:600;color:#FFFDFA;text-wrap:pretty">Nấu vừa đủ, quản vừa tay — mọi chi nhánh trên một màn hình.</p>
+<p style="margin:18px 0 0;font-size:17px;line-height:1.55;color:#C7D8BE;text-wrap:pretty">Thực đơn, đơn hàng, nhân sự và tài chính của 12 chi nhánh, cập nhật theo thời gian thực.</p>
+</div>
+<div style="flex:1;min-height:200px;border-radius:12px;overflow:hidden;background:rgba(255,253,250,.06);border:1px solid rgba(255,253,250,.16)">
+<image-slot id="dp-auth-brand" shape="rect" fit="cover" placeholder="Kéo ảnh vào đây: mâm cơm chay hoặc gian bếp"></image-slot>
+</div>
+<div style="font-size:13px;color:#A8BE9C">Nội bộ · v2.4 · Hỗ trợ IT: 1900 6088 ext. 2</div>
+</aside>
+
+<main style="flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:48px 32px">
+<div style="width:100%;max-width:460px">
+
+<sc-if value="{{ isRegister }}" hint-placeholder-val="{{ true }}">
+<div>
+<h1 style="font-size:30px;font-weight:600;letter-spacing:-0.01em;margin:0">Tạo tài khoản quản trị</h1>
+<p style="margin:8px 0 0;font-size:15px;color:#6B6455">Dành cho chủ chi nhánh và quản lý mới được cấp quyền. Dùng email nội bộ @duyenphan.vn.</p>
+<div style="margin-top:28px;background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);padding:24px;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" label="Họ và tên" placeholder="Nguyễn Thị An" icon="user" hint-size="100%,66px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" label="Email công việc" defaultValue="an.nguyen@duyenphan" icon="mail" error="{{ emailError }}" hint-size="100%,66px"></x-import>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" label="Số điện thoại" defaultValue="0901 234 567" icon="phone" hint-size="100%,66px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Select" label="Chi nhánh phụ trách" options="{{ branchOptions }}" hint-size="100%,66px"></x-import>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" label="Mật khẩu" type="password" defaultValue="••••••••" icon="lock" hint="Tối thiểu 8 ký tự, có chữ và số." hint-size="100%,66px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" label="Xác nhận mật khẩu" type="password" defaultValue="••••••" icon="lock" error="{{ confirmError }}" hint-size="100%,66px"></x-import>
+<div style="padding-top:4px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Checkbox" label="Tôi đồng ý với điều khoản sử dụng và quy định bảo mật nội bộ." checked="{{ agree }}" onChange="{{ setAgree }}" hint-size="100%,22px"></x-import>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" size="lg" full-width="{{ true }}" hint-size="100%,48px">Đăng ký</x-import>
+</div>
+<p style="margin:20px 0 0;text-align:center;font-size:14px;color:#6B6455">Đã có tài khoản? <a href="#" onClick="{{ showLogin }}" style="font-weight:600">Đăng nhập ngay</a></p>
+</div>
+</sc-if>
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+<div>
+<h1 style="font-size:30px;font-weight:600;letter-spacing:-0.01em;margin:0">Đăng nhập quản trị</h1>
+<p style="margin:8px 0 0;font-size:15px;color:#6B6455">Dùng email nội bộ @duyenphan.vn được cấp cho chi nhánh của bạn.</p>
+<div style="margin-top:28px;background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);padding:24px;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" label="Email" defaultValue="an.nguyen@duyenphan" icon="mail" error="{{ emailError }}" hint-size="100%,66px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" label="Mật khẩu" type="password" defaultValue="••••••••" icon="lock" hint-size="100%,66px"></x-import>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Checkbox" label="Ghi nhớ đăng nhập" checked="{{ remember }}" onChange="{{ setRemember }}" hint-size="180px,22px"></x-import>
+<a href="#" style="font-size:13px;font-weight:500">Quên mật khẩu?</a>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" size="lg" full-width="{{ true }}" hint-size="100%,48px">Đăng nhập</x-import>
+</div>
+<p style="margin:20px 0 0;text-align:center;font-size:14px;color:#6B6455">Chưa có tài khoản? <a href="#" onClick="{{ showRegister }}" style="font-weight:600">Đăng ký ngay</a></p>
+</div>
+</sc-if>
+
+</div>
+</main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;initialMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;register&quot;,&quot;login&quot;],&quot;default&quot;:&quot;register&quot;,&quot;tsType&quot;:&quot;'register' | 'login'&quot;,&quot;section&quot;:&quot;Trạng thái&quot;},&quot;showErrors&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Trạng thái&quot;}}">
+class Component extends DCLogic {
+  state = { mode: null, agree: true, remember: true };
+  renderVals() {
+    const mode = this.state.mode ?? (this.props.initialMode ?? 'register');
+    const errors = this.props.showErrors ?? true;
+    return {
+      isRegister: mode === 'register',
+      isLogin: mode === 'login',
+      emailError: errors ? 'Email không hợp lệ' : '',
+      confirmError: errors ? 'Mật khẩu xác nhận không khớp' : '',
+      branchOptions: ['Chọn chi nhánh', 'Quận 3', 'Quận 1', 'Tân Bình', 'Thủ Đức', 'Trụ sở'],
+      agree: this.state.agree,
+      remember: this.state.remember,
+      setAgree: v => this.setState({ agree: v }),
+      setRemember: v => this.setState({ remember: v }),
+      showLogin: e => { e.preventDefault(); this.setState({ mode: 'login' }); },
+      showRegister: e => { e.preventDefault(); this.setState({ mode: 'register' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

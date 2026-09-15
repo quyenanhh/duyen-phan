@@ -1,0 +1,1948 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+--cream-50:#FFFDFA;--cream-100:#FAF7F2;--cream-200:#F3EDE2;--white:#FFFFFF;
+--green-900:#2C4022;--green-800:#3A5430;--green-700:#4B6B3E;--green-300:#A8BE9C;--green-100:#E7EEE2;
+--clay-700:#8E5726;--clay-600:#B9773A;--clay-300:#DCB98E;--clay-100:#E8D9BE;--clay-50:#F6EEE1;
+--ink-900:#2E2A22;--ink-600:#6B6455;--ink-400:#928B79;--line-200:#E4DCC8;--line-100:#EFE9DC;--border-strong:#D3C7A9;
+--rust-600:#B4462E;--rust-100:#F6DED7;
+--surface-page:var(--cream-200);--surface-card:var(--white);--surface-sunken:#EAE2CF;--surface-inverse:var(--green-900);--surface-accent-soft:var(--clay-50);--surface-brand-soft:var(--green-100);
+--text-body:var(--green-700);--text-muted:var(--ink-600);--text-subtle:var(--ink-400);--text-on-brand:var(--cream-50);--text-brand:var(--green-700);--text-accent:var(--clay-700);
+--text-link:var(--green-700);--text-link-hover:var(--green-800);
+--brand:var(--green-700);--brand-hover:var(--green-800);--accent:var(--clay-600);--accent-hover:var(--clay-700);
+--border:var(--line-200);--border-soft:var(--line-100);
+--success-soft:var(--green-100);--success-text:#2E4D25;
+--danger:var(--rust-600);--danger-soft:var(--rust-100);--danger-text:#8E3421;
+--font-ui:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
+--font-serif:'Lora',Georgia,serif;
+--fs-caption:12px;--fs-label:13px;--fs-body-sm:14px;--fs-body:15px;--fs-body-lg:16px;--fs-h3:19px;--fs-h2:26px;--fs-h1:32px;--fs-display:40px;
+--radius-card:12px;--radius-modal:12px;--radius-control:8px;--radius-sm:6px;--radius-pill:999px;
+--shadow-card:0 2px 8px rgba(46,42,34,.06);--shadow-raised:0 4px 14px rgba(46,42,34,.08);--shadow-modal:0 16px 40px rgba(46,42,34,.14);
+--focus-ring:rgba(75,107,62,.32);
+--ease-out:cubic-bezier(.22,.61,.36,1);--dur-fast:120ms;--dur-base:180ms;
+--control-h-sm:32px;--control-h-md:40px;--control-h-lg:48px;
+--page-max:1200px;
+--header-bg:rgba(250,247,242,.88);
+}
+.landing-scope{
+--surface-page:#D9E8D0;--surface-card:#FFFFFF;--surface-sunken:#C9DDBE;
+--surface-brand-soft:#E3E8E3;--surface-accent-soft:#F3EAD8;--surface-inverse:#24302A;
+--text-body:#33512E;--text-muted:#5C6B60;--text-subtle:#8A9690;--text-on-brand:#F8F9F7;
+--text-brand:#2F3E34;--text-accent:#C5A059;--text-link:#33512E;--text-link-hover:#24302A;
+--brand:#2F3E34;--brand-hover:#24302A;--accent:#C5A059;--accent-hover:#A8853F;
+--border:#DDE3DD;--border-soft:#E8ECE8;--border-strong:#C9D1C8;
+--header-bg:rgba(244,246,244,.88);
+}
+.dark-mode{
+--surface-page:#1E1B16;--surface-card:#2A2620;--surface-sunken:#332F27;
+--surface-brand-soft:rgba(75,107,62,.24);--surface-accent-soft:rgba(185,119,58,.16);
+--text-body:#F2EDE2;--text-muted:#B9B0A0;--text-subtle:#8C8374;
+--text-brand:#8FB37B;--text-accent:#D9A366;--text-link:#8FB37B;--text-link-hover:#A9C79A;
+--brand:#5C8049;--brand-hover:#6E9459;--accent:#C2884A;--accent-hover:#D39A5C;
+--border:rgba(255,255,255,.12);--border-soft:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.24);
+--header-bg:rgba(30,27,22,.86);
+}
+*{box-sizing:border-box}
+h1,h2,h3,p,div{margin:0}
+body{margin:0;background:var(--surface-page);font-family:var(--font-ui);color:var(--text-body);font-size:var(--fs-body);line-height:1.6}
+a{color:var(--text-link);text-decoration:none;transition:color var(--dur-fast) var(--ease-out)}
+a:hover{color:var(--text-link-hover)}
+
+/* — landing — */
+.wrap{max-width:var(--page-max);margin:0 auto;padding:0 32px}
+.eyebrow{font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--text-accent)}
+.nav-link{color:var(--text-muted);font-size:var(--fs-body-sm);transition:color var(--dur-fast) var(--ease-out);cursor:pointer}
+.nav-link:hover{color:var(--text-brand)}
+.foot-link{color:var(--text-muted);font-size:var(--fs-body-sm);transition:color var(--dur-fast) var(--ease-out)}
+.foot-link:hover{color:var(--text-brand)}
+.photo-card{display:flex;align-items:center;justify-content:center;background:var(--surface-sunken);border:1px solid var(--border-strong);border-radius:var(--radius-card);box-shadow:var(--shadow-card);transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.photo-card:hover{box-shadow:var(--shadow-raised);transform:translateY(-2px)}
+.photo-icon{opacity:.4;color:var(--text-subtle)}
+.caption{margin-top:12px;font-size:12px;font-style:italic;color:var(--text-subtle)}
+.plain-field{height:48px;padding:0 16px;border-radius:var(--radius-control);border:1px solid var(--border-strong);font-family:var(--font-ui);font-size:var(--fs-body-sm);background:var(--surface-card);color:var(--text-body)}
+.plain-field::placeholder{color:var(--text-subtle)}
+.dish-row{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:48px 0;border-bottom:1px solid var(--border-soft)}
+.dish-row:last-of-type{border-bottom:none}
+
+/* — shared buttons — */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-ui);font-weight:500;border-radius:var(--radius-control);cursor:pointer;white-space:nowrap;border:1px solid transparent;font-size:var(--fs-body-sm);transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:active{transform:translateY(1px)}
+.btn-md{height:40px;padding:0 16px}
+.btn-lg{height:48px;padding:0 24px;font-size:var(--fs-body)}
+.btn-block{width:100%}
+.btn-primary{background:var(--brand);color:var(--text-on-brand);border-color:var(--brand)}
+.btn-primary:hover{background:var(--brand-hover);border-color:var(--brand-hover)}
+.btn-secondary{background:var(--surface-card);color:var(--text-body);border-color:var(--border-strong)}
+.btn-secondary:hover{background:var(--surface-sunken)}
+.btn-accent{background:var(--accent);color:#FFF9F0;border-color:var(--accent)}
+.btn-danger{background:var(--danger);color:#FFF9F0;border-color:var(--danger)}
+.btn-danger:hover{background:var(--danger-text);border-color:var(--danger-text)}
+.btn-accent:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+
+/* — auth — */
+.field-wrap label{display:block;margin-bottom:6px;font-size:var(--fs-label);font-weight:500;color:var(--text-body)}
+.field{display:flex;align-items:center;gap:8px;height:var(--control-h-md);padding:0 12px;background:var(--surface-card);border:1px solid var(--border-strong);border-radius:var(--radius-control)}
+.field:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px var(--focus-ring)}
+.field input,.field select{flex:1;min-width:0;border:0;outline:none;background:transparent;font-family:var(--font-ui);font-size:var(--fs-body-sm);color:var(--text-body);appearance:none;cursor:pointer}
+.field input{cursor:text}
+.field input::placeholder{color:var(--text-subtle)}
+.hint-msg{display:block;margin-top:6px;font-size:var(--fs-caption);color:var(--text-muted)}
+.err-msg{display:block;margin-top:6px;font-size:var(--fs-caption);color:var(--danger-text)}
+.chk{display:inline-flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:var(--fs-body-sm)}
+.chk-box{width:18px;height:18px;flex:0 0 auto;margin-top:1px;display:grid;place-items:center;border-radius:var(--radius-sm);color:var(--text-on-brand)}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-label);font-weight:500;color:var(--text-muted);cursor:pointer}
+.back-link:hover{color:var(--text-brand)}
+@media (max-width:900px){[data-auth-brand]{display:none}}
+
+/* — dashboard — */
+.sidebar-w{width:248px}
+.nav-item{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:0;border-radius:var(--radius-control);font-size:var(--fs-body-sm);background:transparent;color:var(--text-body);cursor:pointer}
+.nav-item.active{background:var(--green-100);color:#2E4D25;font-weight:600}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-control);border:1px solid transparent;background:transparent;color:var(--text-muted);cursor:pointer}
+.icon-btn:hover{background:var(--surface-page);color:var(--text-body)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:var(--fs-caption);font-weight:500;line-height:1.4;white-space:nowrap}
+.badge .dot{width:6px;height:6px;border-radius:999px;background:currentColor}
+.tabp{border:0;cursor:pointer;padding:0 14px;height:30px;border-radius:999px;font-family:inherit;font-size:13px;font-weight:400;background:transparent;color:var(--text-muted);transition:background var(--dur-fast) var(--ease-out)}
+.tabp.active{background:var(--surface-card);color:#3A5430;font-weight:600;box-shadow:0 1px 3px rgba(46,42,34,.10)}
+th{text-align:left;padding:10px 16px;white-space:nowrap;font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--text-muted);border-bottom:1px solid var(--border);background:var(--surface-page)}
+td{padding:0 16px;height:52px;text-align:left;border-bottom:1px solid #EFE9DC;color:var(--text-body)}
+tr.row:hover td{background:var(--surface-page)}
+</style>
+</helmet>
+
+<sc-if value="{{ isLanding }}" hint-placeholder-val="{{ true }}">
+<div class="landing-scope {{ themeClass }}" style="background:var(--surface-page);transition:background var(--dur-base) var(--ease-out)">
+
+<header style="position:sticky;top:0;z-index:20;background:var(--header-bg);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);transition:background var(--dur-base) var(--ease-out)">
+  <div class="wrap" style="height:80px;display:flex;align-items:center;gap:32px">
+    <span style="font-family:var(--font-serif);font-size:22px;font-weight:600;color:var(--text-brand)">Duyên Phần</span>
+    <nav style="display:flex;gap:32px;flex:1">
+      <a class="nav-link" href="#">Trang chủ</a>
+      <a class="nav-link" href="#thuc-don">Thực đơn</a>
+      <a class="nav-link" href="#chi-nhanh">Chi nhánh</a>
+      <a class="nav-link" href="#cau-chuyen">Về chúng tôi</a>
+      <a class="nav-link" href="#lien-he">Liên hệ</a>
+    </nav>
+    <span style="display:flex;align-items:center;gap:16px">
+      <button type="button" class="icon-btn" style="width:36px;height:36px" title="Đổi giao diện sáng/tối" onClick="{{ toggleTheme }}">
+        <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></sc-if>
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg></sc-if>
+      </button>
+      <sc-if value="{{ isLoggedIn }}" hint-placeholder-val="{{ false }}">
+        <span style="position:relative">
+          <a onClick="{{ toggleLandingAcctMenu }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:4px 12px 4px 4px;border-radius:999px;background:var(--surface-brand-soft)">
+            <span style="width:28px;height:28px;flex:0 0 auto;border-radius:999px;background:var(--clay-100);color:var(--text-accent);display:grid;place-items:center;font-weight:600;font-size:12px">{{ userInitials }}</span>
+            <span style="font-size:13px;font-weight:600;color:var(--text-brand)">{{ userName }}</span>
+          </a>
+          <sc-if value="{{ landingAcctMenuOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:fixed;inset:0;z-index:29" onClick="{{ closeLandingAcctMenu }}"></div>
+            <div onClick="{{ stopClick }}" style="position:absolute;top:calc(100% + 10px);right:0;width:300px;background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-modal);padding:20px;z-index:30;text-align:left">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:40px;height:40px;flex:0 0 auto;border-radius:999px;background:var(--clay-100);color:var(--text-accent);display:grid;place-items:center;font-weight:600;font-size:14px">{{ userInitials }}</span>
+                <div style="min-width:0">
+                  <div style="font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ userName }}</div>
+                  <div style="font-size:12px;color:var(--text-muted)">{{ userRoleLabel }}</div>
+                </div>
+              </div>
+              <a onClick="{{ openProfileFromLanding }}" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-soft);display:flex;align-items:center;gap:10px;cursor:pointer">
+                <span style="flex:1;font-size:13px;font-weight:600;color:var(--text-body)">Thông tin cá nhân</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle)"><path d="m9 18 6-6-6-6"/></svg>
+              </a>
+              <a onClick="{{ openSecurityFromLanding }}" style="margin-top:10px;display:flex;align-items:center;gap:10px;cursor:pointer">
+                <span style="flex:1;font-size:13px;font-weight:600;color:var(--text-body)">Mật khẩu và bảo mật</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle)"><path d="m9 18 6-6-6-6"/></svg>
+              </a>
+              <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:2px">
+                <a onClick="{{ goAuth }}" class="nav-link" style="display:flex;align-items:center;gap:10px;padding:8px 4px;cursor:pointer;color:var(--text-body)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                  Vào trang quản trị
+                </a>
+                <a onClick="{{ prevent }}" class="nav-link" style="display:flex;align-items:center;gap:10px;padding:8px 4px;cursor:pointer;color:var(--text-body)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                  Hỗ trợ
+                </a>
+                <a onClick="{{ switchAccount }}" class="nav-link" style="display:flex;align-items:center;gap:10px;padding:8px 4px;cursor:pointer;color:var(--text-body)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+                  Chuyển đổi tài khoản
+                </a>
+                <a onClick="{{ logout }}" class="nav-link" style="display:flex;align-items:center;gap:10px;padding:8px 4px;cursor:pointer;color:var(--danger-text)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                  Đăng xuất
+                </a>
+              </div>
+            </div>
+          </sc-if>
+        </span>
+      </sc-if>
+      <sc-if value="{{ isLoggedOut }}" hint-placeholder-val="{{ true }}">
+        <a onClick="{{ goAuth }}" class="btn btn-primary btn-md">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+          Đăng nhập quản trị
+        </a>
+      </sc-if>
+    </span>
+  </div>
+</header>
+
+<div style="background:var(--surface-card);border-bottom:1px solid var(--border)">
+  <section style="padding:96px 0;position:relative;overflow:hidden">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;color:var(--brand);opacity:.08">
+      <g fill="currentColor" stroke="none">
+        <path transform="translate(60,40) rotate(-24) scale(1.4)" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/>
+        <path transform="translate(1120,50) rotate(30) scale(1.9)" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/>
+        <path transform="translate(1080,640) rotate(160) scale(1.5)" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/>
+        <path transform="translate(40,660) rotate(210) scale(1.2)" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/>
+      </g>
+    </svg>
+    <div class="wrap" style="position:relative">
+      <div class="photo-card" style="height:560px;position:relative">
+        <svg class="photo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <div style="position:absolute;left:32px;bottom:32px;max-width:480px;background:var(--surface-card);border-radius:var(--radius-card);box-shadow:var(--shadow-raised);padding:32px">
+          <p class="eyebrow">Cơm chay thuần Việt · từ 2016</p>
+          <h1 style="font-family:var(--font-serif);font-size:36px;line-height:1.25;font-weight:600;margin-top:14px"><span style="color:var(--green-700)">Cơm chay lành mạnh,</span> <span style="color:var(--text-accent)">trọn vị yêu thương</span></h1>
+          <p style="margin-top:16px;font-size:var(--fs-body-sm);color:var(--text-muted);text-wrap:pretty">
+            Rau củ theo mùa, gạo lứt và đậu hũ làm mỗi sáng. Chúng tôi nấu vừa đủ cho một ngày, không phô trương, không dư thừa.
+          </p>
+          <div style="display:flex;gap:12px;margin-top:24px">
+            <a href="#thuc-don" class="btn btn-primary btn-md">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v8a2 2 0 0 0 2 2v10"/><path d="M4 2v4"/><path d="M7 2v4"/><path d="M20 2c-2 1-3 3-3 6 0 2 1 3 2 3v11"/></svg>
+              Xem thực đơn
+            </a>
+            <a href="#dat-ban" class="btn btn-secondary btn-md">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+              Đặt bàn ngay
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="caption">Ảnh bàn cơm chay nhiều món, tông ấm — chưa có ảnh thật</p>
+    </div>
+  </section>
+
+  <div class="wrap" style="display:flex;justify-content:center;align-items:stretch;padding-top:56px;padding-bottom:56px;border-top:1px solid var(--border)">
+    <div style="display:flex;align-items:center;gap:14px;padding:0 40px">
+      <span style="color:var(--text-accent);flex:0 0 auto"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v10h16V9"/><path d="M9 21v-6h6v6"/></svg></span>
+      <span>
+        <span style="display:block;font-family:var(--font-serif);font-size:30px;font-weight:600;line-height:1">12</span>
+        <span style="font-size:var(--fs-label);color:var(--text-muted)">chi nhánh</span>
+      </span>
+    </div>
+    <span style="width:1px;align-self:stretch;background:var(--border)"></span>
+    <div style="display:flex;align-items:center;gap:14px;padding:0 40px">
+      <span style="color:var(--text-accent);flex:0 0 auto"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg></span>
+      <span>
+        <span style="display:block;font-family:var(--font-serif);font-size:30px;font-weight:600;line-height:1">9 năm</span>
+        <span style="font-size:var(--fs-label);color:var(--text-muted)">nấu chay mỗi ngày</span>
+      </span>
+    </div>
+    <span style="width:1px;align-self:stretch;background:var(--border)"></span>
+    <div style="display:flex;align-items:center;gap:14px;padding:0 40px">
+      <span style="color:var(--text-accent);flex:0 0 auto"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg></span>
+      <span>
+        <span style="display:block;font-family:var(--font-serif);font-size:30px;font-weight:600;line-height:1">48</span>
+        <span style="font-size:var(--fs-label);color:var(--text-muted)">món theo mùa</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div style="display:flex;align-items:center;gap:16px;max-width:200px;margin:0 auto;padding:48px 0 0">
+  <span style="flex:1;height:1px;background:var(--border)"></span>
+  <span style="color:var(--text-accent);flex:0 0 auto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg></span>
+  <span style="flex:1;height:1px;background:var(--border)"></span>
+</div>
+
+<section id="triet-ly" style="padding:96px 32px;position:relative;overflow:hidden">
+  <svg viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;z-index:-1;color:var(--brand);opacity:.10">
+    <g fill="currentColor" stroke="none">
+      <path transform="translate(80,60) rotate(-18) scale(1.6)" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/>
+      <path transform="translate(1040,80) rotate(24) scale(2.1)" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/>
+      <path transform="translate(160,400) rotate(200) scale(1.3)" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/>
+      <path transform="translate(1080,420) rotate(150) scale(1.8)" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/>
+      <path transform="translate(600,40) rotate(10) scale(1.1)" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/>
+    </g>
+  </svg>
+  <div style="max-width:680px;margin:0 auto;text-align:center;position:relative">
+    <p class="eyebrow">Triết lý</p>
+    <p style="font-family:var(--font-serif);font-size:30px;line-height:1.4;font-weight:500;font-style:italic;color:var(--text-body);margin-top:24px;text-wrap:pretty">
+      "Chúng tôi tin một bữa cơm ngon không cần phô trương — chỉ cần đủ, đúng mùa, và nấu bằng sự tử tế."
+    </p>
+  </div>
+  <div class="wrap" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:64px;text-align:center">
+    <div>
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--surface-brand-soft);color:var(--brand)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg>
+      </span>
+      <div style="font-weight:600;margin-top:16px">Rau củ theo mùa</div>
+      <div style="font-size:var(--fs-body-sm);color:var(--text-muted);margin-top:8px">Đặt hàng trực tiếp từ nông trại Đà Lạt và Long Khánh.</div>
+    </div>
+    <div>
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--surface-brand-soft);color:var(--brand)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"/><path d="M7 8V5a1 1 0 0 1 1-1"/><path d="M12 7V4"/><path d="M17 8V5a1 1 0 0 0-1-1"/></svg>
+      </span>
+      <div style="font-weight:600;margin-top:16px">Nấu vừa đủ</div>
+      <div style="font-size:var(--fs-body-sm);color:var(--text-muted);margin-top:8px">Mỗi bếp nấu theo số phần đã đặt, hạn chế thức ăn dư.</div>
+    </div>
+    <div>
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--surface-brand-soft);color:var(--brand)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.5 3-6a4.5 4.5 0 0 0-8-2.8A4.5 4.5 0 0 0 2 8c0 2.5 1.5 4.5 3 6l7 7Z"/></svg>
+      </span>
+      <div style="font-weight:600;margin-top:16px">Giá phải chăng</div>
+      <div style="font-size:var(--fs-body-sm);color:var(--text-muted);margin-top:8px">Cơm phần từ 45.000₫, phần chay miễn phí mỗi rằm.</div>
+    </div>
+  </div>
+</section>
+
+<section id="thuc-don" style="background:var(--surface-card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:96px 0">
+  <div class="wrap">
+    <p class="eyebrow">Món ăn nổi bật</p>
+    <h2 style="font-family:var(--font-serif);font-size:34px;font-weight:600;margin-top:12px">Vài món chúng tôi tự hào</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:32px">
+      <div>
+        <div class="photo-card" style="height:180px">
+          <svg class="photo-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <h3 style="font-size:16px;font-weight:600;margin-top:14px">Cơm chay thập cẩm</h3>
+        <div style="margin-top:8px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text-accent)">65.000₫</div>
+      </div>
+      <div>
+        <div class="photo-card" style="height:180px">
+          <svg class="photo-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <h3 style="font-size:16px;font-weight:600;margin-top:14px">Cơm sen hạt dẻ</h3>
+        <div style="margin-top:8px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text-accent)">78.000₫</div>
+      </div>
+      <div>
+        <div class="photo-card" style="height:180px">
+          <svg class="photo-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <h3 style="font-size:16px;font-weight:600;margin-top:14px">Canh nấm rong biển</h3>
+        <div style="margin-top:8px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text-accent)">45.000₫</div>
+      </div>
+      <div>
+        <div class="photo-card" style="height:180px">
+          <svg class="photo-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <h3 style="font-size:16px;font-weight:600;margin-top:14px">Gỏi cuốn chay</h3>
+        <div style="margin-top:8px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text-accent)">42.000₫</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:48px">
+      <a href="#" style="display:inline-flex;align-items:center;gap:8px;font-weight:500">
+        Xem thực đơn đầy đủ
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="cau-chuyen" style="padding:96px 0">
+  <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <div>
+      <div class="photo-card" style="height:420px">
+        <svg class="photo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+      </div>
+      <p class="caption">Ảnh người nấu trong bếp</p>
+    </div>
+    <div>
+      <p class="eyebrow">Câu chuyện</p>
+      <h2 style="font-family:var(--font-serif);font-size:34px;font-weight:600;margin-top:12px">Duyên phần — cái duyên của một bữa cơm</h2>
+      <p style="margin-top:24px;font-size:var(--fs-body-lg);color:var(--text-muted);text-wrap:pretty">
+        Bắt đầu từ một quán nhỏ ở Quận 3 năm 2016, chúng tôi vẫn giữ một nguyên tắc: nấu đủ ăn trong ngày, không để thừa.
+      </p>
+      <p style="margin-top:16px;font-size:var(--fs-body-lg);color:var(--text-muted);text-wrap:pretty">
+        Không mở rộng vội, không thêm món cho có. Mỗi chi nhánh mới chỉ ra đời khi bếp cũ đã vững.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div style="display:flex;align-items:center;gap:16px;max-width:200px;margin:0 auto;padding-bottom:48px">
+  <span style="flex:1;height:1px;background:var(--border)"></span>
+  <span style="color:var(--text-accent);flex:0 0 auto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg></span>
+  <span style="flex:1;height:1px;background:var(--border)"></span>
+</div>
+
+<section id="chi-nhanh" style="padding:96px 0">
+  <div class="wrap">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <p class="eyebrow">Hệ thống chi nhánh</p>
+        <h2 style="font-family:var(--font-serif);font-size:34px;font-weight:600;margin-top:12px">12 chi nhánh tại TP.HCM và Hà Nội</h2>
+      </div>
+      <a href="#" style="display:inline-flex;align-items:center;gap:8px;font-weight:500">
+        Xem tất cả chi nhánh
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px">
+      <div>
+        <div class="photo-card" style="height:180px">
+          <svg class="photo-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <h3 style="font-size:17px;font-weight:600;margin-top:14px">Quận 3 — Võ Văn Tần</h3>
+        <p style="margin-top:6px;font-size:var(--fs-body-sm);color:var(--text-muted)">284 Võ Văn Tần, Quận 3, TP.HCM</p>
+        <a href="#" class="btn btn-secondary btn-md" style="margin-top:14px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Xem trên bản đồ
+        </a>
+      </div>
+      <div>
+        <div class="photo-card" style="height:180px">
+          <svg class="photo-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <h3 style="font-size:17px;font-weight:600;margin-top:14px">Quận 1 — Lê Lợi</h3>
+        <p style="margin-top:6px;font-size:var(--fs-body-sm);color:var(--text-muted)">58 Lê Lợi, Bến Nghé, Quận 1, TP.HCM</p>
+        <a href="#" class="btn btn-secondary btn-md" style="margin-top:14px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Xem trên bản đồ
+        </a>
+      </div>
+      <div>
+        <div class="photo-card" style="height:180px">
+          <svg class="photo-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <h3 style="font-size:17px;font-weight:600;margin-top:14px">Thủ Đức — Kha Vạn Cân</h3>
+        <p style="margin-top:6px;font-size:var(--fs-body-sm);color:var(--text-muted)">432 Kha Vạn Cân, Thủ Đức, TP.HCM</p>
+        <a href="#" class="btn btn-secondary btn-md" style="margin-top:14px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Xem trên bản đồ
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--surface-card);border-top:1px solid var(--border);padding:64px 0 32px">
+  <div class="wrap" style="display:grid;grid-template-columns:1.6fr 1fr 1.2fr;gap:48px">
+    <div>
+      <div style="font-family:var(--font-serif);font-size:22px;font-weight:600;color:var(--text-brand)">Duyên Phần</div>
+      <p style="margin-top:8px;font-size:var(--fs-body-sm);color:var(--text-muted);max-width:280px">Chuỗi nhà hàng cơm chay thuần Việt. Nấu vừa đủ, ăn vừa lành.</p>
+      <p style="margin-top:16px;font-size:var(--fs-body-sm);color:var(--text-muted)">Trụ sở: 45 Trần Quốc Thảo, Quận 3, TP.HCM</p>
+      <p style="margin-top:4px;font-size:var(--fs-body-sm);color:var(--text-muted)">Giờ mở cửa: 08:00 – 21:00 mỗi ngày</p>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <a href="#" class="icon-btn" style="width:36px;height:36px;border:1px solid var(--border)" title="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" class="icon-btn" style="width:36px;height:36px;border:1px solid var(--border)" title="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" class="icon-btn" style="width:36px;height:36px;border:1px solid var(--border)" title="Zalo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H3l1.7-3.4A8.5 8.5 0 1 1 21 11.5Z"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-label);font-weight:600;margin-bottom:12px;color:var(--green-700)">Về chúng tôi</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <a class="foot-link" href="#">Câu chuyện</a>
+        <a class="foot-link" href="#">Nhượng quyền</a>
+        <a class="foot-link" href="#">Liên hệ</a>
+        <a class="foot-link" onClick="{{ goAuth }}">{{ authFootLinkLabel }}</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-label);font-weight:600;margin-bottom:12px;color:var(--green-700)">Nhận thực đơn tuần</div>
+      <div style="display:flex;gap:8px">
+        <input class="plain-field" placeholder="Email của bạn" style="flex:1">
+        <a href="#" class="btn btn-primary btn-md">Gửi</a>
+      </div>
+      <p style="margin-top:8px;font-size:var(--fs-caption);color:var(--text-subtle)">Mỗi thứ Hai, một email. Huỷ bất cứ lúc nào.</p>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:var(--fs-caption);color:var(--text-subtle)">
+    <span>© 2026 Duyên Phần. Giấy phép ĐKKD 0312xxxxxx.</span>
+    <span>1900 6088 · xinchao@duyenphan.vn</span>
+  </div>
+</footer>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isAuth }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:840px;display:flex">
+
+  <aside data-auth-brand="true" style="flex:0 0 45%;position:relative;background:#3A5430;display:flex;flex-direction:column;justify-content:space-between;gap:32px;padding:48px 56px;color:var(--cream-50)">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span style="font-family:var(--font-serif);font-size:26px;font-weight:600;letter-spacing:-0.01em">Duyên Phần</span>
+      <span class="back-link" style="color:rgba(255,253,250,.75)" onClick="{{ goLanding }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Về trang chủ
+      </span>
+    </div>
+    <div>
+      <div style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--clay-300)">Hệ thống quản trị chuỗi</div>
+      <p style="margin-top:18px;font-family:var(--font-serif);font-size:42px;line-height:1.22;font-weight:600;color:var(--cream-50);text-wrap:pretty">Nấu vừa đủ, quản vừa tay — mọi chi nhánh trên một màn hình.</p>
+      <p style="margin-top:18px;font-size:17px;line-height:1.55;color:#C7D8BE;text-wrap:pretty">Thực đơn, đơn hàng, nhân sự và tài chính của 12 chi nhánh, cập nhật theo thời gian thực.</p>
+    </div>
+    <div style="flex:0 0 auto;height:320px;border-radius:12px;overflow:hidden;position:relative;background:rgba(255,253,250,.06);border:1px solid rgba(255,253,250,.16)">
+      <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMax slice" style="position:absolute;inset:0;width:100%;height:100%">
+        <g fill="rgba(255,253,250,.10)">
+          <ellipse cx="40" cy="150" rx="30" ry="34"/><rect x="35" y="170" width="10" height="26"/>
+          <ellipse cx="130" cy="140" rx="34" ry="38"/><rect x="124" y="164" width="12" height="30"/>
+          <ellipse cx="260" cy="145" rx="32" ry="36"/><rect x="254" y="168" width="12" height="28"/>
+          <ellipse cx="360" cy="150" rx="28" ry="32"/><rect x="355" y="170" width="10" height="26"/>
+        </g>
+        <g fill="rgba(20,26,16,.35)">
+          <ellipse cx="0" cy="185" rx="42" ry="46"/><rect x="-8" y="215" width="16" height="34"/>
+          <ellipse cx="90" cy="195" rx="46" ry="50"/><rect x="82" y="228" width="16" height="34"/>
+          <ellipse cx="200" cy="188" rx="44" ry="48"/><rect x="192" y="220" width="16" height="34"/>
+          <ellipse cx="310" cy="196" rx="46" ry="50"/><rect x="302" y="228" width="16" height="34"/>
+          <ellipse cx="400" cy="188" rx="42" ry="46"/><rect x="392" y="220" width="16" height="34"/>
+        </g>
+      </svg>
+    </div>
+    <div style="font-size:13px;color:var(--green-300)">Nội bộ · v2.4 · Hỗ trợ IT: 1900 6088 ext. 2</div>
+  </aside>
+
+  <main style="flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:32px 40px;background:var(--cream-100)">
+    <div style="width:100%;max-width:600px">
+
+      <sc-if value="{{ success }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:var(--success-soft);color:var(--success-text)">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </span>
+          <h1 style="font-size:26px;font-weight:600;letter-spacing:-0.01em;margin-top:16px">{{ successTitle }}</h1>
+          <p style="margin-top:8px;font-size:var(--fs-body-sm);color:var(--text-muted)">{{ successText }}</p>
+          <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top:24px" onClick="{{ backToLogin }}">{{ successBtn }}</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <h1 style="font-size:30px;font-weight:600;letter-spacing:-0.01em">Tạo tài khoản quản trị</h1>
+          <p style="margin-top:8px;font-size:15px;color:var(--text-muted)">Dành cho chủ chi nhánh và quản lý mới được cấp quyền. Dùng email nội bộ @duyenphan.vn.</p>
+
+          <div style="margin-top:12px;background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px;display:flex;flex-direction:column;gap:8px">
+            <div style="margin:-20px -20px 4px;height:56px;background:var(--green-300);border-radius:12px 12px 0 0;overflow:hidden;position:relative">
+              <svg viewBox="0 0 400 80" preserveAspectRatio="xMidYMax slice" style="position:absolute;inset:0;width:100%;height:100%">
+                <g fill="#3A5430" opacity=".55">
+                  <ellipse cx="40" cy="78" rx="22" ry="24"/><rect x="36" y="94" width="8" height="18"/>
+                  <ellipse cx="90" cy="82" rx="18" ry="20"/><rect x="86" y="96" width="8" height="16"/>
+                  <ellipse cx="330" cy="80" rx="20" ry="22"/><rect x="326" y="96" width="8" height="16"/>
+                  <ellipse cx="372" cy="76" rx="24" ry="26"/><rect x="368" y="94" width="8" height="18"/>
+                </g>
+                <g stroke="#FFFDFA" stroke-width="2" stroke-linecap="round" fill="none" opacity=".8">
+                  <path d="M180 38c3-4 6-4 9 0 3-4 6-4 9 0"/>
+                  <path d="M220 52c2.5-3 5-3 7.5 0 2.5-3 5-3 7.5 0"/>
+                  <path d="M150 60c2-2.5 4-2.5 6 0 2-2.5 4-2.5 6 0"/>
+                </g>
+              </svg>
+            </div>
+            <label class="field-wrap">
+              <label>Họ và tên</label>
+              <span class="field" style="border-color:{{ regNameBorder }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <input placeholder="Nguyễn Thị An" value="{{ regName }}" onChange="{{ onRegName }}">
+              </span>
+              <sc-if value="{{ regNameError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ regNameError }}</span></sc-if>
+            </label>
+
+            <label class="field-wrap">
+              <label>Email công việc</label>
+              <span class="field" style="border-color:{{ regEmailBorder }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+                <input placeholder="ten@duyenphan.vn" value="{{ regEmail }}" onChange="{{ onRegEmail }}">
+              </span>
+              <sc-if value="{{ regEmailError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ regEmailError }}</span></sc-if>
+            </label>
+
+            <label class="field-wrap">
+              <label>Số điện thoại</label>
+              <span class="field">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+                <input placeholder="09xx xxx xxx" value="{{ regPhone }}" onChange="{{ onRegPhone }}">
+              </span>
+            </label>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <label class="field-wrap">
+                <label>Chi nhánh phụ trách</label>
+                <span class="field" style="border-color:{{ regBranchBorder }}">
+                  <select value="{{ regBranch }}" onChange="{{ onRegBranch }}">
+                    <option value="">Chọn chi nhánh</option>
+                    <sc-for list="{{ branchOptions }}" as="b" hint-placeholder-count="5"><option value="{{ b }}">{{ b }}</option></sc-for>
+                  </select>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><path d="m6 9 6 6 6-6"/></svg>
+                </span>
+                <sc-if value="{{ regBranchError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ regBranchError }}</span></sc-if>
+              </label>
+              <label class="field-wrap">
+                <label>Chức vụ</label>
+                <span class="field" style="border-color:{{ regRoleBorder }}">
+                  <select value="{{ regRole }}" onChange="{{ onRegRole }}">
+                    <option value="">Chọn chức vụ</option>
+                    <sc-for list="{{ regRoleOptions }}" as="r" hint-placeholder-count="3"><option value="{{ r }}">{{ r }}</option></sc-for>
+                  </select>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><path d="m6 9 6 6 6-6"/></svg>
+                </span>
+                <sc-if value="{{ regRoleError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ regRoleError }}</span></sc-if>
+              </label>
+            </div>
+            <p style="font-size:12px;color:var(--text-subtle)">Với vai trò Nhân viên/Thu ngân: quản lý chi nhánh sẽ tạo sẵn tài khoản cho bạn — bạn chỉ cần đăng ký nếu chưa được cấp, và tài khoản sẽ cần quản lý xác nhận trước khi dùng.</p>
+
+            <label class="field-wrap">
+              <label>Mật khẩu</label>
+              <span class="field" style="border-color:{{ regPasswordBorder }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" placeholder="Tối thiểu 8 ký tự" value="{{ regPassword }}" onChange="{{ onRegPassword }}">
+              </span>
+              <sc-if value="{{ regPasswordError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ regPasswordError }}</span></sc-if>
+              <sc-if value="{{ regPasswordHintShown }}" hint-placeholder-val="{{ true }}"><span class="hint-msg">Tối thiểu 8 ký tự, có chữ và số.</span></sc-if>
+            </label>
+
+            <label class="field-wrap">
+              <label>Xác nhận mật khẩu</label>
+              <span class="field" style="border-color:{{ regConfirmBorder }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" placeholder="Nhập lại mật khẩu" value="{{ regConfirm }}" onChange="{{ onRegConfirm }}">
+              </span>
+              <sc-if value="{{ regConfirmError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ regConfirmError }}</span></sc-if>
+            </label>
+
+            <div style="padding-top:4px">
+              <label class="chk" onClick="{{ toggleAgree }}">
+                <span class="chk-box" style="background:{{ agreeBg }};border:1px solid {{ agreeBorder }}">
+                  <sc-if value="{{ agree }}" hint-placeholder-val="{{ true }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></sc-if>
+                </span>
+                Tôi đồng ý với điều khoản sử dụng và quy định bảo mật nội bộ.
+              </label>
+              <sc-if value="{{ agreeError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ agreeError }}</span></sc-if>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-lg btn-block" onClick="{{ submitRegister }}">Đăng ký</button>
+          </div>
+          <p style="margin-top:12px;text-align:center;font-size:14px;color:var(--text-muted)">Đã có tài khoản? <a href="#" onClick="{{ showLogin }}" style="font-weight:600">Đăng nhập ngay</a></p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <h1 style="font-size:30px;font-weight:600;letter-spacing:-0.01em">Đăng nhập quản trị</h1>
+          <p style="margin-top:8px;font-size:15px;color:var(--text-muted)">Dùng email nội bộ @duyenphan.vn được cấp cho chi nhánh của bạn.</p>
+
+          <div style="margin-top:12px;background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px;display:flex;flex-direction:column;gap:8px">
+            <div style="margin:-20px -20px 4px;height:56px;background:var(--green-300);border-radius:12px 12px 0 0;overflow:hidden;position:relative">
+              <svg viewBox="0 0 400 80" preserveAspectRatio="xMidYMax slice" style="position:absolute;inset:0;width:100%;height:100%">
+                <g fill="#3A5430" opacity=".55">
+                  <ellipse cx="40" cy="78" rx="22" ry="24"/><rect x="36" y="94" width="8" height="18"/>
+                  <ellipse cx="90" cy="82" rx="18" ry="20"/><rect x="86" y="96" width="8" height="16"/>
+                  <ellipse cx="330" cy="80" rx="20" ry="22"/><rect x="326" y="96" width="8" height="16"/>
+                  <ellipse cx="372" cy="76" rx="24" ry="26"/><rect x="368" y="94" width="8" height="18"/>
+                </g>
+                <g stroke="#FFFDFA" stroke-width="2" stroke-linecap="round" fill="none" opacity=".8">
+                  <path d="M180 38c3-4 6-4 9 0 3-4 6-4 9 0"/>
+                  <path d="M220 52c2.5-3 5-3 7.5 0 2.5-3 5-3 7.5 0"/>
+                  <path d="M150 60c2-2.5 4-2.5 6 0 2-2.5 4-2.5 6 0"/>
+                </g>
+              </svg>
+            </div>
+            <label class="field-wrap">
+              <label>Email</label>
+              <span class="field" style="border-color:{{ emailBorder }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+                <input placeholder="ten@duyenphan.vn" value="{{ email }}" onChange="{{ onEmail }}">
+              </span>
+              <sc-if value="{{ emailError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ emailError }}</span></sc-if>
+            </label>
+
+            <label class="field-wrap">
+              <label>Mật khẩu</label>
+              <span class="field" style="border-color:{{ passBorder }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" placeholder="Nhập mật khẩu" value="{{ password }}" onChange="{{ onPassword }}">
+              </span>
+              <sc-if value="{{ passError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ passError }}</span></sc-if>
+            </label>
+
+            <label class="field-wrap">
+              <label>Vai trò đăng nhập</label>
+              <span class="field">
+                <select value="{{ loginRole }}" onChange="{{ onLoginRole }}">
+                  <sc-for list="{{ loginRoleOptions }}" as="r" hint-placeholder-count="3"><option value="{{ r }}">{{ r }}</option></sc-for>
+                </select>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+              <span class="hint-msg">{{ loginRoleHint }}</span>
+            </label>
+
+            <label class="chk" onClick="{{ toggleFirstLogin }}">
+              <span class="chk-box" style="background:{{ firstLoginBg }};border:1px solid {{ firstLoginBorder }}">
+                <sc-if value="{{ firstLogin }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></sc-if>
+              </span>
+              Đây là lần đăng nhập đầu tiên (tài khoản do quản lý cấp)
+            </label>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+              <label class="chk" onClick="{{ toggleRemember }}">
+                <span class="chk-box" style="background:{{ rememberBg }};border:1px solid {{ rememberBorder }}">
+                  <sc-if value="{{ remember }}" hint-placeholder-val="{{ true }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></sc-if>
+                </span>
+                Ghi nhớ đăng nhập
+              </label>
+              <a href="#" onClick="{{ prevent }}" style="font-size:13px;font-weight:500">Quên mật khẩu?</a>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-lg btn-block" onClick="{{ submitLogin }}">Đăng nhập</button>
+          </div>
+          <p style="margin-top:12px;text-align:center;font-size:14px;color:var(--text-muted)">Chưa có tài khoản? <a href="#" onClick="{{ showRegister }}" style="font-weight:600">Đăng ký ngay</a></p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isChangePassword }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <h1 style="font-size:30px;font-weight:600;letter-spacing:-0.01em">Đổi mật khẩu mới</h1>
+          <p style="margin-top:8px;font-size:15px;color:var(--text-muted)">{{ changePasswordHint }}</p>
+
+          <div style="margin-top:12px;background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px;display:flex;flex-direction:column;gap:8px">
+            <label class="field-wrap">
+              <label>Mật khẩu mới</label>
+              <span class="field" style="border-color:{{ newPasswordBorder }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" placeholder="Tối thiểu 8 ký tự" value="{{ newPassword }}" onChange="{{ onNewPassword }}">
+              </span>
+              <sc-if value="{{ newPasswordError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ newPasswordError }}</span></sc-if>
+            </label>
+            <label class="field-wrap">
+              <label>Xác nhận mật khẩu mới</label>
+              <span class="field" style="border-color:{{ newConfirmBorder }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" placeholder="Nhập lại mật khẩu mới" value="{{ newConfirm }}" onChange="{{ onNewConfirm }}">
+              </span>
+              <sc-if value="{{ newConfirmError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ newConfirmError }}</span></sc-if>
+            </label>
+            <button type="button" class="btn btn-primary btn-lg btn-block" onClick="{{ submitNewPassword }}">Đổi mật khẩu và tiếp tục</button>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </main>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:stretch;min-height:1000px;color:var(--text-body);font-size:var(--fs-body);line-height:1.6">
+
+<nav class="sidebar-w" style="flex:0 0 248px;display:flex;flex-direction:column;background:var(--surface-card);border-right:1px solid var(--border)">
+  <div style="padding:20px 20px 16px;border-bottom:1px solid #EFE9DC;display:flex;gap:10px;align-items:center;cursor:pointer" onClick="{{ goLanding }}">
+    <span style="width:32px;height:32px;border-radius:var(--radius-control);background:var(--green-100);color:var(--brand);display:grid;place-items:center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg>
+    </span>
+    <span>
+      <span style="display:block;font-weight:600">Duyên Phần</span>
+      <span style="display:block;font-size:var(--fs-caption);color:var(--text-muted)">Quản trị chuỗi</span>
+    </span>
+  </div>
+  <div style="padding:12px;display:flex;flex-direction:column;gap:2px;flex:1">
+    <button class="nav-item {{ overviewNavActive }}" onClick="{{ goManagerOverview }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span style="flex:1;text-align:left">{{ dashNavLabel }}</span></button>
+    <span style="padding:16px 12px 6px;font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;color:var(--text-subtle);font-weight:600">Vận hành</span>
+    <button class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v10h16V9"/><path d="M9 21v-6h6v6"/></svg><span style="flex:1;text-align:left">Chi nhánh</span></button>
+    <button class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v8a2 2 0 0 0 2 2v10"/><path d="M4 2v4"/><path d="M7 2v4"/><path d="M20 2c-2 1-3 3-3 6 0 2 1 3 2 3v11"/></svg><span style="flex:1;text-align:left">Thực đơn</span></button>
+    <button class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="13" height="10" rx="1"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg><span style="flex:1;text-align:left">Đặt hàng &amp; Giao hàng</span><span class="badge" style="background:var(--clay-100);color:#8E5726">12</span></button>
+    <span style="padding:16px 12px 6px;font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;color:var(--text-subtle);font-weight:600">Nội bộ</span>
+    <button class="nav-item {{ staffListNavActive }}" onClick="{{ goStaffList }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span style="flex:1;text-align:left">Nhân viên</span></button>
+    <button class="nav-item {{ newStaffNavActive }}" onClick="{{ goNewStaffTool }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="14" height="16" rx="2"/><path d="M7 9h6"/><path d="M7 13h4"/><path d="M18 8v6"/><path d="M15 11h6"/></svg><span style="flex:1;text-align:left">Random tài khoản</span></button>
+    <button class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4"/><path d="M17 12h3a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-3a2 2 0 0 1 0-4z"/></svg><span style="flex:1;text-align:left">Doanh thu &amp; Chi tiêu</span></button>
+  </div>
+  <div style="padding:12px;border-top:1px solid #EFE9DC;display:flex;align-items:center;gap:10px">
+    <span style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;cursor:pointer" onClick="{{ openProfile }}" title="Xem thông tin tài khoản">
+      <span style="width:32px;height:32px;flex:0 0 auto;border-radius:999px;background:#E8D9BE;color:#8E5726;display:grid;place-items:center;font-weight:600;font-size:12px">{{ userInitials }}</span>
+      <span style="flex:1;min-width:0;font-size:13px;line-height:1.35">
+        <span style="display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ userName }}</span>
+        <span style="display:block;color:var(--text-muted)">{{ userRoleLabel }}</span>
+      </span>
+    </span>
+    <button type="button" class="icon-btn" style="width:32px;height:32px" onClick="{{ logout }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
+  </div>
+</nav>
+
+<sc-if value="{{ isManagerView }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;min-width:0;background:var(--surface-page)">
+
+  <div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:var(--surface-card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10">
+    <div style="flex:1">
+      <h2 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Tổng quan</h2>
+      <div style="font-size:12px;color:var(--text-muted)">Cập nhật 14:32 · 03/09/2026 · 12 chi nhánh</div>
+    </div>
+    <div style="display:flex;gap:2px;padding:3px;background:var(--surface-page);border:1px solid var(--border);border-radius:999px">
+      <button type="button" class="tabp {{ tabToday }}" onClick="{{ setRangeToday }}">Hôm nay</button>
+      <button type="button" class="tabp {{ tabWeek }}" onClick="{{ setRangeWeek }}">Tuần</button>
+      <button type="button" class="tabp {{ tabMonth }}" onClick="{{ setRangeMonth }}">Tháng</button>
+      <button type="button" class="tabp {{ tabYear }}" onClick="{{ setRangeYear }}">Năm</button>
+    </div>
+    <button type="button" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
+  </div>
+
+  <div style="padding:32px;display:flex;flex-direction:column;gap:24px">
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4"/><path d="M17 12h3a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-3a2 2 0 0 1 0-4z"/></svg>
+          <span style="font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;font-weight:600">Tổng doanh thu</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ kpiRevenue }}</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:#2E4D25">{{ kpiRevenueDelta }}</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h16v20l-3-2-3 2-3-2-3 2-4-2z"/><path d="M8 7h8"/><path d="M8 11h8"/><path d="M8 15h5"/></svg>
+          <span style="font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;font-weight:600">Tổng đơn hàng</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ kpiOrders }}</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:#2E4D25">{{ kpiOrdersDelta }}</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v10h16V9"/><path d="M9 21v-6h6v6"/></svg>
+          <span style="font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;font-weight:600">Chi nhánh hoạt động</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">12 / 12</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:#2E4D25">Tất cả đang mở</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="13" height="10" rx="1"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>
+          <span style="font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;font-weight:600">Đơn đang giao</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ kpiDelivering }}</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:#8C5E14">{{ kpiDeliveringDelta }}</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;align-items:start">
+
+      <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:24px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+          <div>
+            <h3 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Xu hướng doanh thu</h3>
+            <p style="margin-top:4px;font-size:14px;color:var(--text-muted)">{{ chartSubtitle }}</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted)">
+            <span style="width:10px;height:2px;background:var(--brand);border-radius:2px"></span>Doanh thu
+            <span style="width:10px;height:2px;background:var(--clay-300);border-radius:2px;margin-left:8px"></span>Kỳ trước
+          </div>
+        </div>
+        <div style="margin-top:20px">
+          <svg viewBox="0 0 720 220" style="display:block;width:100%;height:220px;overflow:visible">
+            <defs><linearGradient id="dpRevFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4B6B3E" stop-opacity="0.16"></stop>
+              <stop offset="100%" stop-color="#4B6B3E" stop-opacity="0"></stop>
+            </linearGradient></defs>
+            <sc-for list="{{ chartGrid }}" as="g" hint-placeholder-count="5">
+              <line x1="8" x2="712" y1="{{ g.y }}" y2="{{ g.y }}" stroke="#EFE9DC" stroke-width="1"></line>
+            </sc-for>
+            <path d="{{ chartArea }}" fill="url(#dpRevFill)"></path>
+            <path d="{{ chartPrevPath }}" fill="none" stroke="var(--clay-300)" stroke-width="2" stroke-dasharray="4 5" stroke-linecap="round"></path>
+            <path d="{{ chartPath }}" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <sc-for list="{{ chartPoints }}" as="p" hint-placeholder-count="7">
+              <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="{{ p.r }}" fill="#FFFFFF" stroke="var(--brand)" stroke-width="2.5"></circle>
+            </sc-for>
+            <sc-for list="{{ chartLabels }}" as="l" hint-placeholder-count="7">
+              <text x="{{ l.x }}" y="194" text-anchor="middle" fill="#6B6455" font-size="12" font-family="'Be Vietnam Pro',sans-serif">{{ l.label }}</text>
+            </sc-for>
+          </svg>
+        </div>
+      </section>
+
+      <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:24px">
+        <h3 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Top chi nhánh theo doanh thu</h3>
+        <p style="margin-top:4px;font-size:14px;color:var(--text-muted)">{{ rangeLabel }}</p>
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:16px">
+          <sc-for list="{{ topBranches }}" as="b" hint-placeholder-count="5">
+            <div>
+              <div style="display:flex;align-items:baseline;gap:10px">
+                <span style="width:20px;font-size:12px;font-weight:600;color:var(--text-subtle);font-variant-numeric:tabular-nums">{{ b.rank }}</span>
+                <span style="flex:1;font-size:14px;font-weight:500">{{ b.name }}</span>
+                <span style="font-size:14px;font-weight:600;font-variant-numeric:tabular-nums">{{ b.value }}</span>
+              </div>
+              <div style="margin-top:6px;margin-left:30px;height:6px;border-radius:999px;background:var(--surface-page);display:flex">
+                <div style="height:100%;border-radius:999px;background:#B9773A;width:{{ b.width }}"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid #EFE9DC;display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted)">
+          <span>8 chi nhánh còn lại</span><a href="#" onClick="{{ prevent }}" style="font-weight:500">Xem tất cả</a>
+        </div>
+      </section>
+
+    </div>
+
+    <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);overflow:hidden">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 24px">
+        <div>
+          <h3 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Hoạt động gần đây</h3>
+          <p style="margin-top:4px;font-size:14px;color:var(--text-muted)">Đơn hàng mới nhất từ tất cả chi nhánh</p>
+        </div>
+        <button type="button" class="btn" style="height:32px;padding:0 12px;background:var(--surface-card);color:var(--text-body);border-color:var(--border-strong)" onClick="{{ prevent }}">Xem tất cả đơn
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+      <table style="width:100%;font-size:var(--fs-body-sm);border-collapse:collapse">
+        <thead><tr><th>Mã đơn</th><th>Chi nhánh</th><th>Trạng thái</th><th style="text-align:right">Giá trị</th><th style="text-align:right">Thời gian</th></tr></thead>
+        <tbody>
+        <sc-for list="{{ recentOrders }}" as="o" hint-placeholder-count="7">
+          <tr class="row">
+            <td style="font-weight:600">{{ o.code }}</td>
+            <td>{{ o.br }}</td>
+            <td><span class="badge" style="background:{{ o.stBg }};color:{{ o.stColor }}"><span class="dot"></span>{{ o.stLabel }}</span></td>
+            <td style="text-align:right;font-variant-numeric:tabular-nums">{{ o.total }}</td>
+            <td style="text-align:right;color:var(--text-muted)">{{ o.t }}</td>
+          </tr>
+        </sc-for>
+        </tbody>
+      </table>
+    </section>
+
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStaffView }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;min-width:0;background:var(--surface-page)">
+  <div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:var(--surface-card);border-bottom:1px solid var(--border)">
+    <div style="flex:1">
+      <h2 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Lịch làm việc của tôi</h2>
+      <div style="font-size:12px;color:var(--text-muted)">{{ userName }} · {{ staffRoleNote }}</div>
+    </div>
+  </div>
+  <div style="padding:32px;display:flex;flex-direction:column;gap:24px;max-width:900px">
+    <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <h3 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Ca làm tuần này</h3>
+        <span style="font-size:13px;color:var(--text-muted)">31/08 – 06/09/2026</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:20px">
+        <sc-for list="{{ staffWeek }}" as="d" hint-placeholder-count="7">
+          <div style="border:1px solid {{ d.border }};background:{{ d.bg }};border-radius:8px;padding:12px 8px;text-align:center;min-height:96px;display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--text-muted)">{{ d.day }}</span>
+            <span style="font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">{{ d.date }}</span>
+            <span style="margin-top:auto;font-size:13px;font-weight:600;color:{{ d.text }}">{{ d.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:16px;font-size:12px;color:var(--text-muted);flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#E7EEE2;border:1px solid #A8BE9C"></span>Ca sáng</span>
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#F7E9CC;border:1px solid #C98A2C"></span>Ca chiều</span>
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#F3EDE2;border:1px solid #E4DCC8"></span>Nghỉ</span>
+      </div>
+    </section>
+    <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:24px">
+      <h3 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Nơi làm việc</h3>
+      <div style="margin-top:12px;font-size:14px;color:var(--text-muted)">Chi nhánh phụ trách</div>
+      <div style="margin-top:4px;font-size:17px;font-weight:600">Quận 3 — Võ Văn Tần</div>
+      <p style="margin-top:16px;font-size:13px;color:var(--text-subtle)">Bạn chỉ xem được lịch và ca làm của chính mình. Liên hệ quản lý chi nhánh nếu cần đổi ca.</p>
+    </section>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCashierView }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;min-width:0;background:var(--surface-page)">
+  <div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:var(--surface-card);border-bottom:1px solid var(--border)">
+    <div style="flex:1">
+      <h2 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Doanh thu</h2>
+      <div style="font-size:12px;color:var(--text-muted)">Tổng kết theo ngày, tháng, năm</div>
+    </div>
+    <div style="display:flex;gap:2px;padding:3px;background:var(--surface-page);border:1px solid var(--border);border-radius:999px">
+      <button type="button" class="tabp {{ tabToday }}" onClick="{{ setRangeToday }}">Hôm nay</button>
+      <button type="button" class="tabp {{ tabMonth }}" onClick="{{ setRangeMonth }}">Tháng</button>
+      <button type="button" class="tabp {{ tabYear }}" onClick="{{ setRangeYear }}">Năm</button>
+    </div>
+  </div>
+  <div style="padding:32px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:600px">
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px">
+        <span class="eyebrow">Tổng doanh thu</span>
+        <div style="margin-top:10px;font-size:28px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ kpiRevenue }}</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:#2E4D25">{{ kpiRevenueDelta }}</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px">
+        <span class="eyebrow">Tổng đơn hàng</span>
+        <div style="margin-top:10px;font-size:28px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ kpiOrders }}</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:#2E4D25">{{ kpiOrdersDelta }}</div>
+      </div>
+    </div>
+    <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:24px;max-width:800px">
+      <h3 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Xu hướng doanh thu</h3>
+      <p style="margin-top:4px;font-size:14px;color:var(--text-muted)">{{ chartSubtitle }}</p>
+      <div style="margin-top:20px">
+        <svg viewBox="0 0 720 220" style="display:block;width:100%;height:220px;overflow:visible">
+          <defs><linearGradient id="dpRevFillCashier" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4B6B3E" stop-opacity="0.16"></stop>
+            <stop offset="100%" stop-color="#4B6B3E" stop-opacity="0"></stop>
+          </linearGradient></defs>
+          <sc-for list="{{ chartGrid }}" as="g" hint-placeholder-count="5">
+            <line x1="8" x2="712" y1="{{ g.y }}" y2="{{ g.y }}" stroke="#EFE9DC" stroke-width="1"></line>
+          </sc-for>
+          <path d="{{ chartArea }}" fill="url(#dpRevFillCashier)"></path>
+          <path d="{{ chartPath }}" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <sc-for list="{{ chartPoints }}" as="p" hint-placeholder-count="7">
+            <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="{{ p.r }}" fill="#FFFFFF" stroke="var(--brand)" stroke-width="2.5"></circle>
+          </sc-for>
+          <sc-for list="{{ chartLabels }}" as="l" hint-placeholder-count="7">
+            <text x="{{ l.x }}" y="194" text-anchor="middle" fill="#6B6455" font-size="12" font-family="'Be Vietnam Pro',sans-serif">{{ l.label }}</text>
+          </sc-for>
+        </svg>
+      </div>
+    </section>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStaffListView }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;min-width:0;background:var(--surface-page)">
+  <div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:var(--surface-card);border-bottom:1px solid var(--border)">
+    <div style="flex:1">
+      <h2 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Nhân viên</h2>
+      <div style="font-size:12px;color:var(--text-muted)">{{ staffCount }} nhân sự đang hoạt động trong hệ thống</div>
+    </div>
+    <button type="button" class="btn btn-secondary btn-md" onClick="{{ openStaffAdd }}">+ Thêm nhân viên</button>
+    <button type="button" class="btn btn-primary btn-md" onClick="{{ goNewStaffTool }}">+ Tạo tài khoản mới</button>
+  </div>
+  <div style="padding:32px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px">
+        <span class="eyebrow">Số nhân viên</span>
+        <div style="margin-top:10px;font-size:28px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ staffCount }}</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:var(--text-muted)">trong toàn hệ thống</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px">
+        <span class="eyebrow">Số ca làm</span>
+        <div style="margin-top:10px;font-size:28px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ staffShiftTotal }}</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:var(--text-muted)">ca / tuần này</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:20px">
+        <span class="eyebrow">Quỹ lương</span>
+        <div style="margin-top:10px;font-size:28px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ staffPayrollTotal }}</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:var(--text-muted)">tổng lương / tháng</div>
+      </div>
+    </div>
+    <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);overflow:hidden">
+      <div style="padding:20px 24px;display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+        <label class="field-wrap" style="width:260px">
+          <label>Tìm kiếm</label>
+          <span class="field"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Tên hoặc số điện thoại" value="{{ staffQuery }}" onChange="{{ onStaffQuery }}"></span>
+        </label>
+        <label class="field-wrap" style="width:180px">
+          <label>Vai trò</label>
+          <span class="field"><select value="{{ staffFilterRole }}" onChange="{{ onStaffFilterRole }}">
+            <option value="">Tất cả vai trò</option>
+            <sc-for list="{{ staffFilterRoleOptions }}" as="r" hint-placeholder-count="3"><option value="{{ r }}">{{ r }}</option></sc-for>
+          </select></span>
+        </label>
+        <label class="field-wrap" style="width:220px">
+          <label>Chi nhánh</label>
+          <span class="field"><select value="{{ staffFilterBranch }}" onChange="{{ onStaffFilterBranch }}">
+            <option value="">Tất cả chi nhánh</option>
+            <sc-for list="{{ staffFilterBranchOptions }}" as="b" hint-placeholder-count="5"><option value="{{ b }}">{{ b }}</option></sc-for>
+          </select></span>
+        </label>
+        <div style="flex:1"></div>
+        <span style="font-size:13px;color:var(--text-muted);padding-bottom:10px">{{ staffFilteredCount }} / {{ staffCount }} nhân viên</span>
+      </div>
+      <table style="width:100%;font-size:var(--fs-body-sm);border-collapse:collapse">
+        <thead><tr><th>Họ và tên</th><th>Vai trò</th><th>Chi nhánh</th><th>Số điện thoại</th><th>Trạng thái</th><th>Chấm ca</th><th style="text-align:right">Thao tác</th></tr></thead>
+        <tbody>
+        <sc-for list="{{ staffList }}" as="s" hint-placeholder-count="6">
+          <tr class="row" style="cursor:pointer" onClick="{{ s.openProfile }}">
+            <td style="font-weight:600">{{ s.name }}</td>
+            <td><span class="badge" style="background:{{ s.roleBg }};color:{{ s.roleColor }}">{{ s.role }}</span></td>
+            <td>{{ s.branch }}</td>
+            <td>{{ s.phone }}</td>
+            <td><span class="badge" style="background:{{ s.stBg }};color:{{ s.stColor }}"><span class="dot"></span>{{ s.stLabel }}</span></td>
+            <td><span class="badge" style="background:{{ s.ciBg }};color:{{ s.ciColor }}"><span class="dot"></span>{{ s.ciLabel }}</span></td>
+            <td style="text-align:right;white-space:nowrap">
+              <button type="button" class="icon-btn" style="width:32px;height:32px;color:var(--text-accent)" title="{{ s.pauseLabel }}" onClick="{{ s.askPause }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="4"/><path d="M2 21v-1a8 8 0 0 1 12.8-6.4"/><path d="m17 8 5 5"/><path d="m22 8-5 5"/></svg></button>
+              <button type="button" class="icon-btn" style="width:32px;height:32px;color:var(--danger)" title="Xoá nhân viên" onClick="{{ s.askDelete }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+            </td>
+          </tr>
+        </sc-for>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ staffAddOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(46,42,34,.38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:60" onClick="{{ closeStaffAdd }}">
+  <div role="dialog" aria-modal="true" onClick="{{ stopClick }}" style="width:100%;max-width:480px;background:var(--surface-card);border-radius:var(--radius-modal);box-shadow:var(--shadow-modal);border:1px solid var(--border);overflow:hidden">
+    <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 24px 0">
+      <div style="flex:1">
+        <h3 style="font-size:var(--fs-h3);font-weight:600">Thêm nhân viên</h3>
+        <p style="margin-top:6px;font-size:var(--fs-body-sm);color:var(--text-muted)">Nhập thông tin nhân viên mới vào danh sách.</p>
+      </div>
+      <button type="button" class="icon-btn" style="width:32px;height:32px" onClick="{{ closeStaffAdd }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+    <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:16px">
+      <label class="field-wrap">
+        <label>Họ và tên</label>
+        <span class="field" style="border-color:{{ staffAddNameBorder }}"><input placeholder="Nguyễn Văn A" value="{{ staffAddName }}" onChange="{{ onStaffAddName }}"></span>
+        <sc-if value="{{ staffAddNameError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ staffAddNameError }}</span></sc-if>
+      </label>
+      <label class="field-wrap">
+        <label>Số điện thoại</label>
+        <span class="field"><input placeholder="09xx xxx xxx" value="{{ staffAddPhone }}" onChange="{{ onStaffAddPhone }}"></span>
+        <sc-if value="{{ staffAddPhoneError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ staffAddPhoneError }}</span></sc-if>
+      </label>
+      <label class="field-wrap">
+        <label>Chi nhánh</label>
+        <span class="field"><select value="{{ staffAddBranch }}" onChange="{{ onStaffAddBranch }}">
+          <option value="">— Chọn chi nhánh —</option>
+          <sc-for list="{{ staffAddBranchOptions }}" as="b" hint-placeholder-count="5"><option value="{{ b }}">{{ b }}</option></sc-for>
+        </select></span>
+        <sc-if value="{{ staffAddBranchError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ staffAddBranchError }}</span></sc-if>
+      </label>
+      <label class="field-wrap">
+        <label>Vai trò</label>
+        <span class="field"><select value="{{ staffAddRole }}" onChange="{{ onStaffAddRole }}">
+          <option value="">— Chọn vai trò —</option>
+          <sc-for list="{{ staffAddRoleOptions }}" as="r" hint-placeholder-count="3"><option value="{{ r }}">{{ r }}</option></sc-for>
+        </select></span>
+        <sc-if value="{{ staffAddRoleError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ staffAddRoleError }}</span></sc-if>
+      </label>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:24px">
+      <button type="button" class="btn btn-secondary btn-md" onClick="{{ closeStaffAdd }}">Huỷ</button>
+      <button type="button" class="btn btn-primary btn-md" onClick="{{ submitStaffAdd }}">Thêm nhân viên</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ staffProfileOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(46,42,34,.38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:60" onClick="{{ closeStaffProfile }}">
+  <div role="dialog" aria-modal="true" onClick="{{ stopClick }}" style="width:100%;max-width:560px;max-height:88vh;overflow-y:auto;background:var(--surface-card);border-radius:var(--radius-modal);box-shadow:var(--shadow-modal);border:1px solid var(--border)">
+    <div style="background:var(--green-100);padding:28px 56px 28px 28px;position:relative">
+      <button type="button" class="icon-btn" style="width:32px;height:32px;position:absolute;top:16px;right:16px;background:var(--surface-card)" onClick="{{ closeStaffProfile }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      <div style="display:flex;gap:20px;align-items:center">
+        <span style="flex:0 0 auto;width:88px;height:132px;border-radius:8px;background:var(--surface-card);border:1px solid var(--white);box-shadow:var(--shadow-raised);display:grid;place-items:center;color:var(--text-subtle)" title="Ảnh 4x6">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:19px;font-weight:600;line-height:1.3">{{ staffProfile.name }}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="badge" style="background:{{ staffProfile.roleBg }};color:{{ staffProfile.roleColor }}">{{ staffProfile.role }}</span>
+            <span class="badge" style="background:{{ staffProfile.stBg }};color:{{ staffProfile.stColor }}"><span class="dot"></span>{{ staffProfile.stLabel }}</span>
+          </div>
+          <div style="font-size:var(--fs-body-sm);color:var(--text-muted)">{{ staffProfile.branch }}</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:24px">
+      <h4 style="font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)">Thông tin cá nhân</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px">
+        <div style="background:var(--surface-page);border:1px solid var(--border-soft);border-radius:var(--radius-control);padding:12px 14px">
+          <span style="display:block;font-size:var(--fs-caption);color:var(--text-subtle)">Họ và tên</span>
+          <span style="font-weight:600;font-size:var(--fs-body-sm)">{{ staffProfile.name }}</span>
+        </div>
+        <div style="background:var(--surface-page);border:1px solid var(--border-soft);border-radius:var(--radius-control);padding:12px 14px">
+          <span style="display:block;font-size:var(--fs-caption);color:var(--text-subtle)">Ngày sinh</span>
+          <span style="font-weight:600;font-size:var(--fs-body-sm)">{{ staffProfile.dob }}</span>
+        </div>
+        <div style="background:var(--surface-page);border:1px solid var(--border-soft);border-radius:var(--radius-control);padding:12px 14px">
+          <span style="display:block;font-size:var(--fs-caption);color:var(--text-subtle)">Số CCCD</span>
+          <span style="font-weight:600;font-size:var(--fs-body-sm);font-variant-numeric:tabular-nums">{{ staffProfile.cccd }}</span>
+        </div>
+        <div style="background:var(--surface-page);border:1px solid var(--border-soft);border-radius:var(--radius-control);padding:12px 14px">
+          <span style="display:block;font-size:var(--fs-caption);color:var(--text-subtle)">Số điện thoại</span>
+          <span style="font-weight:600;font-size:var(--fs-body-sm)">{{ staffProfile.phone }}</span>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;display:flex;align-items:center;justify-content:space-between">
+        <h4 style="font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)">Lịch đi làm</h4>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button type="button" class="icon-btn" style="width:28px;height:28px;{{ staffCalPrevDisabled }}" onClick="{{ goStaffCalPrev }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+          <span style="font-size:13px;font-weight:600;min-width:96px;text-align:center">{{ staffCalLabel }}</span>
+          <button type="button" class="icon-btn" style="width:28px;height:28px" onClick="{{ goStaffCalNext }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:14px">
+        <span style="text-align:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--text-subtle);padding-bottom:4px">T2</span>
+        <span style="text-align:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--text-subtle);padding-bottom:4px">T3</span>
+        <span style="text-align:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--text-subtle);padding-bottom:4px">T4</span>
+        <span style="text-align:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--text-subtle);padding-bottom:4px">T5</span>
+        <span style="text-align:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--text-subtle);padding-bottom:4px">T6</span>
+        <span style="text-align:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--text-subtle);padding-bottom:4px">T7</span>
+        <span style="text-align:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--text-subtle);padding-bottom:4px">CN</span>
+        <sc-for list="{{ staffCalCells }}" as="d" hint-placeholder-count="35">
+          <div style="border:1px solid {{ d.border }};background:{{ d.bg }};border-radius:6px;padding:6px 4px;text-align:center;min-height:44px;display:flex;flex-direction:column;gap:2px;justify-content:center">
+            <span style="font-size:11px;font-weight:600">{{ d.day }}</span>
+            <span style="font-size:9px;font-weight:600;color:{{ d.text }}">{{ d.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:14px;font-size:11px;color:var(--text-muted)">
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#E7EEE2;border:1px solid #A8BE9C"></span>Ca sáng</span>
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#F7E9CC;border:1px solid #C98A2C"></span>Ca chiều</span>
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#F3EDE2;border:1px solid #E4DCC8"></span>Nghỉ</span>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isNewStaffTool }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;min-width:0;background:var(--surface-page)">
+  <div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:var(--surface-card);border-bottom:1px solid var(--border)">
+    <div style="flex:1">
+      <h2 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Tạo tài khoản nhân viên mới</h2>
+      <div style="font-size:12px;color:var(--text-muted)">Random Gmail, số điện thoại và mật khẩu tạm thời để cấp cho nhân viên</div>
+    </div>
+    <a onClick="{{ goStaffList }}" style="font-size:13px;font-weight:500;cursor:pointer">← Về danh sách Nhân viên</a>
+  </div>
+  <div style="padding:32px">
+    <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);padding:24px;max-width:520px;display:flex;flex-direction:column;gap:12px">
+      <label class="field-wrap">
+        <label>Họ và tên</label>
+        <span class="field"><input placeholder="Nguyễn Văn A" value="{{ newStaffName }}" onChange="{{ onNewStaffName }}"></span>
+      </label>
+
+      <label class="field-wrap">
+        <label>Gmail</label>
+        <span style="display:flex;gap:8px">
+          <span class="field" style="flex:1"><input placeholder="Bấm Random để tạo" value="{{ newStaffEmail }}" onChange="{{ onNewStaffEmail }}"></span>
+          <button type="button" class="btn btn-secondary btn-md" onClick="{{ randomGmail }}">Random</button>
+        </span>
+      </label>
+
+      <label class="field-wrap">
+        <label>Số điện thoại</label>
+        <span style="display:flex;gap:8px">
+          <span class="field" style="flex:1"><input placeholder="Bấm Random để tạo" value="{{ newStaffPhone }}" onChange="{{ onNewStaffPhone }}"></span>
+          <button type="button" class="btn btn-secondary btn-md" onClick="{{ randomPhone }}">Random</button>
+        </span>
+      </label>
+
+      <label class="field-wrap">
+        <label>Mật khẩu tạm thời</label>
+        <span style="display:flex;gap:8px">
+          <span class="field" style="flex:1"><input placeholder="Bấm Random để tạo" value="{{ newStaffPassword }}" onChange="{{ onNewStaffPassword }}"></span>
+          <button type="button" class="btn btn-secondary btn-md" onClick="{{ randomPassword }}">Random</button>
+        </span>
+      </label>
+
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button type="button" class="btn btn-secondary btn-md" style="flex:1" onClick="{{ randomAll }}">Random tất cả</button>
+        <button type="button" class="btn btn-primary btn-md" style="flex:1" onClick="{{ createNewStaffAccount }}">Tạo tài khoản</button>
+      </div>
+      <p style="font-size:12px;color:var(--text-subtle);margin-top:4px">Nhân viên sẽ dùng Gmail và mật khẩu tạm thời này để đăng nhập lần đầu, sau đó bắt buộc đổi mật khẩu mới.</p>
+    </section>
+  </div>
+</div>
+</sc-if>
+
+</div>
+
+<sc-if value="{{ deleteStaffOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(46,42,34,.38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:62" onClick="{{ cancelDeleteStaff }}">
+  <div role="alertdialog" aria-modal="true" onClick="{{ stopClick }}" style="width:100%;max-width:420px;background:var(--surface-card);border-radius:var(--radius-modal);box-shadow:var(--shadow-modal);border:1px solid var(--border);overflow:hidden">
+    <div style="padding:24px">
+      <h3 style="font-size:var(--fs-h3);font-weight:600">Xoá {{ deleteStaffName }} khỏi hệ thống?</h3>
+      <p style="margin-top:8px;font-size:var(--fs-body-sm);color:var(--text-muted)">Nhân viên sẽ mất toàn bộ quyền truy cập và bị xoá khỏi danh sách. Không thể hoàn tác.</p>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:0 24px 24px">
+      <button type="button" class="btn btn-secondary btn-md" onClick="{{ cancelDeleteStaff }}">Huỷ</button>
+      <button type="button" class="btn btn-danger btn-md" onClick="{{ confirmDeleteStaff }}">Xoá nhân viên</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ pauseStaffOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(46,42,34,.38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:62" onClick="{{ cancelPauseStaff }}">
+  <div role="alertdialog" aria-modal="true" onClick="{{ stopClick }}" style="width:100%;max-width:420px;background:var(--surface-card);border-radius:var(--radius-modal);box-shadow:var(--shadow-modal);border:1px solid var(--border);overflow:hidden">
+    <div style="padding:24px">
+      <h3 style="font-size:var(--fs-h3);font-weight:600">{{ pauseStaffTitle }}</h3>
+      <p style="margin-top:8px;font-size:var(--fs-body-sm);color:var(--text-muted)">{{ pauseStaffDesc }}</p>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:0 24px 24px">
+      <button type="button" class="btn btn-secondary btn-md" onClick="{{ cancelPauseStaff }}">Huỷ</button>
+      <button type="button" class="btn btn-primary btn-md" onClick="{{ confirmPauseStaff }}">{{ pauseStaffAction }}</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+</sc-if>
+
+<sc-if value="{{ profileOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(46,42,34,.38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:60" onClick="{{ closeProfile }}">
+  <div role="dialog" aria-modal="true" onClick="{{ stopProfileClick }}" style="width:100%;max-width:420px;background:var(--surface-card);border-radius:var(--radius-modal);box-shadow:var(--shadow-modal);border:1px solid var(--border);overflow:hidden">
+    <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 24px 0">
+      <h3 style="flex:1;font-size:var(--fs-h3);font-weight:600">Thông tin cá nhân</h3>
+      <button type="button" class="icon-btn" style="width:32px;height:32px" onClick="{{ closeProfile }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+    <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:center">
+        <span style="position:relative;width:80px;height:80px">
+          <span style="width:80px;height:80px;border-radius:999px;background:#E8D9BE;color:#8E5726;display:grid;place-items:center;font-weight:600;font-size:24px">{{ userInitials }}</span>
+          <span style="position:absolute;bottom:0;right:0;width:26px;height:26px;border-radius:999px;background:var(--brand);color:var(--text-on-brand);border:2px solid var(--surface-card);display:grid;place-items:center" title="Đổi ảnh đại diện">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </span>
+        </span>
+      </div>
+      <label class="field-wrap">
+        <label>Họ và tên</label>
+        <span class="field"><input value="{{ profileNameDraft }}" onChange="{{ onProfileNameDraft }}"></span>
+      </label>
+      <label class="field-wrap">
+        <label>Gmail</label>
+        <span class="field" style="background:var(--surface-page)"><input value="{{ loggedEmail }}" disabled></span>
+      </label>
+      <label class="field-wrap">
+        <label>Số điện thoại</label>
+        <span class="field" style="background:var(--surface-page)"><input value="{{ loggedPhone }}" disabled></span>
+      </label>
+      <label class="field-wrap">
+        <label>Vai trò</label>
+        <span class="field" style="background:var(--surface-page)"><input value="{{ userRoleLabel }}" disabled></span>
+      </label>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:24px">
+      <button type="button" class="btn btn-secondary btn-md" onClick="{{ closeProfile }}">Huỷ</button>
+      <button type="button" class="btn btn-primary btn-md" onClick="{{ saveProfile }}">Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ securityOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(46,42,34,.38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:60" onClick="{{ closeSecurity }}">
+  <div role="dialog" aria-modal="true" onClick="{{ stopClick }}" style="width:100%;max-width:460px;max-height:88vh;overflow-y:auto;background:var(--surface-card);border-radius:var(--radius-modal);box-shadow:var(--shadow-modal);border:1px solid var(--border)">
+    <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 24px 0">
+      <h3 style="flex:1;font-size:var(--fs-h3);font-weight:600">Mật khẩu và bảo mật</h3>
+      <button type="button" class="icon-btn" style="width:32px;height:32px" onClick="{{ closeSecurity }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+
+    <div style="padding:20px 24px 0">
+      <h4 style="font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)">Mật khẩu</h4>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:14px">
+        <label class="field-wrap">
+          <label>Mật khẩu hiện tại</label>
+          <span class="field" style="border-color:{{ secCurrentBorder }}"><input type="password" placeholder="Nhập mật khẩu hiện tại" value="{{ secCurrent }}" onChange="{{ onSecCurrent }}"></span>
+          <sc-if value="{{ secCurrentError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ secCurrentError }}</span></sc-if>
+        </label>
+        <label class="field-wrap">
+          <label>Mật khẩu mới</label>
+          <span class="field" style="border-color:{{ secNewBorder }}"><input type="password" placeholder="Tối thiểu 8 ký tự" value="{{ secNew }}" onChange="{{ onSecNew }}"></span>
+          <sc-if value="{{ secNewError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ secNewError }}</span></sc-if>
+        </label>
+        <label class="field-wrap">
+          <label>Xác nhận mật khẩu mới</label>
+          <span class="field" style="border-color:{{ secConfirmBorder }}"><input type="password" placeholder="Nhập lại mật khẩu mới" value="{{ secConfirm }}" onChange="{{ onSecConfirm }}"></span>
+          <sc-if value="{{ secConfirmError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ secConfirmError }}</span></sc-if>
+        </label>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <a onClick="{{ goForgotPassword }}" style="font-size:12px;font-weight:600;color:var(--text-brand);cursor:pointer">Quên mật khẩu?</a>
+          <button type="button" class="btn btn-primary btn-md" onClick="{{ submitSecurity }}">Cập nhật mật khẩu</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:24px;margin-top:20px;border-top:1px solid var(--border-soft)">
+      <h4 style="font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)">Bảo mật</h4>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:500">Xác minh qua SĐT khi đăng nhập</div>
+            <div style="margin-top:2px;font-size:12px;color:var(--text-muted)">Gửi mã OTP về {{ loggedPhone }} mỗi lần đăng nhập.</div>
+          </div>
+          <span role="switch" onClick="{{ toggleSecSms }}" style="flex:0 0 auto;width:40px;height:22px;border-radius:999px;background:{{ secSmsTrack }};position:relative;cursor:pointer">
+            <span style="position:absolute;top:2px;left:{{ secSmsKnob }};width:18px;height:18px;border-radius:999px;background:#FFF;transition:left var(--dur-fast) var(--ease-out)"></span>
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:500">Xác minh qua Gmail</div>
+            <div style="margin-top:2px;font-size:12px;color:var(--text-muted)">Gửi mã xác minh về {{ loggedEmail }}.</div>
+          </div>
+          <span role="switch" onClick="{{ toggleSecEmail }}" style="flex:0 0 auto;width:40px;height:22px;border-radius:999px;background:{{ secEmailTrack }};position:relative;cursor:pointer">
+            <span style="position:absolute;top:2px;left:{{ secEmailKnob }};width:18px;height:18px;border-radius:999px;background:#FFF;transition:left var(--dur-fast) var(--ease-out)"></span>
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:500">Ứng dụng xác thực (Authenticator)</div>
+            <div style="margin-top:2px;font-size:12px;color:var(--text-muted)">Dùng mã từ ứng dụng như Google Authenticator.</div>
+          </div>
+          <span role="switch" onClick="{{ toggleSecApp }}" style="flex:0 0 auto;width:40px;height:22px;border-radius:999px;background:{{ secAppTrack }};position:relative;cursor:pointer">
+            <span style="position:absolute;top:2px;left:{{ secAppKnob }};width:18px;height:18px;border-radius:999px;background:#FFF;transition:left var(--dur-fast) var(--ease-out)"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ toastMsg }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;padding:14px 16px;max-width:360px;background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-control);box-shadow:var(--shadow-modal);font-size:var(--fs-body-sm)">
+  <span style="color:var(--success-text,#3A5430);display:flex;flex:0 0 auto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+  {{ toastMsg }}
+</div>
+</sc-if>
+
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":980}}'>
+const BRANCHES = ['Quận 3', 'Quận 1', 'Tân Bình', 'Thủ Đức', 'Trụ sở'];
+const PHONE_PREFIXES = ['090', '091', '092', '093', '094', '096', '097', '098', '099', '032', '033', '034', '035', '036', '037', '038', '039', '070', '076', '077', '078', '079', '081', '082', '083', '084', '085', '088', '089'];
+const DEMO_LOGIN_EMAIL = 'an.nguyen@duyenphan';
+const DEMO_LOGIN_ERRORS = { email: 'Email không hợp lệ' };
+const DEMO_REG_EMAIL = 'an.nguyen@duyenphan';
+const DEMO_REG_PASSWORD = '12345678';
+const DEMO_REG_CONFIRM = '123456';
+const DEMO_REG_ERRORS = { regEmail: 'Email không hợp lệ', regConfirm: 'Mật khẩu xác nhận không khớp' };
+
+const RANGES = [
+  { id: 'today', label: 'Hôm nay' },
+  { id: 'week', label: 'Tuần' },
+  { id: 'month', label: 'Tháng' },
+  { id: 'year', label: 'Năm' }
+];
+
+const DASH_DATA = {
+  today: {
+    sub: '03/09/2026 · theo giờ',
+    revenue: '18.420.000₫', revenueDelta: '+8,2% so với hôm qua',
+    orders: '264', ordersDelta: '+12 đơn so với hôm qua',
+    delivering: '4', deliveringDelta: '1 đơn quá 30 phút',
+    labels: ['08h', '10h', '12h', '14h', '16h', '18h', '20h'],
+    series: [8, 22, 96, 74, 38, 66, 44],
+    prev: [10, 26, 88, 62, 44, 58, 40],
+    branches: [['Quận 3 — Võ Văn Tần', '5.240.000₫', 100], ['Quận 1 — Lê Lợi', '4.180.000₫', 80], ['Tân Bình — Hoàng Việt', '3.020.000₫', 58], ['Thủ Đức — Kha Vạn Cân', '2.480.000₫', 47], ['Phú Nhuận — Phan Xích Long', '1.860.000₫', 36]]
+  },
+  week: {
+    sub: '28/08 – 03/09/2026 · theo ngày',
+    revenue: '124.860.000₫', revenueDelta: '+6,4% so với tuần trước',
+    orders: '1.842', ordersDelta: '+96 đơn so với tuần trước',
+    delivering: '4', deliveringDelta: '1 đơn quá 30 phút',
+    labels: ['28/08', '29/08', '30/08', '31/08', '01/09', '02/09', '03/09'],
+    series: [58, 72, 96, 88, 74, 62, 80],
+    prev: [54, 66, 84, 80, 70, 58, 72],
+    branches: [['Quận 3 — Võ Văn Tần', '32.480.000₫', 100], ['Quận 1 — Lê Lợi', '27.140.000₫', 84], ['Tân Bình — Hoàng Việt', '19.620.000₫', 60], ['Thủ Đức — Kha Vạn Cân', '15.280.000₫', 47], ['Phú Nhuận — Phan Xích Long', '11.940.000₫', 37]]
+  },
+  month: {
+    sub: '01/09 – 03/09/2026 · theo tuần',
+    revenue: '486.320.000₫', revenueDelta: '+11,3% so với tháng trước',
+    orders: '7.264', ordersDelta: '+624 đơn so với tháng trước',
+    delivering: '4', deliveringDelta: '1 đơn quá 30 phút',
+    labels: ['T1', 'T2', 'T3', 'T4'],
+    series: [64, 78, 92, 86],
+    prev: [60, 70, 82, 80],
+    branches: [['Quận 3 — Võ Văn Tần', '128.640.000₫', 100], ['Quận 1 — Lê Lợi', '104.280.000₫', 81], ['Tân Bình — Hoàng Việt', '76.420.000₫', 59], ['Thủ Đức — Kha Vạn Cân', '58.960.000₫', 46], ['Phú Nhuận — Phan Xích Long', '44.180.000₫', 34]]
+  },
+  year: {
+    sub: '01/2026 – 09/2026 · theo tháng',
+    revenue: '4.284.000.000₫', revenueDelta: '+18,6% so với cùng kỳ 2025',
+    orders: '64.180', ordersDelta: '+8.240 đơn so với cùng kỳ',
+    delivering: '4', deliveringDelta: '1 đơn quá 30 phút',
+    labels: ['01', '02', '03', '04', '05', '06', '07', '08', '09'],
+    series: [52, 46, 68, 72, 80, 76, 88, 96, 84],
+    prev: [44, 40, 58, 64, 70, 68, 76, 82, 74],
+    branches: [['Quận 3 — Võ Văn Tần', '1.086.000.000₫', 100], ['Quận 1 — Lê Lợi', '924.400.000₫', 85], ['Tân Bình — Hoàng Việt', '682.200.000₫', 63], ['Thủ Đức — Kha Vạn Cân', '524.800.000₫', 48], ['Phú Nhuận — Phan Xích Long', '398.600.000₫', 37]]
+  }
+};
+
+const ORDER_STATUS_STYLE = {
+  completed: ['#E7EEE2', '#3A5430', 'Hoàn tất'],
+  processing: ['#F7E9CC', '#8C5E14', 'Đang xử lý'],
+  delivering: ['#DFE7EF', '#3F5C79', 'Đang giao'],
+  cancelled: ['#F6DED7', '#8E3421', 'Đã huỷ'],
+  late: ['#F6DED7', '#8E3421', 'Trễ'],
+  pending: ['#F7E9CC', '#8C5E14', 'Chờ xác nhận']
+};
+
+const ORDERS = [
+  { id: 1, code: 'DP-1042', br: 'Quận 3 — Võ Văn Tần', st: 'delivering', total: '385.000₫', t: '14:20 03/09/2026' },
+  { id: 2, code: 'DP-1041', br: 'Quận 1 — Lê Lợi', st: 'completed', total: '1.250.000₫', t: '13:52 03/09/2026' },
+  { id: 3, code: 'DP-1040', br: 'Tân Bình — Hoàng Việt', st: 'processing', total: '96.000₫', t: '13:41 03/09/2026' },
+  { id: 4, code: 'DP-1039', br: 'Quận 1 — Lê Lợi', st: 'cancelled', total: '210.000₫', t: '13:02 03/09/2026' },
+  { id: 5, code: 'DP-1038', br: 'Thủ Đức — Kha Vạn Cân', st: 'completed', total: '540.000₫', t: '12:47 03/09/2026' },
+  { id: 6, code: 'DP-1037', br: 'Quận 3 — Võ Văn Tần', st: 'late', total: '87.000₫', t: '12:20 03/09/2026' },
+  { id: 7, code: 'DP-1036', br: 'Phú Nhuận — Phan Xích Long', st: 'pending', total: '164.000₫', t: '11:58 03/09/2026' }
+];
+
+const EMPTY_FORM = { name: '', phone: '', email: '', branch: '', role: '', start: '', salary: '' };
+
+const LOGIN_ROLES = ['Quản lý', 'Nhân viên', 'Thu ngân'];
+const LOGIN_ROLE_HINT = {
+  'Quản lý': 'Xem toàn bộ hệ thống: tổng quan, chi nhánh, thực đơn, nhân viên, doanh thu.',
+  'Nhân viên': 'Chỉ xem được lịch đi làm và ca làm của chính mình.',
+  'Thu ngân': 'Xem tổng kết doanh thu theo ngày, tháng, năm.'
+};
+const STAFF_WEEK_DAYS = [['T2', '31/08'], ['T3', '01/09'], ['T4', '02/09'], ['T5', '03/09'], ['T6', '04/09'], ['T7', '05/09'], ['CN', '06/09']];
+const STAFF_WEEK_PATTERN = ['am', 'am', 'am', 'off', 'am', 'am', 'off'];
+const STAFF_SHIFT_CELL = { am: ['#E7EEE2', '#A8BE9C', '#3A5430', 'Ca sáng'], pm: ['#F7E9CC', '#C98A2C', '#8C5E14', 'Ca chiều'], off: ['#F3EDE2', '#E4DCC8', '#928B79', 'Nghỉ'] };
+
+const STAFF_LIST = [
+  { name: 'Nguyễn Văn An', role: 'Nhân viên', branch: 'Quận 3 — Võ Văn Tần', phone: '090 123 4567', cccd: '079201012345', dob: '12/04/1998', status: 'active', shifts: 6, salary: 7500000, checkedIn: true, week: ['am', 'am', 'am', 'off', 'am', 'am', 'off'] },
+  { name: 'Trần Thị Bích', role: 'Thu ngân', branch: 'Quận 1 — Lê Lợi', phone: '091 234 5678', cccd: '079301023456', dob: '05/09/2000', status: 'active', shifts: 5, salary: 8200000, checkedIn: true, week: ['pm', 'pm', 'off', 'pm', 'pm', 'am', 'off'] },
+  { name: 'Lê Văn Cường', role: 'Nhân viên', branch: 'Tân Bình — Hoàng Việt', phone: '093 345 6789', cccd: '079198034567', dob: '22/11/1995', status: 'active', shifts: 6, salary: 7500000, checkedIn: false, week: ['am', 'pm', 'am', 'pm', 'am', 'off', 'off'] },
+  { name: 'Phạm Thị Diệu', role: 'Thu ngân', branch: 'Thủ Đức — Kha Vạn Cân', phone: '094 456 7890', cccd: '079299045678', dob: '30/01/1999', status: 'paused', shifts: 0, salary: 8200000, checkedIn: false, week: ['off', 'off', 'off', 'off', 'off', 'off', 'off'] },
+  { name: 'Hoàng Văn Em', role: 'Nhân viên', branch: 'Quận 3 — Võ Văn Tần', phone: '096 567 8901', cccd: '079197056789', dob: '18/07/1997', status: 'active', shifts: 5, salary: 7200000, checkedIn: true, week: ['am', 'am', 'off', 'am', 'am', 'pm', 'off'] },
+  { name: 'Vũ Thị Phương', role: 'Nhân viên', branch: 'Phú Nhuận — Phan Xích Long', phone: '097 678 9012', cccd: '079202067890', dob: '03/03/2001', status: 'paused', shifts: 0, salary: 7200000, checkedIn: false, week: ['off', 'off', 'off', 'off', 'off', 'off', 'off'] }
+];
+const STAFF_STATUS_STYLE = { active: ['#E7EEE2', '#3A5430', 'Đang làm'], paused: ['#F6DED7', '#8E3421', 'Tạm nghỉ'] };
+const STAFF_ROLE_STYLE = { 'Nhân viên': ['#E7EEE2', '#3A5430'], 'Thu ngân': ['#F7E9CC', '#8C5E14'] };
+const STAFF_CHECKIN_STYLE = { true: ['#E7EEE2', '#3A5430', 'Đã chấm ca'], false: ['#F7E9CC', '#8C5E14', 'Chưa chấm ca'] };
+const STAFF_ROLES = ['Nhân viên', 'Thu ngân'];
+
+class Component extends DCLogic {
+  state = {
+    page: 'landing', mode: 'login', theme: 'light',
+    email: DEMO_LOGIN_EMAIL, password: '', remember: true, errors: { ...DEMO_LOGIN_ERRORS },
+    regName: '', regEmail: DEMO_REG_EMAIL, regPhone: '', regBranch: '', regRole: '', regPassword: DEMO_REG_PASSWORD, regConfirm: DEMO_REG_CONFIRM, agree: true, regErrors: { ...DEMO_REG_ERRORS },
+    success: null,
+    loggedName: '', loggedEmail: '', range: 'week',
+    loginRole: 'Quản lý', userRole: 'Quản lý', isLoggedIn: false, loggedPhone: '090 123 4567',
+    landingAcctMenuOpen: false,
+    securityOpen: false, secCurrent: '', secNew: '', secConfirm: '', secErrors: {},
+    secSms: false, secEmail: false, secApp: false,
+    firstLogin: false, newPassword: '', newConfirm: '',
+    managerTab: 'overview',
+    staffRecords: STAFF_LIST.map((s, i) => ({ ...s, id: i + 1 })),
+    deleteStaffId: null,
+    pauseStaffId: null,
+    staffQuery: '', staffFilterRole: '', staffFilterBranch: '',
+    staffAddOpen: false, staffAddForm: { name: '', phone: '', branch: '', role: '' }, staffAddErrors: {},
+    staffProfileId: null, staffCalYear: 2026, staffCalMonth: 8,
+    newStaffName: '', newStaffEmail: '', newStaffPhone: '', newStaffPassword: '',
+    toastMsg: '',
+    profileOpen: false, profileNameDraft: ''
+  };
+
+  goAuth(e) {
+    if (e) e.preventDefault();
+    this.setState({ landingAcctMenuOpen: false });
+    if (this.state.isLoggedIn) { this.setState({ page: 'dashboard' }); return; }
+    this.setState({ page: 'auth', mode: 'login', success: null, errors: { ...DEMO_LOGIN_ERRORS }, firstLogin: false });
+  }
+  toggleLandingAcctMenu() { this.setState(s => ({ landingAcctMenuOpen: !s.landingAcctMenuOpen })); }
+  closeLandingAcctMenu() { this.setState({ landingAcctMenuOpen: false }); }
+  switchAccount() { this.setState({ landingAcctMenuOpen: false }); this.logout(); }
+
+  openSecurityFromLanding() { this.setState({ securityOpen: true, landingAcctMenuOpen: false, secCurrent: '', secNew: '', secConfirm: '', secErrors: {} }); }
+  closeSecurity() { this.setState({ securityOpen: false }); }
+  setSecField(key) { return e => { const v = e.target.value; this.setState(s => ({ [key]: v, secErrors: { ...s.secErrors, [key]: null } })); }; }
+  submitSecurity() {
+    const errors = {};
+    if (!this.state.secCurrent.trim()) errors.secCurrent = 'Nhập mật khẩu hiện tại';
+    if (!this.state.secNew.trim()) errors.secNew = 'Nhập mật khẩu mới';
+    else if (this.state.secNew.length < 8) errors.secNew = 'Cần tối thiểu 8 ký tự';
+    if (this.state.secConfirm !== this.state.secNew) errors.secConfirm = 'Mật khẩu xác nhận không khớp';
+    if (Object.keys(errors).length) { this.setState({ secErrors: errors }); return; }
+    this.setState({ securityOpen: false });
+    this.flash('Đã cập nhật mật khẩu mới.');
+  }
+  goForgotPassword() { this.setState({ page: 'changePassword', securityOpen: false, newPassword: '', newConfirm: '', errors: {} }); }
+  toggleSecSms() { this.setState(s => ({ secSms: !s.secSms })); }
+  toggleSecEmail() { this.setState(s => ({ secEmail: !s.secEmail })); }
+  toggleSecApp() { this.setState(s => ({ secApp: !s.secApp })); }
+  toggleTheme() { this.setState(s => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })); }
+  goLanding() { this.setState({ page: 'landing' }); }
+  setMode(m) { this.setState({ mode: m, errors: { ...DEMO_LOGIN_ERRORS }, regErrors: { ...DEMO_REG_ERRORS } }); }
+  setField(key) { return e => { const v = e.target.value; this.setState({ [key]: v, errors: { ...this.state.errors, [key]: null } }); }; }
+  setRegField(key) { return e => { const v = e.target.value; this.setState({ [key]: v, regErrors: { ...this.state.regErrors, [key]: null } }); }; }
+  toggleRemember() { this.setState(s => ({ remember: !s.remember })); }
+  toggleFirstLogin() { this.setState(s => ({ firstLogin: !s.firstLogin })); }
+  setManagerTab(tab) { this.setState({ managerTab: tab }); }
+  flash(msg) { this.setState({ toastMsg: msg }); setTimeout(() => this.setState({ toastMsg: '' }), 4000); }
+
+  openProfile() { this.setState({ profileOpen: true, profileNameDraft: this.state.loggedName }); }
+  openProfileFromLanding() { this.setState({ profileOpen: true, profileNameDraft: this.state.loggedName, landingAcctMenuOpen: false }); }
+  closeProfile() { this.setState({ profileOpen: false }); }
+  stopProfileClick(e) { e.stopPropagation(); }
+  stopClick(e) { e.stopPropagation(); }
+
+  askDeleteStaff(id) { this.setState({ deleteStaffId: id }); }
+  cancelDeleteStaff() { this.setState({ deleteStaffId: null }); }
+  confirmDeleteStaff() {
+    const rec = this.state.staffRecords.find(s => s.id === this.state.deleteStaffId);
+    this.setState(s => ({ staffRecords: s.staffRecords.filter(x => x.id !== s.deleteStaffId), deleteStaffId: null }));
+    if (rec) this.flash('Đã xoá ' + rec.name + ' khỏi danh sách nhân viên.');
+  }
+
+  askPauseStaff(id) { this.setState({ pauseStaffId: id }); }
+  cancelPauseStaff() { this.setState({ pauseStaffId: null }); }
+  confirmPauseStaff() {
+    const rec = this.state.staffRecords.find(s => s.id === this.state.pauseStaffId);
+    if (!rec) return;
+    const next = rec.status === 'active' ? 'paused' : 'active';
+    this.setState(s => ({ staffRecords: s.staffRecords.map(x => x.id === rec.id ? { ...x, status: next } : x), pauseStaffId: null }));
+    this.flash(next === 'paused' ? 'Đã cho ' + rec.name + ' nghỉ tạm thời.' : 'Đã cho ' + rec.name + ' đi làm lại.');
+  }
+
+  openStaffAdd() { this.setState({ staffAddOpen: true, staffAddForm: { name: '', phone: '', branch: '', role: '' }, staffAddErrors: {} }); }
+  closeStaffAdd() { this.setState({ staffAddOpen: false }); }
+  setStaffAddField(key) { return e => { const v = e.target.value; this.setState(s => ({ staffAddForm: { ...s.staffAddForm, [key]: v }, staffAddErrors: { ...s.staffAddErrors, [key]: null } })); }; }
+  submitStaffAdd() {
+    const f = this.state.staffAddForm;
+    const errors = {};
+    if (!f.name.trim()) errors.name = 'Nhập họ và tên';
+    if (!f.phone.trim()) errors.phone = 'Nhập số điện thoại';
+    if (!f.branch) errors.branch = 'Chọn chi nhánh';
+    if (!f.role) errors.role = 'Chọn vai trò';
+    if (Object.keys(errors).length) { this.setState({ staffAddErrors: errors }); return; }
+    const rec = {
+      id: Date.now(), name: f.name.trim(), phone: f.phone.trim(), branch: f.branch, role: f.role,
+      cccd: '— chưa cập nhật —', dob: '— chưa cập nhật —',
+      status: 'active', shifts: 0, salary: 0, checkedIn: false, week: ['off', 'off', 'off', 'off', 'off', 'off', 'off']
+    };
+    this.setState(s => ({ staffRecords: [rec, ...s.staffRecords], staffAddOpen: false }));
+    this.flash('Đã thêm ' + rec.name + ' vào danh sách nhân viên.');
+  }
+
+  openStaffProfile(id) { this.setState({ staffProfileId: id, staffCalYear: 2026, staffCalMonth: 8 }); }
+  closeStaffProfile() { this.setState({ staffProfileId: null }); }
+  staffCalPrev() {
+    this.setState(s => {
+      if (s.staffCalYear === 2026 && s.staffCalMonth === 0) return {};
+      const m = s.staffCalMonth === 0 ? 11 : s.staffCalMonth - 1;
+      const y = s.staffCalMonth === 0 ? s.staffCalYear - 1 : s.staffCalYear;
+      return { staffCalYear: y, staffCalMonth: m };
+    });
+  }
+  staffCalNext() {
+    this.setState(s => {
+      const m = s.staffCalMonth === 11 ? 0 : s.staffCalMonth + 1;
+      const y = s.staffCalMonth === 11 ? s.staffCalYear + 1 : s.staffCalYear;
+      return { staffCalYear: y, staffCalMonth: m };
+    });
+  }
+  buildStaffCalendar(weekPattern, year, month) {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const mondayIndex = (new Date(year, month, 1).getDay() + 6) % 7;
+    const cells = [];
+    for (let i = 0; i < mondayIndex; i++) cells.push({ day: '', bg: 'transparent', border: 'transparent', text: 'transparent', label: '' });
+    const today = new Date(2026, 8, 3);
+    for (let day = 1; day <= daysInMonth; day++) {
+      if (new Date(year, month, day) > today) { cells.push({ day, bg: 'transparent', border: 'var(--border-soft)', text: 'var(--text-subtle)', label: '' }); continue; }
+      const wd = (mondayIndex + day - 1) % 7;
+      const [bg, border, text, label] = STAFF_SHIFT_CELL[weekPattern[wd]] || STAFF_SHIFT_CELL.off;
+      cells.push({ day, bg, border, text, label });
+    }
+    return cells;
+  }
+  saveProfile() {
+    const name = this.state.profileNameDraft.trim();
+    if (!name) return;
+    this.setState({ loggedName: name, profileOpen: false });
+    this.flash('Đã cập nhật tên hiển thị');
+  }
+
+  slug(name) {
+    const map = { à: 'a', á: 'a', ả: 'a', ã: 'a', ạ: 'a', ă: 'a', ằ: 'a', ắ: 'a', ẳ: 'a', ẵ: 'a', ặ: 'a', â: 'a', ầ: 'a', ấ: 'a', ẩ: 'a', ẫ: 'a', ậ: 'a', đ: 'd', è: 'e', é: 'e', ẻ: 'e', ẽ: 'e', ẹ: 'e', ê: 'e', ề: 'e', ế: 'e', ể: 'e', ễ: 'e', ệ: 'e', ì: 'i', í: 'i', ỉ: 'i', ĩ: 'i', ị: 'i', ò: 'o', ó: 'o', ỏ: 'o', õ: 'o', ọ: 'o', ô: 'o', ồ: 'o', ố: 'o', ổ: 'o', ỗ: 'o', ộ: 'o', ơ: 'o', ờ: 'o', ớ: 'o', ở: 'o', ỡ: 'o', ợ: 'o', ù: 'u', ú: 'u', ủ: 'u', ũ: 'u', ụ: 'u', ư: 'u', ừ: 'u', ứ: 'u', ử: 'u', ữ: 'u', ự: 'u', ỳ: 'y', ý: 'y', ỷ: 'y', ỹ: 'y', ỵ: 'y' };
+    return name.toLowerCase().split('').map(c => map[c] || c).join('').replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).join('.');
+  }
+  randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+  randomGmail() {
+    const base = this.state.newStaffName.trim() ? this.slug(this.state.newStaffName) : 'nhanvien';
+    this.setState({ newStaffEmail: base + this.randomInt(10, 999) + '@gmail.com' });
+  }
+  randomPhone() {
+    const prefix = PHONE_PREFIXES[this.randomInt(0, PHONE_PREFIXES.length - 1)];
+    let rest = '';
+    for (let i = 0; i < 7; i++) rest += this.randomInt(0, 9);
+    this.setState({ newStaffPhone: prefix + ' ' + rest.slice(0, 3) + ' ' + rest.slice(3, 7) });
+  }
+  randomPassword() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%';
+    let out = '';
+    for (let i = 0; i < 10; i++) out += chars[this.randomInt(0, chars.length - 1)];
+    this.setState({ newStaffPassword: out });
+  }
+  randomAll() { this.randomGmail(); this.randomPhone(); this.randomPassword(); }
+
+  createNewStaffAccount() {
+    if (!this.state.newStaffEmail || !this.state.newStaffPhone || !this.state.newStaffPassword) {
+      this.flash('Hãy random đủ Gmail, SĐT và mật khẩu trước khi tạo');
+      return;
+    }
+    this.flash('Đã tạo tài khoản cho ' + (this.state.newStaffName.trim() || 'nhân viên mới') + ' — gửi thông tin này cho họ để đăng nhập lần đầu.');
+    this.setState({ newStaffName: '', newStaffEmail: '', newStaffPhone: '', newStaffPassword: '' });
+  }
+
+  submitNewPassword() {
+    const errors = {};
+    if (!this.state.newPassword.trim()) errors.newPassword = 'Nhập mật khẩu mới';
+    else if (this.state.newPassword.length < 8) errors.newPassword = 'Cần tối thiểu 8 ký tự';
+    if (this.state.newConfirm !== this.state.newPassword) errors.newConfirm = 'Mật khẩu xác nhận không khớp';
+    if (Object.keys(errors).length) { this.setState({ errors }); return; }
+    this.setState({ page: 'dashboard', newPassword: '', newConfirm: '', errors: {}, isLoggedIn: true });
+  }
+  toggleAgree() { this.setState(s => ({ agree: !s.agree, regErrors: { ...s.regErrors, agree: null } })); }
+  setRange(id) { this.setState({ range: id }); }
+  logout() { this.setState({ page: 'auth', mode: 'login', password: '', errors: { ...DEMO_LOGIN_ERRORS }, firstLogin: false, isLoggedIn: false }); }
+  initials(name) { return name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase(); }
+
+  buildChart(labels, series, prev) {
+    const W = 720, H = 220, PL = 8, PR = 8, PT = 12, PB = 26;
+    const n = series.length;
+    const x = i => PL + (i * (W - PL - PR)) / (n - 1);
+    const y = v => PT + (1 - v / 100) * (H - PT - PB);
+    const line = a => a.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + y(v).toFixed(1)).join(' ');
+    const area = line(series) + ' L' + x(n - 1).toFixed(1) + ',' + (H - PB).toFixed(1) + ' L' + x(0).toFixed(1) + ',' + (H - PB).toFixed(1) + ' Z';
+    return {
+      chartPath: line(series), chartPrevPath: line(prev), chartArea: area,
+      chartGrid: [0, 25, 50, 75, 100].map(g => ({ y: y(g).toFixed(1) })),
+      chartPoints: series.map((v, i) => ({ cx: x(i).toFixed(1), cy: y(v).toFixed(1), r: i === n - 1 ? 5 : 3.5 })),
+      chartLabels: labels.map((l, i) => ({ x: x(i).toFixed(1), label: l }))
+    };
+  }
+  prevent(e) { e.preventDefault(); }
+  showLogin(e) { e.preventDefault(); this.setMode('login'); }
+  showRegister(e) { e.preventDefault(); this.setMode('register'); }
+
+  submitLogin() {
+    const errors = {};
+    if (!this.state.email.trim()) errors.email = 'Nhập email nội bộ';
+    else if (!this.state.email.includes('@duyenphan.vn')) errors.email = 'Dùng email nội bộ @duyenphan.vn';
+    if (!this.state.password.trim()) errors.password = 'Nhập mật khẩu';
+    if (Object.keys(errors).length) { this.setState({ errors }); return; }
+    const name = this.state.email.split('@')[0].split('.').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    const needsNewPassword = this.state.firstLogin && (this.state.loginRole === 'Nhân viên' || this.state.loginRole === 'Thu ngân');
+    this.setState({
+      page: needsNewPassword ? 'changePassword' : 'dashboard',
+      loggedEmail: this.state.email, loggedName: name || 'Quản trị viên', userRole: this.state.loginRole,
+      isLoggedIn: !needsNewPassword
+    });
+  }
+
+  submitRegister() {
+    const errors = {};
+    if (!this.state.regName.trim()) errors.regName = 'Nhập họ và tên';
+    if (!this.state.regEmail.trim()) errors.regEmail = 'Nhập email nội bộ';
+    else if (!this.state.regEmail.includes('@duyenphan.vn')) errors.regEmail = 'Dùng email nội bộ @duyenphan.vn';
+    if (!this.state.regBranch) errors.regBranch = 'Chọn chi nhánh phụ trách';
+    if (!this.state.regRole) errors.regRole = 'Chọn chức vụ';
+    if (!this.state.regPassword.trim()) errors.regPassword = 'Nhập mật khẩu';
+    else if (this.state.regPassword.length < 8) errors.regPassword = 'Cần tối thiểu 8 ký tự';
+    if (this.state.regConfirm !== this.state.regPassword) errors.regConfirm = 'Mật khẩu xác nhận không khớp';
+    if (!this.state.agree) errors.agree = 'Cần đồng ý điều khoản để tiếp tục';
+    if (Object.keys(errors).length) { this.setState({ regErrors: errors }); return; }
+    this.setState({ success: { type: 'register', email: this.state.regEmail, role: this.state.regRole } });
+  }
+
+  backToLogin() {
+    const s = this.state.success;
+    this.setState({
+      success: null, mode: 'login',
+      email: s && s.type === 'register' ? s.email : this.state.email, password: '', errors: { ...DEMO_LOGIN_ERRORS },
+      regName: '', regEmail: DEMO_REG_EMAIL, regPhone: '', regBranch: '', regRole: '', regPassword: DEMO_REG_PASSWORD, regConfirm: DEMO_REG_CONFIRM, agree: true, regErrors: { ...DEMO_REG_ERRORS }
+    });
+  }
+
+  renderVals() {
+    const er = this.state.errors, rer = this.state.regErrors, s = this.state.success;
+    const range = this.state.range;
+    const d = DASH_DATA[range] || DASH_DATA.week;
+    const rangeLabel = (RANGES.find(r => r.id === range) || {}).label;
+    const chart = this.buildChart(d.labels, d.series, d.prev);
+    return {
+      isLanding: this.state.page === 'landing', isAuth: this.state.page === 'auth' || this.state.page === 'changePassword', isDashboard: this.state.page === 'dashboard',
+      isChangePassword: this.state.page === 'changePassword',
+      firstLogin: this.state.firstLogin, toggleFirstLogin: () => this.toggleFirstLogin(),
+      firstLoginBg: this.state.firstLogin ? 'var(--brand)' : 'var(--surface-card)', firstLoginBorder: this.state.firstLogin ? 'var(--brand)' : 'var(--border-strong)',
+      newPassword: this.state.newPassword, onNewPassword: this.setField('newPassword'), newPasswordBorder: er.newPassword ? 'var(--danger)' : 'var(--border-strong)', newPasswordError: er.newPassword || '',
+      newConfirm: this.state.newConfirm, onNewConfirm: this.setField('newConfirm'), newConfirmBorder: er.newConfirm ? 'var(--danger)' : 'var(--border-strong)', newConfirmError: er.newConfirm || '',
+      submitNewPassword: () => this.submitNewPassword(),
+      goAuth: e => this.goAuth(e), goLanding: () => this.goLanding(),
+      themeClass: this.state.theme === 'dark' ? 'dark-mode' : '', isDark: this.state.theme === 'dark', isLight: this.state.theme !== 'dark',
+      isLoggedIn: this.state.isLoggedIn, isLoggedOut: !this.state.isLoggedIn,
+      authFootLinkLabel: this.state.isLoggedIn ? 'Vào trang quản trị' : 'Đăng nhập quản trị',
+      landingAcctMenuOpen: this.state.landingAcctMenuOpen, toggleLandingAcctMenu: () => this.toggleLandingAcctMenu(), closeLandingAcctMenu: () => this.closeLandingAcctMenu(),
+      loggedPhone: this.state.loggedPhone, switchAccount: () => this.switchAccount(),
+      openSecurityFromLanding: () => this.openSecurityFromLanding(), closeSecurity: () => this.closeSecurity(), submitSecurity: () => this.submitSecurity(),
+      securityOpen: this.state.securityOpen,
+      secCurrent: this.state.secCurrent, onSecCurrent: this.setSecField('secCurrent'), secCurrentBorder: this.state.secErrors.secCurrent ? 'var(--danger)' : 'var(--border-strong)', secCurrentError: this.state.secErrors.secCurrent || '',
+      secNew: this.state.secNew, onSecNew: this.setSecField('secNew'), secNewBorder: this.state.secErrors.secNew ? 'var(--danger)' : 'var(--border-strong)', secNewError: this.state.secErrors.secNew || '',
+      secConfirm: this.state.secConfirm, onSecConfirm: this.setSecField('secConfirm'), secConfirmBorder: this.state.secErrors.secConfirm ? 'var(--danger)' : 'var(--border-strong)', secConfirmError: this.state.secErrors.secConfirm || '',
+      goForgotPassword: () => this.goForgotPassword(),
+      toggleSecSms: () => this.toggleSecSms(), secSmsTrack: this.state.secSms ? 'var(--brand)' : 'var(--border-strong)', secSmsKnob: this.state.secSms ? '20px' : '2px',
+      toggleSecEmail: () => this.toggleSecEmail(), secEmailTrack: this.state.secEmail ? 'var(--brand)' : 'var(--border-strong)', secEmailKnob: this.state.secEmail ? '20px' : '2px',
+      toggleSecApp: () => this.toggleSecApp(), secAppTrack: this.state.secApp ? 'var(--brand)' : 'var(--border-strong)', secAppKnob: this.state.secApp ? '20px' : '2px',
+      changePasswordHint: this.state.isLoggedIn
+        ? 'Đặt mật khẩu mới cho tài khoản ' + (this.state.loggedName || 'của bạn') + '.'
+        : 'Đây là lần đăng nhập đầu tiên của ' + (this.state.loggedName || 'nhân viên') + '. Vui lòng đặt mật khẩu mới trước khi tiếp tục.',
+      toggleTheme: () => this.toggleTheme(),
+
+      userInitials: this.state.loggedName ? this.initials(this.state.loggedName) : 'AN',
+      userName: this.state.loggedName || 'An Nguyễn', logout: () => this.logout(),
+      loggedEmail: this.state.loggedEmail || 'an.nguyen@duyenphan.vn',
+      userRoleLabel: this.state.userRole === 'Nhân viên' ? 'Nhân viên' : this.state.userRole === 'Thu ngân' ? 'Thu ngân' : 'Quản lý chuỗi',
+
+      loginRole: this.state.loginRole, onLoginRole: this.setField('loginRole'), loginRoleOptions: LOGIN_ROLES,
+      loginRoleHint: LOGIN_ROLE_HINT[this.state.loginRole] || '',
+      isManagerView: this.state.userRole === 'Quản lý' && this.state.managerTab === 'overview',
+      isStaffListView: this.state.userRole === 'Quản lý' && this.state.managerTab === 'staffList',
+      isNewStaffTool: this.state.userRole === 'Quản lý' && this.state.managerTab === 'newStaff',
+      isStaffView: this.state.userRole === 'Nhân viên', isCashierView: this.state.userRole === 'Thu ngân',
+      goManagerOverview: () => this.setManagerTab('overview'), goStaffList: () => this.setManagerTab('staffList'), goNewStaffTool: () => this.setManagerTab('newStaff'),
+      overviewNavActive: this.state.managerTab === 'overview' ? 'active' : '', staffListNavActive: this.state.managerTab === 'staffList' ? 'active' : '', newStaffNavActive: this.state.managerTab === 'newStaff' ? 'active' : '',
+      staffCount: this.state.staffRecords.length,
+      staffShiftTotal: this.state.staffRecords.reduce((sum, s) => sum + (s.shifts || 0), 0),
+      staffPayrollTotal: this.state.staffRecords.reduce((sum, s) => sum + (s.salary || 0), 0).toLocaleString('vi-VN') + '₫',
+      staffList: (() => {
+        const q = this.state.staffQuery.trim().toLowerCase();
+        const qDigits = q.replace(/\s+/g, '');
+        return this.state.staffRecords.filter(s => {
+          const matchesQuery = !q || s.name.toLowerCase().includes(q) || s.phone.replace(/\s+/g, '').includes(qDigits);
+          const matchesRole = !this.state.staffFilterRole || s.role === this.state.staffFilterRole;
+          const matchesBranch = !this.state.staffFilterBranch || s.branch === this.state.staffFilterBranch;
+          return matchesQuery && matchesRole && matchesBranch;
+        }).map(s => {
+          const [roleBg, roleColor] = STAFF_ROLE_STYLE[s.role] || STAFF_ROLE_STYLE['Nhân viên'];
+          const [stBg, stColor, stLabel] = STAFF_STATUS_STYLE[s.status] || STAFF_STATUS_STYLE.active;
+          const [ciBg, ciColor, ciLabel] = STAFF_CHECKIN_STYLE[s.checkedIn] || STAFF_CHECKIN_STYLE.false;
+          return { name: s.name, role: s.role, branch: s.branch, phone: s.phone, roleBg, roleColor, stBg, stColor, stLabel, ciBg, ciColor, ciLabel,
+            pauseLabel: s.status === 'active' ? 'Cho nghỉ tạm thời' : 'Cho đi làm lại',
+            askDelete: e => { e.stopPropagation(); this.askDeleteStaff(s.id); },
+            askPause: e => { e.stopPropagation(); this.askPauseStaff(s.id); },
+            openProfile: () => this.openStaffProfile(s.id) };
+        });
+      })(),
+      staffFilteredCount: (() => {
+        const q = this.state.staffQuery.trim().toLowerCase();
+        const qDigits = q.replace(/\s+/g, '');
+        return this.state.staffRecords.filter(s => {
+          const matchesQuery = !q || s.name.toLowerCase().includes(q) || s.phone.replace(/\s+/g, '').includes(qDigits);
+          const matchesRole = !this.state.staffFilterRole || s.role === this.state.staffFilterRole;
+          const matchesBranch = !this.state.staffFilterBranch || s.branch === this.state.staffFilterBranch;
+          return matchesQuery && matchesRole && matchesBranch;
+        }).length;
+      })(),
+      staffQuery: this.state.staffQuery, onStaffQuery: this.setField('staffQuery'),
+      staffFilterRole: this.state.staffFilterRole, onStaffFilterRole: this.setField('staffFilterRole'), staffFilterRoleOptions: STAFF_ROLES,
+      staffFilterBranch: this.state.staffFilterBranch, onStaffFilterBranch: this.setField('staffFilterBranch'),
+      staffFilterBranchOptions: [...new Set(this.state.staffRecords.map(s => s.branch))],
+
+      staffAddOpen: this.state.staffAddOpen, openStaffAdd: () => this.openStaffAdd(), closeStaffAdd: () => this.closeStaffAdd(), submitStaffAdd: () => this.submitStaffAdd(),
+      staffAddName: this.state.staffAddForm.name, onStaffAddName: this.setStaffAddField('name'), staffAddNameError: this.state.staffAddErrors.name || '', staffAddNameBorder: this.state.staffAddErrors.name ? 'var(--danger)' : 'var(--border-strong)',
+      staffAddPhone: this.state.staffAddForm.phone, onStaffAddPhone: this.setStaffAddField('phone'), staffAddPhoneError: this.state.staffAddErrors.phone || '',
+      staffAddBranch: this.state.staffAddForm.branch, onStaffAddBranch: this.setStaffAddField('branch'), staffAddBranchError: this.state.staffAddErrors.branch || '', staffAddBranchOptions: BRANCHES,
+      staffAddRole: this.state.staffAddForm.role, onStaffAddRole: this.setStaffAddField('role'), staffAddRoleError: this.state.staffAddErrors.role || '', staffAddRoleOptions: STAFF_ROLES,
+
+      staffProfileOpen: this.state.staffProfileId != null,
+      closeStaffProfile: () => this.closeStaffProfile(),
+      staffProfile: (() => {
+        const p = this.state.staffRecords.find(s => s.id === this.state.staffProfileId);
+        if (!p) return { name: '', role: '', branch: '', phone: '', dob: '', cccd: '', week: [] };
+        const [roleBg, roleColor] = STAFF_ROLE_STYLE[p.role] || STAFF_ROLE_STYLE['Nhân viên'];
+        const [stBg, stColor, stLabel] = STAFF_STATUS_STYLE[p.status] || STAFF_STATUS_STYLE.active;
+        const week = STAFF_WEEK_DAYS.map(([day, date], i) => {
+          const [bg, border, text, label] = STAFF_SHIFT_CELL[p.week[i]] || STAFF_SHIFT_CELL.off;
+          return { day, date, bg, border, text, label };
+        });
+        return { name: p.name, role: p.role, roleBg, roleColor, stBg, stColor, stLabel, branch: p.branch, phone: p.phone, dob: p.dob, cccd: p.cccd, week, weekPattern: p.week };
+      })(),
+      staffCalLabel: 'Tháng ' + (this.state.staffCalMonth + 1) + '/' + this.state.staffCalYear,
+      staffCalCanPrev: !(this.state.staffCalYear === 2026 && this.state.staffCalMonth === 0),
+      staffCalPrevDisabled: (this.state.staffCalYear === 2026 && this.state.staffCalMonth === 0) ? 'opacity:.35;pointer-events:none' : '',
+      goStaffCalPrev: () => this.staffCalPrev(), goStaffCalNext: () => this.staffCalNext(),
+      staffCalCells: (() => {
+        const p = this.state.staffRecords.find(x => x.id === this.state.staffProfileId);
+        const pattern = p ? p.week : STAFF_WEEK_PATTERN;
+        return this.buildStaffCalendar(pattern, this.state.staffCalYear, this.state.staffCalMonth);
+      })(),
+
+      deleteStaffOpen: this.state.deleteStaffId != null,
+      deleteStaffName: (this.state.staffRecords.find(s => s.id === this.state.deleteStaffId) || {}).name || '',
+      cancelDeleteStaff: () => this.cancelDeleteStaff(), confirmDeleteStaff: () => this.confirmDeleteStaff(), stopClick: e => this.stopClick(e),
+      pauseStaffOpen: this.state.pauseStaffId != null,
+      pauseStaffTitle: (() => {
+        const p = this.state.staffRecords.find(x => x.id === this.state.pauseStaffId);
+        if (!p) return '';
+        return p.status === 'active' ? 'Cho ' + p.name + ' nghỉ tạm thời?' : 'Cho ' + p.name + ' đi làm lại?';
+      })(),
+      pauseStaffDesc: (() => {
+        const p = this.state.staffRecords.find(x => x.id === this.state.pauseStaffId);
+        if (!p) return '';
+        return p.status === 'active' ? 'Nhân viên sẽ chuyển sang trạng thái tạm nghỉ, có thể cho đi làm lại bất cứ lúc nào.' : 'Nhân viên sẽ trở lại trạng thái đang làm việc bình thường.';
+      })(),
+      pauseStaffAction: (() => {
+        const p = this.state.staffRecords.find(x => x.id === this.state.pauseStaffId);
+        return p && p.status === 'active' ? 'Cho nghỉ' : 'Cho đi làm lại';
+      })(),
+      cancelPauseStaff: () => this.cancelPauseStaff(), confirmPauseStaff: () => this.confirmPauseStaff(),
+      toastMsg: this.state.toastMsg,
+      profileOpen: this.state.profileOpen, openProfile: () => this.openProfile(), openProfileFromLanding: () => this.openProfileFromLanding(), closeProfile: () => this.closeProfile(),
+      stopProfileClick: e => this.stopProfileClick(e), saveProfile: () => this.saveProfile(),
+      profileNameDraft: this.state.profileNameDraft, onProfileNameDraft: this.setField('profileNameDraft'),
+      newStaffName: this.state.newStaffName, onNewStaffName: this.setField('newStaffName'),
+      newStaffEmail: this.state.newStaffEmail, onNewStaffEmail: this.setField('newStaffEmail'),
+      newStaffPhone: this.state.newStaffPhone, onNewStaffPhone: this.setField('newStaffPhone'),
+      newStaffPassword: this.state.newStaffPassword, onNewStaffPassword: this.setField('newStaffPassword'),
+      randomGmail: () => this.randomGmail(), randomPhone: () => this.randomPhone(), randomPassword: () => this.randomPassword(),
+      randomAll: () => this.randomAll(), createNewStaffAccount: () => this.createNewStaffAccount(),
+      dashNavLabel: this.state.userRole === 'Nhân viên' ? 'Lịch làm của tôi' : this.state.userRole === 'Thu ngân' ? 'Doanh thu' : 'Tổng quan',
+      staffRoleNote: 'Nhân viên · Quận 3 — Võ Văn Tần',
+      staffWeek: STAFF_WEEK_DAYS.map(([day, date], i) => {
+        const [bg, border, text, label] = STAFF_SHIFT_CELL[STAFF_WEEK_PATTERN[i]] || STAFF_SHIFT_CELL.off;
+        return { day, date, bg, border, text, label };
+      }),
+
+      chartSubtitle: d.sub, rangeLabel,
+      kpiRevenue: d.revenue, kpiRevenueDelta: d.revenueDelta,
+      kpiOrders: d.orders, kpiOrdersDelta: d.ordersDelta,
+      kpiDelivering: d.delivering, kpiDeliveringDelta: d.deliveringDelta,
+      ...chart,
+      topBranches: d.branches.map(([name, value, w], i) => ({ rank: i + 1, name, value, width: w + '%' })),
+      recentOrders: ORDERS.map(o => {
+        const [stBg, stColor, stLabel] = ORDER_STATUS_STYLE[o.st] || ORDER_STATUS_STYLE.pending;
+        return { ...o, stBg, stColor, stLabel };
+      }),
+      tabToday: range === 'today' ? 'active' : '', tabWeek: range === 'week' ? 'active' : '',
+      tabMonth: range === 'month' ? 'active' : '', tabYear: range === 'year' ? 'active' : '',
+      setRangeToday: () => this.setRange('today'), setRangeWeek: () => this.setRange('week'),
+      setRangeMonth: () => this.setRange('month'), setRangeYear: () => this.setRange('year'),
+
+      success: this.state.page === 'auth' && !!s,
+      successTitle: s && s.type === 'register' ? 'Tạo tài khoản thành công' : 'Đăng nhập thành công',
+      successText: s && s.type === 'register'
+        ? (s.role === 'Quản lý'
+            ? 'Email xác thực đã được gửi tới ' + s.email + '. Đăng nhập để bắt đầu sử dụng.'
+            : 'Tài khoản ' + s.role + ' đã được tạo và đang chờ quản lý chi nhánh xác nhận trước khi sử dụng.')
+        : '',
+      successBtn: 'Đăng nhập ngay',
+      backToLogin: () => this.backToLogin(),
+
+      isRegister: this.state.page === 'auth' && !s && this.state.mode === 'register', isLogin: this.state.page === 'auth' && !s && this.state.mode === 'login',
+      showLogin: e => this.showLogin(e), showRegister: e => this.showRegister(e),
+
+      email: this.state.email, onEmail: this.setField('email'), emailBorder: er.email ? 'var(--danger)' : 'var(--border-strong)', emailError: er.email || '',
+      password: this.state.password, onPassword: this.setField('password'), passBorder: er.password ? 'var(--danger)' : 'var(--border-strong)', passError: er.password || '',
+      remember: this.state.remember, toggleRemember: () => this.toggleRemember(),
+      rememberBg: this.state.remember ? 'var(--brand)' : 'var(--surface-card)', rememberBorder: this.state.remember ? 'var(--brand)' : 'var(--border-strong)',
+      prevent: e => this.prevent(e), submitLogin: () => this.submitLogin(),
+
+      regName: this.state.regName, onRegName: this.setRegField('regName'), regNameBorder: rer.regName ? 'var(--danger)' : 'var(--border-strong)', regNameError: rer.regName || '',
+      regEmail: this.state.regEmail, onRegEmail: this.setRegField('regEmail'), regEmailBorder: rer.regEmail ? 'var(--danger)' : 'var(--border-strong)', regEmailError: rer.regEmail || '',
+      regPhone: this.state.regPhone, onRegPhone: this.setRegField('regPhone'),
+      regBranch: this.state.regBranch, onRegBranch: this.setRegField('regBranch'), regBranchBorder: rer.regBranch ? 'var(--danger)' : 'var(--border-strong)', regBranchError: rer.regBranch || '', branchOptions: BRANCHES,
+      regRole: this.state.regRole, onRegRole: this.setRegField('regRole'), regRoleBorder: rer.regRole ? 'var(--danger)' : 'var(--border-strong)', regRoleError: rer.regRole || '', regRoleOptions: LOGIN_ROLES,
+      regPassword: this.state.regPassword, onRegPassword: this.setRegField('regPassword'), regPasswordBorder: rer.regPassword ? 'var(--danger)' : 'var(--border-strong)', regPasswordError: rer.regPassword || '',
+      regPasswordHintShown: !rer.regPassword,
+      regConfirm: this.state.regConfirm, onRegConfirm: this.setRegField('regConfirm'), regConfirmBorder: rer.regConfirm ? 'var(--danger)' : 'var(--border-strong)', regConfirmError: rer.regConfirm || '',
+      agree: this.state.agree, toggleAgree: () => this.toggleAgree(),
+      agreeBg: this.state.agree ? 'var(--brand)' : 'var(--surface-card)', agreeBorder: this.state.agree ? 'var(--brand)' : 'var(--border-strong)', agreeError: rer.agree || '',
+      submitRegister: () => this.submitRegister()
+    };
+  }
+}
+</script>
+</body>
+</html>

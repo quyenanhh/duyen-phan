@@ -1,0 +1,293 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+--cream-50:#FFFDFA;--cream-100:#FAF7F2;--cream-200:#F3EDE2;--white:#FFFFFF;
+--green-900:#2C4022;--green-800:#3A5430;--green-700:#4B6B3E;--green-300:#A8BE9C;--green-100:#E7EEE2;
+--clay-700:#8E5726;--clay-600:#B9773A;--clay-300:#DCB98E;--clay-100:#E8D9BE;--clay-50:#F6EEE1;
+--ink-900:#2E2A22;--ink-600:#6B6455;--ink-400:#928B79;--line-200:#E4DCC8;--line-100:#EFE9DC;--border-strong:#D3C7A9;
+--surface-page:var(--cream-100);--surface-card:var(--white);--surface-sunken:var(--cream-200);--surface-inverse:var(--green-900);--surface-accent-soft:var(--clay-50);--surface-brand-soft:var(--green-100);
+--text-body:var(--ink-900);--text-muted:var(--ink-600);--text-subtle:var(--ink-400);--text-on-brand:var(--cream-50);--text-brand:var(--green-700);--text-accent:var(--clay-700);
+--text-link:var(--green-700);--text-link-hover:var(--green-800);
+--brand:var(--green-700);--brand-hover:var(--green-800);--accent:var(--clay-600);--accent-hover:var(--clay-700);
+--border:var(--line-200);--border-soft:var(--line-100);
+--font-ui:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
+--font-serif:'Lora',Georgia,serif;
+--fs-caption:12px;--fs-label:13px;--fs-body-sm:14px;--fs-body:15px;--fs-body-lg:16px;--fs-h3:19px;--fs-h2:26px;--fs-h1:32px;--fs-display:40px;
+--radius-card:12px;--radius-control:8px;--radius-pill:999px;
+--shadow-card:0 2px 8px rgba(46,42,34,.06);--shadow-raised:0 4px 14px rgba(46,42,34,.08);
+--ease-out:cubic-bezier(.22,.61,.36,1);--dur-fast:120ms;--dur-base:180ms;
+--page-max:1200px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface-page)}
+h1,h2,h3,p,div{margin:0}
+a{color:var(--text-link);text-decoration:none;transition:color var(--dur-fast) var(--ease-out)}
+a:hover{color:var(--text-link-hover)}
+.wrap{max-width:var(--page-max);margin:0 auto;padding:0 32px}
+.eyebrow{font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--text-accent)}
+.nav-link{color:var(--text-muted);font-size:var(--fs-body-sm);transition:color var(--dur-fast) var(--ease-out)}
+.nav-link:hover{color:var(--text-brand)}
+.foot-link{color:var(--text-muted);font-size:var(--fs-body-sm);transition:color var(--dur-fast) var(--ease-out)}
+.foot-link:hover{color:var(--text-brand)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-ui);font-weight:500;border-radius:var(--radius-control);cursor:pointer;white-space:nowrap;border:1px solid transparent;transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:active{transform:translateY(1px)}
+.btn-lg{height:48px;padding:0 24px;font-size:var(--fs-body)}
+.btn-md{height:40px;padding:0 16px;font-size:var(--fs-body-sm)}
+.btn-primary{background:var(--brand);color:var(--text-on-brand);border-color:var(--brand)}
+.btn-primary:hover{background:var(--brand-hover);border-color:var(--brand-hover)}
+.btn-secondary{background:var(--surface-card);color:var(--text-body);border-color:var(--border-strong)}
+.btn-secondary:hover{background:var(--surface-sunken)}
+.btn-accent{background:var(--accent);color:#FFF9F0;border-color:var(--accent)}
+.btn-accent:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+/* One quiet, consistent placeholder treatment everywhere — no color-alternating tints. */
+.photo-card{display:flex;align-items:center;justify-content:center;background:var(--surface-sunken);border:1px solid var(--border-strong);border-radius:var(--radius-card);box-shadow:var(--shadow-card);transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.photo-card:hover{box-shadow:var(--shadow-raised);transform:translateY(-2px)}
+.photo-icon{opacity:.4;color:var(--text-subtle)}
+.caption{margin-top:12px;font-size:12px;font-style:italic;color:var(--text-subtle)}
+.field{height:48px;padding:0 16px;border-radius:var(--radius-control);border:1px solid var(--border-strong);font-family:var(--font-ui);font-size:var(--fs-body-sm);background:var(--surface-card);color:var(--text-body)}
+.field::placeholder{color:var(--text-subtle)}
+.dish-row{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:48px 0;border-bottom:1px solid var(--border-soft)}
+.dish-row:last-of-type{border-bottom:none}
+</style>
+</helmet>
+
+<div style="font-family:var(--font-ui);color:var(--text-body);background:var(--surface-page);font-size:var(--fs-body);line-height:1.6">
+
+<header style="position:sticky;top:0;z-index:20;background:rgba(250,247,242,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)">
+  <div class="wrap" style="height:80px;display:flex;align-items:center;gap:32px">
+    <span style="font-family:var(--font-serif);font-size:22px;font-weight:600;color:var(--text-brand)">Duyên Phần</span>
+    <nav style="display:flex;gap:32px;flex:1">
+      <a class="nav-link" href="#thuc-don">Thực đơn</a>
+      <a class="nav-link" href="#triet-ly">Triết lý</a>
+      <a class="nav-link" href="#cau-chuyen">Câu chuyện</a>
+      <a class="nav-link" href="#chi-nhanh">Chi nhánh</a>
+    </nav>
+    <span style="display:flex;align-items:center;gap:24px">
+      <span style="display:flex;align-items:center;gap:8px;font-size:var(--fs-label);color:var(--text-muted)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+        1900 6088
+      </span>
+      <a href="#dat-ban" class="btn btn-accent btn-md">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+        Đặt bàn
+      </a>
+    </span>
+  </div>
+</header>
+
+<div style="background:var(--surface-card);border-bottom:1px solid var(--border)">
+  <section style="padding:96px 0">
+    <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+      <div>
+        <p class="eyebrow">Cơm chay thuần Việt · từ 2016</p>
+        <h1 style="font-family:var(--font-serif);font-size:48px;line-height:1.2;font-weight:600;margin-top:16px">
+          Một bữa cơm lành,<br><em style="color:var(--text-accent);font-style:italic">nấu bằng sự tử tế</em>
+        </h1>
+        <p style="margin-top:24px;font-size:var(--fs-body-lg);color:var(--text-muted);text-wrap:pretty;max-width:460px">
+          Rau củ theo mùa, gạo lứt và đậu hũ làm mỗi sáng. Chúng tôi nấu vừa đủ cho một ngày, không phô trương, không dư thừa.
+        </p>
+        <div style="display:flex;gap:12px;margin-top:32px">
+          <a href="#thuc-don" class="btn btn-primary btn-lg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v8a2 2 0 0 0 2 2v10"/><path d="M4 2v4"/><path d="M7 2v4"/><path d="M20 2c-2 1-3 3-3 6 0 2 1 3 2 3v11"/></svg>
+            Xem thực đơn hôm nay
+          </a>
+          <a href="#chi-nhanh" class="btn btn-secondary btn-lg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Tìm chi nhánh gần bạn
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="photo-card" style="height:480px">
+          <svg class="photo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <p class="caption">Ảnh mâm cơm chay, ánh sáng tự nhiên — chưa có ảnh thật</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap" style="display:flex;gap:64px;padding-top:48px;padding-bottom:48px;border-top:1px solid var(--border)">
+    <span><span style="display:block;font-size:24px;font-weight:600">12</span><span style="font-size:var(--fs-label);color:var(--text-muted)">chi nhánh</span></span>
+    <span><span style="display:block;font-size:24px;font-weight:600">9 năm</span><span style="font-size:var(--fs-label);color:var(--text-muted)">nấu chay mỗi ngày</span></span>
+    <span><span style="display:block;font-size:24px;font-weight:600">48</span><span style="font-size:var(--fs-label);color:var(--text-muted)">món theo mùa</span></span>
+  </div>
+</div>
+
+<section id="triet-ly" style="padding:96px 32px">
+  <div style="max-width:680px;margin:0 auto;text-align:center">
+    <p class="eyebrow">Triết lý</p>
+    <p style="font-family:var(--font-serif);font-size:30px;line-height:1.4;font-weight:500;font-style:italic;color:var(--text-body);margin-top:24px;text-wrap:pretty">
+      "Chúng tôi tin một bữa cơm ngon không cần phô trương — chỉ cần đủ, đúng mùa, và nấu bằng sự tử tế."
+    </p>
+  </div>
+  <div class="wrap" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:64px;text-align:center">
+    <div>
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--surface-brand-soft);color:var(--brand)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg>
+      </span>
+      <div style="font-weight:600;margin-top:16px">Rau củ theo mùa</div>
+      <div style="font-size:var(--fs-body-sm);color:var(--text-muted);margin-top:8px">Đặt hàng trực tiếp từ nông trại Đà Lạt và Long Khánh.</div>
+    </div>
+    <div>
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--surface-brand-soft);color:var(--brand)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"/><path d="M7 8V5a1 1 0 0 1 1-1"/><path d="M12 7V4"/><path d="M17 8V5a1 1 0 0 0-1-1"/></svg>
+      </span>
+      <div style="font-weight:600;margin-top:16px">Nấu vừa đủ</div>
+      <div style="font-size:var(--fs-body-sm);color:var(--text-muted);margin-top:8px">Mỗi bếp nấu theo số phần đã đặt, hạn chế thức ăn dư.</div>
+    </div>
+    <div>
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--surface-brand-soft);color:var(--brand)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.5 3-6a4.5 4.5 0 0 0-8-2.8A4.5 4.5 0 0 0 2 8c0 2.5 1.5 4.5 3 6l7 7Z"/></svg>
+      </span>
+      <div style="font-weight:600;margin-top:16px">Giá phải chăng</div>
+      <div style="font-size:var(--fs-body-sm);color:var(--text-muted);margin-top:8px">Cơm phần từ 45.000₫, phần chay miễn phí mỗi rằm.</div>
+    </div>
+  </div>
+</section>
+
+<section id="thuc-don" style="background:var(--surface-card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:96px 0">
+  <div class="wrap">
+    <p class="eyebrow">Món đặc trưng</p>
+    <h2 style="font-family:var(--font-serif);font-size:34px;font-weight:600;margin-top:12px">Vài món chúng tôi tự hào</h2>
+
+    <div class="dish-row" style="margin-top:24px">
+      <div>
+        <div class="photo-card" style="height:260px">
+          <svg class="photo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <p class="caption">Ảnh cơm chay thập cẩm</p>
+      </div>
+      <div>
+        <h3 style="font-size:22px;font-weight:600">Cơm chay thập cẩm</h3>
+        <p style="margin-top:8px;color:var(--text-muted)">Gạo lứt, đậu hũ áp chảo, rau củ hấp theo mùa.</p>
+        <div style="margin-top:24px;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums">65.000₫</div>
+      </div>
+    </div>
+
+    <div class="dish-row">
+      <div style="order:2">
+        <h3 style="font-size:22px;font-weight:600">Cơm sen hạt dẻ</h3>
+        <p style="margin-top:8px;color:var(--text-muted)">Gạo sen, hạt dẻ rang, lá sen hấp.</p>
+        <div style="margin-top:24px;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums">78.000₫</div>
+      </div>
+      <div style="order:1">
+        <div class="photo-card" style="height:260px">
+          <svg class="photo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <p class="caption">Ảnh cơm sen hạt dẻ</p>
+      </div>
+    </div>
+
+    <div class="dish-row">
+      <div>
+        <div class="photo-card" style="height:260px">
+          <svg class="photo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <p class="caption">Ảnh canh nấm rong biển</p>
+      </div>
+      <div>
+        <h3 style="font-size:22px;font-weight:600">Canh nấm rong biển</h3>
+        <p style="margin-top:8px;color:var(--text-muted)">Nấm hương, rong biển, cà rốt.</p>
+        <div style="margin-top:24px;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums">45.000₫</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:48px">
+      <a href="#" style="display:inline-flex;align-items:center;gap:8px;font-weight:500">
+        Xem thực đơn đầy đủ
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="cau-chuyen" style="padding:96px 0">
+  <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <div>
+      <div class="photo-card" style="height:420px">
+        <svg class="photo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+      </div>
+      <p class="caption">Ảnh người nấu trong bếp</p>
+    </div>
+    <div>
+      <p class="eyebrow">Câu chuyện</p>
+      <h2 style="font-family:var(--font-serif);font-size:34px;font-weight:600;margin-top:12px">Duyên phần — cái duyên của một bữa cơm</h2>
+      <p style="margin-top:24px;font-size:var(--fs-body-lg);color:var(--text-muted);text-wrap:pretty">
+        Bắt đầu từ một quán nhỏ ở Quận 3 năm 2016, chúng tôi vẫn giữ một nguyên tắc: nấu đủ ăn trong ngày, không để thừa.
+      </p>
+      <p style="margin-top:16px;font-size:var(--fs-body-lg);color:var(--text-muted);text-wrap:pretty">
+        Không mở rộng vội, không thêm món cho có. Mỗi chi nhánh mới chỉ ra đời khi bếp cũ đã vững.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="chi-nhanh" style="background:var(--surface-inverse);color:var(--cream-50);padding:96px 0">
+  <div class="wrap" style="display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center">
+    <div>
+      <p class="eyebrow" style="color:var(--clay-300)">Đặt bàn</p>
+      <h2 style="font-family:var(--font-serif);font-size:34px;font-weight:600;margin-top:12px;color:var(--cream-50)">12 chi nhánh tại TP.HCM và Hà Nội</h2>
+      <p style="margin-top:16px;color:var(--green-300);font-size:var(--fs-body-lg)">Giao trong bán kính 5km. Đặt trước 11:00 để nhận cơm trưa đúng giờ.</p>
+      <div style="display:flex;gap:8px;margin-top:32px;max-width:440px">
+        <input class="field" placeholder="Nhập địa chỉ của bạn" style="flex:1;background:rgba(255,253,250,.06);border-color:rgba(255,253,250,.24);color:var(--cream-50)">
+        <a href="#" class="btn btn-accent btn-lg">Tìm</a>
+      </div>
+      <a href="#" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;color:var(--cream-50);font-weight:500">
+        Xem tất cả chi nhánh
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div style="padding:24px;border-radius:var(--radius-card);background:rgba(255,253,250,.06);border:1px solid rgba(255,253,250,.12)">
+      <p class="eyebrow" style="color:var(--clay-300);margin-bottom:12px">Chi nhánh nổi bật</p>
+      <div style="font-size:19px;font-weight:600">Quận 3 — Võ Văn Tần</div>
+      <div style="font-size:var(--fs-label);color:var(--green-300);margin-top:8px">10:00 – 21:00</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:16px">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--green-300)"></span>
+        <span style="font-size:var(--fs-label)">Đang mở</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--surface-card);border-top:1px solid var(--border);padding:64px 0 32px">
+  <div class="wrap" style="display:grid;grid-template-columns:1.6fr 1fr 1.2fr;gap:48px">
+    <div>
+      <div style="font-family:var(--font-serif);font-size:22px;font-weight:600;color:var(--text-brand)">Duyên Phần</div>
+      <p style="margin-top:8px;font-size:var(--fs-body-sm);color:var(--text-muted);max-width:280px">Chuỗi nhà hàng cơm chay thuần Việt. Nấu vừa đủ, ăn vừa lành.</p>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-label);font-weight:600;margin-bottom:12px">Về chúng tôi</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <a class="foot-link" href="#">Câu chuyện</a>
+        <a class="foot-link" href="#">Nhượng quyền</a>
+        <a class="foot-link" href="#">Liên hệ</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-label);font-weight:600;margin-bottom:12px">Nhận thực đơn tuần</div>
+      <div style="display:flex;gap:8px">
+        <input class="field" placeholder="Email của bạn" style="flex:1">
+        <a href="#" class="btn btn-primary btn-md">Gửi</a>
+      </div>
+      <p style="margin-top:8px;font-size:var(--fs-caption);color:var(--text-subtle)">Mỗi thứ Hai, một email. Huỷ bất cứ lúc nào.</p>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:var(--fs-caption);color:var(--text-subtle)">
+    <span>© 2026 Duyên Phần. Giấy phép ĐKKD 0312xxxxxx.</span>
+    <span>1900 6088 · xinchao@duyenphan.vn</span>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+</body>
+</html>

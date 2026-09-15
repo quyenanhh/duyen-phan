@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Tổng quan (Dashboard)" description="Trang đầu sau đăng nhập: sidebar cố định, KPI, biểu đồ doanh thu, top chi nhánh, hoạt động gần đây." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+<style>body{margin:0;background:#FAF7F2}</style>
+</helmet>
+<div style="font-family:'Be Vietnam Pro',system-ui,sans-serif;color:#2E2A22;background:#FAF7F2;font-size:15px;line-height:1.6;min-height:100vh;display:flex;align-items:stretch">
+
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Sidebar" items="{{ navItems }}" active="{{ active }}" onSelect="{{ setActive }}" footer="{{ userFooter }}" style="position:sticky;top:0;height:100vh" hint-size="248px,100vh"></x-import>
+
+<div style="flex:1;min-width:0">
+
+<div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:#FFFFFF;border-bottom:1px solid #E4DCC8;position:sticky;top:0;z-index:10">
+<div style="flex:1">
+<h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">Tổng quan</h2>
+<div style="font-size:12px;color:#6B6455">Cập nhật 14:32 · 02/09/2026 · 12 chi nhánh</div>
+</div>
+<div style="display:flex;gap:2px;padding:3px;background:#F3EDE2;border:1px solid #E4DCC8;border-radius:999px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.RangeTabs" value="{{ range }}" onChange="{{ setRange }}" hint-size="240px,32px"></x-import>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="bell" label="Thông báo" hint-size="40px,40px"></x-import>
+</div>
+
+<div style="padding:32px;display:flex;flex-direction:column;gap:24px">
+
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="wallet" label="Tổng doanh thu" value="{{ kpiRevenue }}" delta="{{ kpiRevenueDelta }}" hint-size="100%,116px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="receipt-text" label="Tổng đơn hàng" value="{{ kpiOrders }}" delta="{{ kpiOrdersDelta }}" hint-size="100%,116px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="store" label="Chi nhánh hoạt động" value="12 / 12" delta="Tất cả đang mở" hint-size="100%,116px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="truck" label="Đơn đang giao" value="{{ kpiDelivering }}" delta="{{ kpiDeliveringDelta }}" deltaTone="warning" hint-size="100%,116px"></x-import>
+</div>
+
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;align-items:start">
+
+<section style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);padding:24px">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+<div>
+<h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">Xu hướng doanh thu</h3>
+<p style="margin:4px 0 0;font-size:14px;color:#6B6455">{{ chartSubtitle }}</p>
+</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#6B6455">
+<span style="width:10px;height:2px;background:#4B6B3E;border-radius:2px"></span>Doanh thu
+<span style="width:10px;height:2px;background:#DCB98E;border-radius:2px;margin-left:8px"></span>Kỳ trước
+</div>
+</div>
+<div style="margin-top:20px">{{ revenueChart }}</div>
+</section>
+
+<section style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);padding:24px">
+<h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">Top chi nhánh theo doanh thu</h3>
+<p style="margin:4px 0 0;font-size:14px;color:#6B6455">{{ rangeLabel }}</p>
+<div style="margin-top:20px;display:flex;flex-direction:column;gap:16px">
+<sc-for list="{{ topBranches }}" as="b" hint-placeholder-count="5">
+<div>
+<div style="display:flex;align-items:baseline;gap:10px">
+<span style="width:20px;font-size:12px;font-weight:600;color:#928B79;font-variant-numeric:tabular-nums">{{ b.rank }}</span>
+<span style="flex:1;font-size:14px;font-weight:500">{{ b.name }}</span>
+<span style="font-size:14px;font-weight:600;font-variant-numeric:tabular-nums">{{ b.value }}</span>
+</div>
+<div style="margin-top:6px;margin-left:30px;height:6px;border-radius:999px;background:#F3EDE2;display:flex">
+<div style="height:100%;border-radius:999px;background:#B9773A;flex:0 0 auto" data-bar-width="{{ b.width }}"></div>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid #EFE9DC;display:flex;justify-content:space-between;font-size:13px;color:#6B6455">
+<span>8 chi nhánh còn lại</span><a href="#" style="font-weight:500">Xem tất cả</a>
+</div>
+</section>
+
+</div>
+
+<section style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 24px">
+<div>
+<h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">Hoạt động gần đây</h3>
+<p style="margin:4px 0 0;font-size:14px;color:#6B6455">Đơn hàng mới nhất từ tất cả chi nhánh</p>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" size="sm" variant="secondary" iconRight="arrow-right" hint-size="150px,32px">Xem tất cả đơn</x-import>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.RecentOrders" rows="{{ recentOrders }}" hint-size="100%,320px"></x-import>
+</section>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:980},&quot;range&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;today&quot;,&quot;week&quot;,&quot;month&quot;,&quot;year&quot;],&quot;default&quot;:&quot;week&quot;,&quot;tsType&quot;:&quot;'today' | 'week' | 'month' | 'year'&quot;,&quot;section&quot;:&quot;Dữ liệu&quot;}}">
+const RANGES = [
+  { id: 'today', label: 'Hôm nay' },
+  { id: 'week', label: 'Tuần' },
+  { id: 'month', label: 'Tháng' },
+  { id: 'year', label: 'Năm' }
+];
+
+const DATA = {
+  today: {
+    sub: '02/09/2026 · theo giờ',
+    revenue: '18.420.000₫', revenueDelta: '+8,2% so với hôm qua',
+    orders: '264', ordersDelta: '+12 đơn so với hôm qua',
+    delivering: '4', deliveringDelta: '1 đơn quá 30 phút',
+    labels: ['08h', '10h', '12h', '14h', '16h', '18h', '20h'],
+    series: [8, 22, 96, 74, 38, 66, 44],
+    prev: [10, 26, 88, 62, 44, 58, 40],
+    branches: [['Quận 3 — Võ Văn Tần', '5.240.000₫', 100], ['Quận 1 — Lê Lợi', '4.180.000₫', 80], ['Tân Bình — Hoàng Việt', '3.020.000₫', 58], ['Thủ Đức — Kha Vạn Cân', '2.480.000₫', 47], ['Phú Nhuận — Phan Xích Long', '1.860.000₫', 36]]
+  },
+  week: {
+    sub: '27/08 – 02/09/2026 · theo ngày',
+    revenue: '124.860.000₫', revenueDelta: '+6,4% so với tuần trước',
+    orders: '1.842', ordersDelta: '+96 đơn so với tuần trước',
+    delivering: '4', deliveringDelta: '1 đơn quá 30 phút',
+    labels: ['27/08', '28/08', '29/08', '30/08', '31/08', '01/09', '02/09'],
+    series: [58, 72, 96, 88, 74, 62, 80],
+    prev: [54, 66, 84, 80, 70, 58, 72],
+    branches: [['Quận 3 — Võ Văn Tần', '32.480.000₫', 100], ['Quận 1 — Lê Lợi', '27.140.000₫', 84], ['Tân Bình — Hoàng Việt', '19.620.000₫', 60], ['Thủ Đức — Kha Vạn Cân', '15.280.000₫', 47], ['Phú Nhuận — Phan Xích Long', '11.940.000₫', 37]]
+  },
+  month: {
+    sub: '01/09 – 02/09/2026 · theo tuần',
+    revenue: '486.320.000₫', revenueDelta: '+11,3% so với tháng trước',
+    orders: '7.264', ordersDelta: '+624 đơn so với tháng trước',
+    delivering: '4', deliveringDelta: '1 đơn quá 30 phút',
+    labels: ['T1', 'T2', 'T3', 'T4'],
+    series: [64, 78, 92, 86],
+    prev: [60, 70, 82, 80],
+    branches: [['Quận 3 — Võ Văn Tần', '128.640.000₫', 100], ['Quận 1 — Lê Lợi', '104.280.000₫', 81], ['Tân Bình — Hoàng Việt', '76.420.000₫', 59], ['Thủ Đức — Kha Vạn Cân', '58.960.000₫', 46], ['Phú Nhuận — Phan Xích Long', '44.180.000₫', 34]]
+  },
+  year: {
+    sub: '01/2026 – 09/2026 · theo tháng',
+    revenue: '4.284.000.000₫', revenueDelta: '+18,6% so với cùng kỳ 2025',
+    orders: '64.180', ordersDelta: '+8.240 đơn so với cùng kỳ',
+    delivering: '4', deliveringDelta: '1 đơn quá 30 phút',
+    labels: ['01', '02', '03', '04', '05', '06', '07', '08', '09'],
+    series: [52, 46, 68, 72, 80, 76, 88, 96, 84],
+    prev: [44, 40, 58, 64, 70, 68, 76, 82, 74],
+    branches: [['Quận 3 — Võ Văn Tần', '1.086.000.000₫', 100], ['Quận 1 — Lê Lợi', '924.400.000₫', 85], ['Tân Bình — Hoàng Việt', '682.200.000₫', 63], ['Thủ Đức — Kha Vạn Cân', '524.800.000₫', 48], ['Phú Nhuận — Phan Xích Long', '398.600.000₫', 37]]
+  }
+};
+
+const ORDERS = [
+  { id: 1, code: 'DP-1042', br: 'Quận 3 — Võ Văn Tần', st: 'delivering', total: '385.000₫', t: '14:20 02/09/2026' },
+  { id: 2, code: 'DP-1041', br: 'Quận 1 — Lê Lợi', st: 'completed', total: '1.250.000₫', t: '13:52 02/09/2026' },
+  { id: 3, code: 'DP-1040', br: 'Tân Bình — Hoàng Việt', st: 'processing', total: '96.000₫', t: '13:41 02/09/2026' },
+  { id: 4, code: 'DP-1039', br: 'Quận 1 — Lê Lợi', st: 'cancelled', total: '210.000₫', t: '13:02 02/09/2026' },
+  { id: 5, code: 'DP-1038', br: 'Thủ Đức — Kha Vạn Cân', st: 'completed', total: '540.000₫', t: '12:47 02/09/2026' },
+  { id: 6, code: 'DP-1037', br: 'Quận 3 — Võ Văn Tần', st: 'late', total: '87.000₫', t: '12:20 02/09/2026' },
+  { id: 7, code: 'DP-1036', br: 'Phú Nhuận — Phan Xích Long', st: 'pending', total: '164.000₫', t: '11:58 02/09/2026' }
+];
+
+class Component extends DCLogic {
+  state = { range: null, active: 'dash' };
+
+  componentDidMount() { this.registerGlobals(); this.syncBars(); }
+  componentDidUpdate() { this.registerGlobals(); this.syncBars(); }
+
+  /* Bar widths are per-row runtime data; applied after render so the template stays literal. */
+  syncBars() {
+    document.querySelectorAll('[data-bar-width]').forEach(el => {
+      const w = el.getAttribute('data-bar-width');
+      if (w && el.style.width !== w) el.style.width = w;
+    });
+  }
+
+  registerGlobals() {
+    const NS = window.DuyNPhNDesignSystem_e06890;
+    if (!NS || NS.RangeTabs) return;
+    const R = React.createElement;
+
+    NS.RangeTabs = ({ value, onChange }) => R('div', { style: { display: 'flex', gap: 2 } },
+      RANGES.map(r => {
+        const on = value === r.id;
+        return R('button', {
+          key: r.id, type: 'button', onClick: () => onChange && onChange(r.id),
+          style: {
+            border: 0, cursor: 'pointer', padding: '0 14px', height: 30, borderRadius: 999,
+            fontFamily: 'inherit', fontSize: 13, fontWeight: on ? 600 : 400,
+            background: on ? '#FFFFFF' : 'transparent', color: on ? '#3A5430' : '#6B6455',
+            boxShadow: on ? '0 1px 3px rgba(46,42,34,.10)' : 'none',
+            transition: 'background 120ms cubic-bezier(.22,.61,.36,1)'
+          }
+        }, r.label);
+      })
+    );
+
+    NS.RevenueChart = ({ labels, series, prev }) => {
+      const W = 720, H = 220, PL = 8, PR = 8, PT = 12, PB = 26;
+      const n = series.length;
+      const x = i => PL + (i * (W - PL - PR)) / (n - 1);
+      const y = v => PT + (1 - v / 100) * (H - PT - PB);
+      const line = a => a.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+      const area = line(series) + ` L${x(n - 1).toFixed(1)},${(H - PB).toFixed(1)} L${x(0).toFixed(1)},${(H - PB).toFixed(1)} Z`;
+      return R('svg', { viewBox: `0 0 ${W} ${H}`, style: { display: 'block', width: '100%', height: 220, overflow: 'visible' } }, [
+        R('defs', { key: 'd' }, R('linearGradient', { id: 'dpRevFill', x1: 0, y1: 0, x2: 0, y2: 1 }, [
+          R('stop', { key: 'a', offset: '0%', stopColor: '#4B6B3E', stopOpacity: 0.16 }),
+          R('stop', { key: 'b', offset: '100%', stopColor: '#4B6B3E', stopOpacity: 0 })
+        ])),
+        ...[0, 25, 50, 75, 100].map(g => R('line', {
+          key: 'g' + g, x1: PL, x2: W - PR, y1: y(g), y2: y(g), stroke: '#EFE9DC', strokeWidth: 1
+        })),
+        R('path', { key: 'ar', d: area, fill: 'url(#dpRevFill)' }),
+        R('path', { key: 'pv', d: line(prev), fill: 'none', stroke: '#DCB98E', strokeWidth: 2, strokeDasharray: '4 5', strokeLinecap: 'round' }),
+        R('path', { key: 'ln', d: line(series), fill: 'none', stroke: '#4B6B3E', strokeWidth: 2.5, strokeLinecap: 'round', strokeLinejoin: 'round' }),
+        ...series.map((v, i) => R('circle', { key: 'p' + i, cx: x(i), cy: y(v), r: i === n - 1 ? 5 : 3.5, fill: '#FFFFFF', stroke: '#4B6B3E', strokeWidth: 2.5 })),
+        ...labels.map((l, i) => R('text', {
+          key: 't' + i, x: x(i), y: H - 6, textAnchor: 'middle',
+          fill: '#6B6455', fontSize: 12, fontFamily: "'Be Vietnam Pro',sans-serif"
+        }, l))
+      ]);
+    };
+
+    NS.RecentOrders = ({ rows }) => R(NS.DataTable, {
+      rows, onRowClick: () => {},
+      columns: [
+        { key: 'code', label: 'Mã đơn', render: r => R('span', { style: { fontWeight: 600 } }, r.code) },
+        { key: 'br', label: 'Chi nhánh' },
+        { key: 'st', label: 'Trạng thái', render: r => R(NS.StatusChip, { status: r.st }) },
+        { key: 'total', label: 'Giá trị', align: 'right' },
+        { key: 't', label: 'Thời gian', align: 'right', muted: true }
+      ]
+    });
+    this.forceUpdate();
+  }
+
+  renderVals() {
+    const R = React.createElement;
+    const NS = window.DuyNPhNDesignSystem_e06890 || {};
+    const range = this.state.range ?? (this.props.range ?? 'week');
+    const d = DATA[range] || DATA.week;
+    const rangeLabel = (RANGES.find(r => r.id === range) || {}).label;
+
+    return {
+      range, setRange: id => this.setState({ range: id }),
+      active: this.state.active, setActive: id => this.setState({ active: id }),
+      rangeLabel, chartSubtitle: d.sub,
+      kpiRevenue: d.revenue, kpiRevenueDelta: d.revenueDelta,
+      kpiOrders: d.orders, kpiOrdersDelta: d.ordersDelta,
+      kpiDelivering: d.delivering, kpiDeliveringDelta: d.deliveringDelta,
+      topBranches: d.branches.map(([name, value, w], i) => ({ rank: i + 1, name, value, width: w + '%' })),
+      recentOrders: ORDERS,
+      revenueChart: NS.RevenueChart ? R(NS.RevenueChart, { labels: d.labels, series: d.series, prev: d.prev }) : null,
+      navItems: [
+        { id: 'dash', label: 'Tổng quan', icon: 'layout-dashboard' },
+        { section: 'Vận hành' },
+        { id: 'branches', label: 'Chi nhánh', icon: 'store' },
+        { id: 'menu', label: 'Thực đơn', icon: 'utensils' },
+        { id: 'orders', label: 'Đặt hàng & Giao hàng', icon: 'truck', badge: 12 },
+        { section: 'Nội bộ' },
+        { id: 'staff', label: 'Nhân viên', icon: 'users' },
+        { id: 'finance', label: 'Doanh thu & Chi tiêu', icon: 'wallet' }
+      ],
+      userFooter: R('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } }, [
+        R('span', { key: 'a', style: { width: 32, height: 32, flex: '0 0 auto', borderRadius: 999, background: '#E8D9BE', color: '#8E5726', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 12 } }, 'AN'),
+        R('span', { key: 'n', style: { flex: 1, minWidth: 0, fontSize: 13, lineHeight: 1.35 } }, [
+          R('span', { key: 'x', style: { display: 'block', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, 'An Nguyễn'),
+          R('span', { key: 'y', style: { display: 'block', color: '#6B6455' } }, 'Quản lý chuỗi')
+        ]),
+        NS.IconButton ? R(NS.IconButton, { key: 'o', icon: 'log-out', label: 'Đăng xuất', size: 'sm' }) : null
+      ])
+    };
+  }
+}
+</script>
+</body>
+</html>

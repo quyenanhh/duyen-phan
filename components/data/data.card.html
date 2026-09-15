@@ -1,0 +1,22 @@
+<!-- @dsCard group="Components" viewport="700x380" name="Data — table, status chips, KPI" subtitle="52px rows, uppercase headers, tabular money" -->
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{padding:20px;background:var(--surface-page)}.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.stack{display:flex;flex-direction:column;gap:16px}.lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--text-subtle)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const {DataTable,StatusChip,StatCard,Card}=window.DuyNPhNDesignSystem_e06890;
+const rows=[{id:1,code:'DP-1042',br:'Quận 3',total:'385.000₫',st:'delivering',t:'14:20 31/08/2026'},{id:2,code:'DP-1041',br:'Quận 1',total:'1.250.000₫',st:'completed',t:'13:52 31/08/2026'},{id:3,code:'DP-1040',br:'Tân Bình',total:'96.000₫',st:'processing',t:'13:41 31/08/2026'},{id:4,code:'DP-1039',br:'Quận 1',total:'210.000₫',st:'cancelled',t:'13:02 31/08/2026'}];
+function Demo(){return(<div className="stack">
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16}}>
+<StatCard icon="wallet" label="Doanh thu hôm nay" value="18.420.000₫" delta="+8,2% so với hôm qua"/>
+<StatCard icon="receipt-text" label="Đơn hàng" value="264" delta="+12 đơn"/>
+<StatCard icon="clock" label="Đơn trễ" value="3" delta="+2 so với hôm qua" deltaTone="danger"/>
+</div>
+<Card padding={0}><DataTable onRowClick={()=>{}} columns={[{key:'code',label:'Mã đơn'},{key:'br',label:'Chi nhánh',sortable:true},{key:'t',label:'Thời gian',muted:true},{key:'total',label:'Tổng tiền',align:'right'},{key:'st',label:'Trạng thái',render:r=><StatusChip status={r.st}/>}]} rows={rows}/></Card>
+</div>);}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

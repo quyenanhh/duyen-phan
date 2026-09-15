@@ -1,0 +1,47 @@
+:root{
+/* base palette */
+--cream-50:#FFFDFA;--cream-100:#FAF7F2;--cream-200:#F3EDE2;--white:#FFFFFF;
+--green-900:#2C4022;--green-800:#3A5430;--green-700:#4B6B3E;--green-300:#A8BE9C;--green-100:#E7EEE2;
+--clay-700:#8E5726;--clay-600:#B9773A;--clay-300:#DCB98E;--clay-100:#E8D9BE;--clay-50:#F6EEE1;
+--ink-900:#2E2A22;--ink-600:#6B6455;--ink-400:#928B79;--line-200:#E4DCC8;--line-100:#EFE9DC;
+--amber-600:#C98A2C;--amber-100:#F7E9CC;
+--rust-600:#B4462E;--rust-100:#F6DED7;
+--slate-600:#5C7A99;--slate-100:#DFE7EF;
+
+/* semantic surfaces */
+--surface-page:var(--cream-100);
+--surface-card:var(--white);
+--surface-sunken:var(--cream-200);
+--surface-inverse:var(--green-900);
+--surface-accent-soft:var(--clay-50);
+--surface-brand-soft:var(--green-100);
+
+/* semantic text */
+--text-body:var(--ink-900);
+--text-muted:var(--ink-600);
+--text-subtle:var(--ink-400);
+--text-on-brand:var(--cream-50);
+--text-brand:var(--green-700);
+--text-accent:var(--clay-700);
+--text-link:var(--green-700);
+--text-link-hover:var(--green-800);
+
+/* brand actions */
+--brand:var(--green-700);
+--brand-hover:var(--green-800);
+--brand-active:var(--green-900);
+--accent:var(--clay-600);
+--accent-hover:var(--clay-700);
+
+/* lines */
+--border:var(--line-200);
+--border-soft:var(--line-100);
+--border-strong:#D3C7A9;
+--focus-ring:rgba(75,107,62,.32);
+
+/* status */
+--success:var(--green-700);--success-soft:var(--green-100);--success-text:var(--green-800);
+--warning:var(--amber-600);--warning-soft:var(--amber-100);--warning-text:#8C5E14;
+--danger:var(--rust-600);--danger-soft:var(--rust-100);--danger-text:#8E3421;
+--info:var(--slate-600);--info-soft:var(--slate-100);--info-text:#3F5C79;
+}

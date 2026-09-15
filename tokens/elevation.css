@@ -1,0 +1,6 @@
+:root{
+--shadow-card:0 2px 8px rgba(46,42,34,.06);
+--shadow-raised:0 4px 14px rgba(46,42,34,.08);
+--shadow-modal:0 16px 40px rgba(46,42,34,.14);
+--shadow-inset-line:inset 0 -1px 0 var(--border-soft);
+}

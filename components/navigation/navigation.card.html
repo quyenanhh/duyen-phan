@@ -1,0 +1,21 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Navigation — sidebar, tabs, pagination" subtitle="248px fixed sidebar, underline tabs" -->
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{padding:20px;background:var(--surface-page)}.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.stack{display:flex;flex-direction:column;gap:16px}.lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--text-subtle)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const {Sidebar,Tabs,Pagination,Card,Badge}=window.DuyNPhNDesignSystem_e06890;
+const items=[{id:'dash',label:'Tổng quan',icon:'layout-dashboard'},{section:'Vận hành'},{id:'orders',label:'Đơn hàng',icon:'receipt-text',badge:12},{id:'menu',label:'Thực đơn',icon:'utensils'},{id:'branch',label:'Chi nhánh',icon:'store'},{section:'Nội bộ'},{id:'staff',label:'Nhân sự',icon:'users'},{id:'fin',label:'Tài chính',icon:'wallet'}];
+function Demo(){const [a,setA]=React.useState('orders'),[t,setT]=React.useState('all'),[p,setP]=React.useState(2);
+return(<div style={{display:'flex',gap:20,height:360}}>
+<div style={{border:'1px solid var(--border)',borderRadius:12,overflow:'hidden',background:'var(--surface-card)'}}><Sidebar items={items} active={a} onSelect={setA} footer={<div style={{display:'flex',alignItems:'center',gap:8,fontSize:'var(--fs-label)',color:'var(--text-muted)'}}><span style={{width:28,height:28,borderRadius:999,background:'var(--clay-100)',color:'var(--text-accent)',display:'grid',placeItems:'center',fontWeight:600,fontSize:12}}>AN</span>An Nguyễn</div>}/></div>
+<div style={{flex:1}} className="stack">
+<Tabs value={t} onChange={setT} items={[{id:'all',label:'Tất cả',count:128},{id:'proc',label:'Đang xử lý',count:9},{id:'late',label:'Trễ',count:3},{id:'done',label:'Hoàn tất'}]}/>
+<Card padding={0}><div style={{padding:24,color:'var(--text-muted)',fontSize:'var(--fs-body-sm)'}}>Nội dung tab “{t}”</div><Pagination page={p} pageCount={9} total={128} onChange={setP}/></Card>
+</div></div>);}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

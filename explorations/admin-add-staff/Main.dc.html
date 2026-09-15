@@ -1,0 +1,854 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700&display=swap">
+<style>
+:root{
+--cream-50:#FFFDFA;--cream-100:#FAF7F2;--cream-200:#F3EDE2;--white:#FFFFFF;
+--green-900:#2C4022;--green-800:#3A5430;--green-700:#4B6B3E;--green-300:#A8BE9C;--green-100:#E7EEE2;
+--clay-700:#8E5726;--clay-600:#B9773A;--clay-300:#DCB98E;--clay-100:#E8D9BE;--clay-50:#F6EEE1;
+--ink-900:#2E2A22;--ink-600:#6B6455;--ink-400:#928B79;--line-200:#E4DCC8;--line-100:#EFE9DC;--border-strong:#D3C7A9;
+--amber-600:#C98A2C;--amber-100:#F7E9CC;--rust-600:#B4462E;--rust-100:#F6DED7;--slate-600:#5C7A99;--slate-100:#DFE7EF;
+--surface-page:var(--cream-100);--surface-card:var(--white);--surface-sunken:var(--cream-200);--surface-brand-soft:var(--green-100);
+--text-body:var(--ink-900);--text-muted:var(--ink-600);--text-subtle:var(--ink-400);--text-on-brand:var(--cream-50);--text-brand:var(--green-700);--text-accent:var(--clay-700);
+--brand:var(--green-700);--brand-hover:var(--green-800);--accent:var(--clay-600);--accent-hover:var(--clay-700);
+--border:var(--line-200);--border-soft:var(--line-100);
+--success-soft:var(--green-100);--success-text:var(--green-800);
+--warning-soft:var(--amber-100);--warning-text:#8C5E14;
+--info-soft:var(--slate-100);--info-text:#3F5C79;
+--danger:var(--rust-600);--danger-soft:var(--rust-100);--danger-text:#8E3421;
+--font-ui:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
+--fs-caption:12px;--fs-label:13px;--fs-body-sm:14px;--fs-body:15px;--fs-h3:19px;
+--radius-card:12px;--radius-modal:12px;--radius-control:8px;--radius-pill:999px;
+--shadow-card:0 2px 8px rgba(46,42,34,.06);--shadow-modal:0 16px 40px rgba(46,42,34,.14);
+--focus-ring:rgba(75,107,62,.32);
+--ease-out:cubic-bezier(.22,.61,.36,1);--dur-fast:120ms;
+--sidebar-w:248px;--row-h:52px;--control-h-sm:32px;--control-h-md:40px;--control-h-lg:48px;
+}
+*{box-sizing:border-box}
+h1,h2,h3,p,div{margin:0}
+body{margin:0;background:var(--surface-page);font-family:var(--font-ui)}
+button{font-family:inherit}
+.eyebrow{font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--text-muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-ui);font-weight:500;border-radius:var(--radius-control);cursor:pointer;white-space:nowrap;border:1px solid transparent;font-size:var(--fs-body-sm);transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)}
+.btn-md{height:var(--control-h-md);padding:0 16px}
+.btn-primary{background:var(--brand);color:var(--text-on-brand);border-color:var(--brand)}
+.btn-primary:hover{background:var(--brand-hover);border-color:var(--brand-hover)}
+.btn-secondary{background:var(--surface-card);color:var(--text-body);border-color:var(--border-strong)}
+.btn-secondary:hover{background:var(--surface-sunken)}
+.btn-danger{background:var(--danger);color:#FFF5F2;border-color:var(--danger)}
+.btn-danger:hover{background:#9C3C28;border-color:#9C3C28}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-control);border:1px solid transparent;background:transparent;color:var(--text-muted);cursor:pointer}
+.icon-btn:hover{background:var(--surface-sunken);color:var(--text-body)}
+.icon-btn-sm{width:32px;height:32px}
+.field-wrap label{display:block;margin-bottom:6px;font-size:var(--fs-label);font-weight:500;color:var(--text-body)}
+.field{display:flex;align-items:center;gap:8px;height:var(--control-h-md);padding:0 12px;background:var(--surface-card);border:1px solid var(--border-strong);border-radius:var(--radius-control)}
+.field:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px var(--focus-ring)}
+.field input,.field select{flex:1;min-width:0;border:0;outline:none;background:transparent;font-family:var(--font-ui);font-size:var(--fs-body-sm);color:var(--text-body);appearance:none;cursor:pointer}
+.field input{cursor:text}
+.field input::placeholder{color:var(--text-subtle)}
+.field.sm{height:var(--control-h-sm)}
+.err-msg{display:block;margin-top:6px;font-size:var(--fs-caption);color:var(--danger-text)}
+.nav-item{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:0;border-radius:var(--radius-control);font-size:var(--fs-body-sm);background:transparent;color:var(--text-body);cursor:pointer}
+.nav-item.active{background:var(--surface-brand-soft);color:var(--success-text);font-weight:600}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--radius-pill);font-size:var(--fs-caption);font-weight:500;line-height:1.4;white-space:nowrap}
+.badge .dot{width:6px;height:6px;border-radius:999px;background:currentColor}
+th{text-align:left;padding:10px 16px;white-space:nowrap;font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--text-muted);border-bottom:1px solid var(--border);background:var(--surface-sunken)}
+td{padding:0 16px;height:var(--row-h);text-align:left;border-bottom:1px solid var(--border-soft);color:var(--text-body)}
+tr.row:hover td{background:var(--cream-100)}
+.menu-item{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border:0;background:transparent;border-radius:6px;font-size:var(--fs-body-sm);color:var(--text-body);cursor:pointer;text-align:left}
+.menu-item:hover{background:var(--surface-sunken)}
+.menu-item-danger{color:var(--danger-text)}
+.menu-item-danger:hover{background:var(--danger-soft)}
+</style>
+</helmet>
+
+<div style="display:flex;align-items:stretch;min-height:1000px;color:var(--text-body);font-size:var(--fs-body);line-height:1.6">
+
+<nav style="width:var(--sidebar-w);flex:0 0 var(--sidebar-w);display:flex;flex-direction:column;background:var(--surface-card);border-right:1px solid var(--border)">
+  <div style="padding:20px 20px 16px;border-bottom:1px solid var(--border-soft);display:flex;gap:10px;align-items:center">
+    <span style="width:32px;height:32px;border-radius:var(--radius-control);background:var(--surface-brand-soft);color:var(--brand);display:grid;place-items:center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg>
+    </span>
+    <span>
+      <span style="display:block;font-weight:600">Duyên Phần</span>
+      <span style="display:block;font-size:var(--fs-caption);color:var(--text-muted)">Quản trị chuỗi</span>
+    </span>
+  </div>
+  <div style="padding:12px;display:flex;flex-direction:column;gap:2px;flex:1">
+    <button class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span style="flex:1;text-align:left">Tổng quan</span></button>
+    <span style="padding:16px 12px 6px;font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;color:var(--text-subtle);font-weight:600">Vận hành</span>
+    <button class="nav-item {{ branchesNavActive }}" onClick="{{ goBranches }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v10h16V9"/><path d="M9 21v-6h6v6"/></svg><span style="flex:1;text-align:left">Chi nhánh</span></button>
+    <button class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v8a2 2 0 0 0 2 2v10"/><path d="M4 2v4"/><path d="M7 2v4"/><path d="M20 2c-2 1-3 3-3 6 0 2 1 3 2 3v11"/></svg><span style="flex:1;text-align:left">Thực đơn</span></button>
+    <button class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="13" height="10" rx="1"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg><span style="flex:1;text-align:left">Đặt hàng &amp; Giao hàng</span><span class="badge" style="background:var(--clay-100);color:var(--text-accent)">12</span></button>
+    <span style="padding:16px 12px 6px;font-size:var(--fs-caption);letter-spacing:.08em;text-transform:uppercase;color:var(--text-subtle);font-weight:600">Nội bộ</span>
+    <button class="nav-item {{ staffNavActive }}" onClick="{{ goStaff }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span style="flex:1;text-align:left">Nhân viên</span></button>
+    <button class="nav-item {{ newStaffNavActive }}" onClick="{{ goNewStaff }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="14" height="16" rx="2"/><path d="M7 9h6"/><path d="M7 13h4"/><path d="M18 8v6"/><path d="M15 11h6"/></svg><span style="flex:1;text-align:left">Random tài khoản</span></button>
+    <button class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4"/><path d="M17 12h3a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-3a2 2 0 0 1 0-4z"/></svg><span style="flex:1;text-align:left">Doanh thu &amp; Chi tiêu</span></button>
+  </div>
+  <div style="padding:12px;border-top:1px solid var(--border-soft);display:flex;align-items:center;gap:10px">
+    <span style="width:32px;height:32px;flex:0 0 auto;border-radius:999px;background:var(--clay-100);color:var(--text-accent);display:grid;place-items:center;font-weight:600;font-size:12px">AN</span>
+    <span style="flex:1;min-width:0;font-size:13px;line-height:1.35">
+      <span style="display:block;font-weight:600">An Nguyễn</span>
+      <span style="display:block;color:var(--text-muted)">Quản lý chuỗi</span>
+    </span>
+    <span class="icon-btn icon-btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></span>
+  </div>
+</nav>
+
+<div style="flex:1;min-width:0;background:var(--surface-page)">
+
+  <sc-if value="{{ isStaffPage }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:var(--surface-card);border-bottom:1px solid var(--border)">
+    <div style="flex:1">
+      <h2 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Nhân viên</h2>
+      <div style="font-size:12px;color:var(--text-muted)">{{ filteredCount }} / {{ count }} nhân viên hiển thị</div>
+    </div>
+    <span class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+  </div>
+
+  <div style="padding:32px;display:flex;flex-direction:column;gap:24px">
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="eyebrow">Nhân sự đang làm</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ activeCount }}</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:var(--text-muted)">/ {{ count }} nhân viên trong danh sách</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+          <span class="eyebrow">Ca hôm nay</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">42 / 45</div>
+        <div style="margin-top:6px;font-size:var(--fs-label);color:var(--warning-text)">3 ca chưa xếp</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4"/><path d="M17 12h3a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-3a2 2 0 0 1 0-4z"/></svg>
+          <span class="eyebrow">Quỹ lương tháng 8</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">1.284.000.000₫</div>
+      </div>
+    </div>
+
+    <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);overflow:hidden">
+
+      <div style="padding:20px 24px;display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+        <label class="field-wrap" style="width:240px">
+          <label>Tìm kiếm</label>
+          <span class="field sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Tên hoặc số điện thoại" value="{{ query }}" onChange="{{ onQuery }}"></span>
+        </label>
+        <label class="field-wrap" style="width:190px">
+          <label>Chi nhánh</label>
+          <span class="field sm">
+            <select value="{{ filterBranch }}" onChange="{{ onFilterBranch }}">
+              <option value="">Tất cả chi nhánh</option>
+              <sc-for list="{{ filterBranchOptions }}" as="b" hint-placeholder-count="5"><option value="{{ b }}">{{ b }}</option></sc-for>
+            </select>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);margin-left:auto;flex:0 0 auto"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </label>
+        <label class="field-wrap" style="width:180px">
+          <label>Vai trò</label>
+          <span class="field sm">
+            <select value="{{ filterRole }}" onChange="{{ onFilterRole }}">
+              <option value="">Tất cả vai trò</option>
+              <sc-for list="{{ filterRoleOptions }}" as="r" hint-placeholder-count="5"><option value="{{ r }}">{{ r }}</option></sc-for>
+            </select>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);margin-left:auto;flex:0 0 auto"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </label>
+        <div style="flex:1"></div>
+        <button type="button" class="btn btn-secondary btn-md" onClick="{{ importCsv }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M3 15v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/></svg>Nhập CSV</button>
+        <input type="file" accept=".csv,text/csv" data-csv-input style="display:none" onChange="{{ onCsvChosen }}">
+        <button type="button" class="btn btn-primary btn-md" onClick="{{ openAdd }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>Thêm nhân viên</button>
+      </div>
+
+      <div style="overflow-x:auto">
+      <table style="width:100%;font-size:var(--fs-body-sm);border-collapse:collapse">
+        <thead><tr>
+          <th>Nhân viên</th><th>Chi nhánh</th><th>Vai trò</th><th>Ca làm hiện tại</th><th>Điện thoại</th><th>Trạng thái</th><th></th>
+        </tr></thead>
+        <tbody>
+        <sc-for list="{{ rows }}" as="s" hint-placeholder-count="5">
+          <tr class="row">
+            <td><span style="display:flex;align-items:center;gap:12px"><span style="width:36px;height:36px;flex:0 0 auto;border-radius:999px;background:var(--green-100);color:var(--green-800);display:grid;place-items:center;font-weight:600;font-size:12px">{{ s.initials }}</span><span><span style="display:block;font-weight:600">{{ s.name }}</span><span style="display:block;font-size:12px;color:var(--text-muted)">{{ s.code }}</span></span></span></td>
+            <td>{{ s.branch }}</td>
+            <td><span class="badge" style="background:{{ s.roleBg }};color:{{ s.roleColor }}">{{ s.role }}</span></td>
+            <td style="color:var(--text-muted)">{{ s.shift }}</td>
+            <td>{{ s.phone }}</td>
+            <td><span class="badge" style="background:{{ s.statusBg }};color:{{ s.statusColor }}"><span class="dot"></span>{{ s.statusLabel }}</span></td>
+            <td style="text-align:right">
+              <button type="button" class="icon-btn icon-btn-sm" data-menu-btn="{{ s.id }}" onClick="{{ s.toggleMenu }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></button>
+              <sc-if value="{{ s.menuOpen }}" hint-placeholder-val="{{ false }}">
+                <div data-menu-pop style="position:fixed;top:0;left:0;visibility:hidden;z-index:46;width:190px;background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-control);box-shadow:var(--shadow-card);padding:6px;text-align:left">
+                  <button type="button" class="menu-item" onClick="{{ s.viewProfile }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>Xem hồ sơ &amp; ca làm</button>
+                  <sc-if value="{{ s.canTerminate }}" hint-placeholder-val="{{ true }}">
+                    <button type="button" class="menu-item menu-item-danger" onClick="{{ s.askTerminate }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="4"/><path d="M2 21v-1a8 8 0 0 1 12.8-6.4"/><path d="m17 8 5 5"/><path d="m22 8-5 5"/></svg>Cho nghỉ làm</button>
+                  </sc-if>
+                </div>
+              </sc-if>
+            </td>
+          </tr>
+        </sc-for>
+        </tbody>
+      </table>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 24px;border-top:1px solid var(--border-soft);font-size:var(--fs-label);color:var(--text-muted)">
+        <span>{{ filteredCount }} nhân viên</span>
+        <span style="display:flex;gap:4px">
+          <span class="icon-btn icon-btn-sm" style="opacity:.4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></span>
+          <span class="icon-btn icon-btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+        </span>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ isBranchesPage }}" hint-placeholder-val="{{ false }}">
+  <div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:var(--surface-card);border-bottom:1px solid var(--border)">
+    <div style="flex:1">
+      <h2 style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Chi nhánh</h2>
+      <div style="font-size:12px;color:var(--text-muted)">{{ branchCount }} chi nhánh</div>
+    </div>
+    <span class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+  </div>
+
+  <div style="padding:32px;display:flex;flex-direction:column;gap:24px">
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v10h16V9"/><path d="M9 21v-6h6v6"/></svg>
+          <span class="eyebrow">Tổng chi nhánh</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ branchCount }}</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <span class="eyebrow">Đang hoạt động</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ branchActiveCount }}</div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-4"/><path d="M17 12h3a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-3a2 2 0 0 1 0-4z"/></svg>
+          <span class="eyebrow">Tổng doanh thu tháng</span>
+        </div>
+        <div style="margin-top:10px;font-size:26px;font-weight:600;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ branchRevenueTotal }}</div>
+      </div>
+    </div>
+
+    <section style="background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);overflow:hidden">
+
+      <div style="padding:20px 24px;display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+        <label class="field-wrap" style="width:260px">
+          <label>Tìm kiếm</label>
+          <span class="field sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Tên hoặc địa chỉ chi nhánh" value="{{ branchQuery }}" onChange="{{ onBranchQuery }}"></span>
+        </label>
+        <div style="flex:1"></div>
+        <button type="button" class="btn btn-primary btn-md" onClick="{{ openAddBranch }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Thêm chi nhánh</button>
+      </div>
+
+      <div style="overflow-x:auto">
+      <table style="width:100%;font-size:var(--fs-body-sm);border-collapse:collapse">
+        <thead><tr>
+          <th>Chi nhánh</th><th>Quản lý</th><th>Điện thoại</th><th>Giờ mở cửa</th><th>Doanh thu tháng</th><th>Trạng thái</th><th></th>
+        </tr></thead>
+        <tbody>
+        <sc-for list="{{ branchRows }}" as="b" hint-placeholder-count="6">
+          <tr class="row">
+            <td><span style="display:block;font-weight:600">{{ b.name }}</span><span style="display:block;font-size:12px;color:var(--text-muted)">{{ b.address }}</span></td>
+            <td>{{ b.manager }}</td>
+            <td>{{ b.phone }}</td>
+            <td style="color:var(--text-muted)">{{ b.hours }}</td>
+            <td style="font-variant-numeric:tabular-nums">{{ b.revenue }}</td>
+            <td><span class="badge" style="background:{{ b.statusBg }};color:{{ b.statusColor }}"><span class="dot"></span>{{ b.statusLabel }}</span></td>
+            <td style="text-align:right">
+              <button type="button" class="icon-btn icon-btn-sm" data-branch-menu-btn="{{ b.id }}" onClick="{{ b.toggleMenu }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></button>
+              <sc-if value="{{ b.menuOpen }}" hint-placeholder-val="{{ false }}">
+                <div data-branch-menu-pop style="position:fixed;top:0;left:0;visibility:hidden;z-index:46;width:190px;background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-control);box-shadow:var(--shadow-card);padding:6px;text-align:left">
+                  <button type="button" class="menu-item" onClick="{{ b.toggleStatus }}">{{ b.toggleStatusLabel }}</button>
+                </div>
+              </sc-if>
+            </td>
+          </tr>
+        </sc-for>
+        </tbody>
+      </table>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 24px;border-top:1px solid var(--border-soft);font-size:var(--fs-label);color:var(--text-muted)">
+        <span>{{ branchFilteredCount }} chi nhánh</span>
+      </div>
+    </section>
+
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isNewStaffPage }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:32px;font-size:20px;font-weight:700;color:#000">TEST TĨNH — nếu thấy dòng này nghĩa là block render được</div>
+  </sc-if>
+
+  </div>
+</div>
+
+<sc-if value="{{ anyMenuOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:44" onClick="{{ closeMenu }}"></div>
+</sc-if>
+
+<sc-if value="{{ anyBranchMenuOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:44" onClick="{{ closeBranchMenu }}"></div>
+</sc-if>
+
+<sc-if value="{{ branchDialogOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(46,42,34,.38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50" onClick="{{ closeAddBranch }}">
+  <div role="dialog" aria-modal="true" onClick="{{ stopClick }}" style="width:100%;max-width:480px;background:var(--surface-card);border-radius:var(--radius-modal);box-shadow:var(--shadow-modal);border:1px solid var(--border);overflow:hidden">
+    <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 24px 0">
+      <div style="flex:1">
+        <h3 style="font-size:var(--fs-h3);font-weight:600">Thêm chi nhánh</h3>
+        <p style="margin-top:6px;font-size:var(--fs-body-sm);color:var(--text-muted)">Nhập thông tin chi nhánh mới trong hệ thống.</p>
+      </div>
+      <button type="button" class="icon-btn icon-btn-sm" onClick="{{ closeAddBranch }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+    <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:16px">
+      <label class="field-wrap">
+        <label>Tên chi nhánh</label>
+        <span class="field" style="border-color:{{ brNameBorder }}"><input placeholder="Quận 7 — Nguyễn Thị Thập" value="{{ brName }}" onChange="{{ onBrName }}"></span>
+        <sc-if value="{{ brNameError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ brNameError }}</span></sc-if>
+      </label>
+      <label class="field-wrap">
+        <label>Địa chỉ</label>
+        <span class="field" style="border-color:{{ brAddressBorder }}"><input placeholder="Số nhà, đường, quận" value="{{ brAddress }}" onChange="{{ onBrAddress }}"></span>
+        <sc-if value="{{ brAddressError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ brAddressError }}</span></sc-if>
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <label class="field-wrap">
+          <label>Quản lý phụ trách</label>
+          <span class="field"><input placeholder="Nguyễn Văn A" value="{{ brManager }}" onChange="{{ onBrManager }}"></span>
+        </label>
+        <label class="field-wrap">
+          <label>Điện thoại</label>
+          <span class="field" style="border-color:{{ brPhoneBorder }}"><input placeholder="09xx xxx xxx" value="{{ brPhone }}" onChange="{{ onBrPhone }}"></span>
+          <sc-if value="{{ brPhoneError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ brPhoneError }}</span></sc-if>
+        </label>
+      </div>
+      <label class="field-wrap">
+        <label>Giờ mở cửa</label>
+        <span class="field"><input placeholder="10:00–21:00" value="{{ brHours }}" onChange="{{ onBrHours }}"></span>
+      </label>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:24px">
+      <button type="button" class="btn btn-secondary btn-md" onClick="{{ closeAddBranch }}">Huỷ</button>
+      <button type="button" class="btn btn-primary btn-md" onClick="{{ submitAddBranch }}">Thêm chi nhánh</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ dialogOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(46,42,34,.38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50" onClick="{{ closeAdd }}">
+  <div role="dialog" aria-modal="true" onClick="{{ stopClick }}" style="width:100%;max-width:560px;background:var(--surface-card);border-radius:var(--radius-modal);box-shadow:var(--shadow-modal);border:1px solid var(--border);overflow:hidden">
+    <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 24px 0">
+      <div style="flex:1">
+        <h3 style="font-size:var(--fs-h3);font-weight:600">Thêm nhân viên</h3>
+        <p style="margin-top:6px;font-size:var(--fs-body-sm);color:var(--text-muted)">Nhập thông tin nhân viên mới. Tài khoản đăng nhập sẽ được gửi qua email.</p>
+      </div>
+      <button type="button" class="icon-btn icon-btn-sm" onClick="{{ closeAdd }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+
+    <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:16px">
+      <label class="field-wrap">
+        <label>Họ và tên</label>
+        <span class="field" style="border-color:{{ nameBorder }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input placeholder="Nguyễn Văn A" value="{{ name }}" onChange="{{ onName }}"></span>
+        <sc-if value="{{ nameError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ nameError }}</span></sc-if>
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <label class="field-wrap">
+          <label>Số điện thoại</label>
+          <span class="field" style="border-color:{{ phoneBorder }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg><input placeholder="09xx xxx xxx" value="{{ phone }}" onChange="{{ onPhone }}"></span>
+          <sc-if value="{{ phoneError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ phoneError }}</span></sc-if>
+        </label>
+        <label class="field-wrap">
+          <label>Email</label>
+          <span class="field"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg><input placeholder="ten@duyenphan.vn" value="{{ email }}" onChange="{{ onEmail }}"></span>
+        </label>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <label class="field-wrap">
+          <label>Chi nhánh</label>
+          <span class="field" style="border-color:{{ branchBorder }}">
+            <select value="{{ branch }}" onChange="{{ onBranch }}">
+              <option value="">— Chọn chi nhánh —</option>
+              <sc-for list="{{ branchOptions }}" as="b" hint-placeholder-count="5"><option value="{{ b }}">{{ b }}</option></sc-for>
+            </select>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+          <sc-if value="{{ branchError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ branchError }}</span></sc-if>
+        </label>
+        <label class="field-wrap">
+          <label>Vai trò</label>
+          <span class="field" style="border-color:{{ roleBorder }}">
+            <select value="{{ role }}" onChange="{{ onRole }}">
+              <option value="">— Chọn vai trò —</option>
+              <sc-for list="{{ roleOptions }}" as="r" hint-placeholder-count="5"><option value="{{ r }}">{{ r }}</option></sc-for>
+            </select>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+          <sc-if value="{{ roleError }}" hint-placeholder-val="{{ false }}"><span class="err-msg">{{ roleError }}</span></sc-if>
+        </label>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <label class="field-wrap">
+          <label>Ngày vào làm</label>
+          <span class="field"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-subtle);flex:0 0 auto"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg><input placeholder="dd/mm/yyyy" value="{{ start }}" onChange="{{ onStart }}"></span>
+        </label>
+        <label class="field-wrap">
+          <label>Lương cơ bản</label>
+          <span class="field"><input placeholder="0" value="{{ salary }}" onChange="{{ onSalary }}"><span style="font-size:var(--fs-label);color:var(--text-subtle);flex:0 0 auto">₫ / tháng</span></span>
+        </label>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:24px">
+      <button type="button" class="btn btn-secondary btn-md" onClick="{{ closeAdd }}">Huỷ</button>
+      <button type="button" class="btn btn-primary btn-md" onClick="{{ submitAdd }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>Thêm nhân viên</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ profileOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:56;display:flex;justify-content:flex-end" onClick="{{ closeProfile }}">
+  <div style="position:absolute;inset:0;background:rgba(46,42,34,.38)"></div>
+  <aside onClick="{{ stopClick }}" style="position:relative;width:520px;max-width:94vw;height:100%;background:var(--surface-card);border-left:1px solid var(--border);box-shadow:var(--shadow-modal);display:flex;flex-direction:column">
+    <div style="display:flex;align-items:flex-start;gap:16px;padding:24px;border-bottom:1px solid var(--border)">
+      <span style="width:56px;height:56px;flex:0 0 auto;border-radius:999px;background:var(--green-100);color:var(--green-800);display:grid;place-items:center;font-weight:600;font-size:18px">{{ profileInitials }}</span>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <h2 style="font-size:26px;font-weight:600;letter-spacing:-0.01em">{{ profileName }}</h2>
+          <span class="badge" style="background:{{ profileRoleBg }};color:{{ profileRoleColor }}">{{ profileRole }}</span>
+        </div>
+        <p style="margin-top:4px;font-size:14px;color:var(--text-muted)">{{ profileMeta }}</p>
+      </div>
+      <button type="button" class="icon-btn icon-btn-sm" onClick="{{ closeProfile }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+
+    <div style="padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:24px;flex:1">
+      <section>
+        <h3 style="margin-bottom:12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--text-muted)">Thông tin</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+          <div style="display:flex;gap:10px"><span style="width:130px;color:var(--text-muted)">Mã nhân viên</span><span style="flex:1;font-weight:500">{{ profileCode }}</span></div>
+          <div style="display:flex;gap:10px"><span style="width:130px;color:var(--text-muted)">Chi nhánh</span><span style="flex:1;font-weight:500">{{ profileBranch }}</span></div>
+          <div style="display:flex;gap:10px"><span style="width:130px;color:var(--text-muted)">Điện thoại</span><span style="flex:1;font-weight:500">{{ profilePhone }}</span></div>
+          <div style="display:flex;gap:10px"><span style="width:130px;color:var(--text-muted)">Trạng thái</span><span style="flex:1;font-weight:500">{{ profileStatusLabel }}</span></div>
+        </div>
+      </section>
+
+      <section>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+          <h3 style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--text-muted)">Lịch ca tuần này</h3>
+          <span style="font-size:13px;color:var(--text-muted)">31/08 – 06/09/2026</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+          <sc-for list="{{ profileWeek }}" as="d" hint-placeholder-count="7">
+            <div style="border:1px solid {{ d.border }};background:{{ d.bg }};border-radius:8px;padding:10px 8px;text-align:center;min-height:88px;display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--text-muted)">{{ d.day }}</span>
+              <span style="font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums">{{ d.date }}</span>
+              <span style="margin-top:auto;font-size:12px;font-weight:600;line-height:1.35;color:{{ d.text }}">{{ d.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:12px;font-size:12px;color:var(--text-muted);flex-wrap:wrap">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#E7EEE2;border:1px solid #A8BE9C"></span>Ca sáng</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#F7E9CC;border:1px solid #C98A2C"></span>Ca chiều</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#F3EDE2;border:1px solid #E4DCC8"></span>Nghỉ / chưa xếp</span>
+        </div>
+      </section>
+    </div>
+  </aside>
+</div>
+</sc-if>
+
+<sc-if value="{{ terminateOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(46,42,34,.38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:58" onClick="{{ cancelTerminate }}">
+  <div role="alertdialog" aria-modal="true" onClick="{{ stopClick }}" style="width:100%;max-width:420px;background:var(--surface-card);border-radius:var(--radius-modal);box-shadow:var(--shadow-modal);border:1px solid var(--border);overflow:hidden">
+    <div style="padding:24px">
+      <h3 style="font-size:var(--fs-h3);font-weight:600">Cho {{ terminateName }} nghỉ làm?</h3>
+      <p style="margin-top:8px;font-size:var(--fs-body-sm);color:var(--text-muted)">Nhân viên sẽ chuyển sang trạng thái đã nghỉ việc và mất quyền truy cập hệ thống.</p>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:0 24px 24px">
+      <button type="button" class="btn btn-secondary btn-md" onClick="{{ cancelTerminate }}">Giữ nhân viên</button>
+      <button type="button" class="btn btn-danger btn-md" onClick="{{ confirmTerminate }}">Cho nghỉ làm</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ toastMsg }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-control);box-shadow:var(--shadow-modal);font-size:var(--fs-body-sm)">
+  <span style="color:var(--success-text);display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+  {{ toastMsg }}
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1600,"height":1080}}'>
+const BRANCHES = ['Trụ sở', 'Quận 3 — Võ Văn Tần', 'Quận 1 — Lê Lợi', 'Tân Bình — Hoàng Việt', 'Thủ Đức — Kha Vạn Cân'];
+const ROLES = ['Quản lý', 'Đầu bếp', 'Phục vụ', 'Thu ngân', 'Shipper'];
+const ROLE_STYLE = {
+  'Quản lý': ['#E7EEE2', '#3A5430'],
+  'Đầu bếp': ['#E8D9BE', '#8E5726'],
+  'Phục vụ': ['#DFE7EF', '#3F5C79'],
+  'Thu ngân': ['#F7E9CC', '#8C5E14'],
+  'Shipper': ['#F3EDE2', '#6B6455']
+};
+const STATUS_STYLE = {
+  active: ['#E7EEE2', '#3A5430', 'Đang làm'],
+  leave: ['#F3EDE2', '#6B6455', 'Nghỉ phép'],
+  terminated: ['#F6DED7', '#8E3421', 'Đã nghỉ việc']
+};
+const DAYS = [['T2', '31/08'], ['T3', '01/09'], ['T4', '02/09'], ['T5', '03/09'], ['T6', '04/09'], ['T7', '05/09'], ['CN', '06/09']];
+const SHIFT_CELL = { am: ['#E7EEE2', '#A8BE9C', '#3A5430', 'Ca sáng'], pm: ['#F7E9CC', '#C98A2C', '#8C5E14', 'Ca chiều'], off: ['#F3EDE2', '#E4DCC8', '#928B79', 'Nghỉ'] };
+const INITIAL_STAFF = [
+  { id: 1, name: 'An Nguyễn', code: 'NV-0001', branch: 'Trụ sở', role: 'Quản lý', shift: 'Hành chính 08:00–17:00', phone: '0901 234 567', status: 'active', week: ['am', 'am', 'am', 'am', 'am', 'off', 'off'] },
+  { id: 2, name: 'Trần Văn Bình', code: 'NV-0042', branch: 'Quận 3 — Võ Văn Tần', role: 'Đầu bếp', shift: 'Sáng 06:00–14:00', phone: '0902 345 678', status: 'active', week: ['am', 'am', 'am', 'off', 'am', 'am', 'am'] },
+  { id: 3, name: 'Lê Thị Cúc', code: 'NV-0088', branch: 'Quận 1 — Lê Lợi', role: 'Phục vụ', shift: 'Chiều 14:00–22:00', phone: '0903 456 789', status: 'active', week: ['pm', 'pm', 'pm', 'pm', 'off', 'pm', 'pm'] },
+  { id: 4, name: 'Phạm Minh Dũng', code: 'NV-0113', branch: 'Tân Bình — Hoàng Việt', role: 'Shipper', shift: 'Ca linh động 09:00–17:00', phone: '0904 567 890', status: 'active', week: ['am', 'am', 'pm', 'pm', 'am', 'am', 'off'] },
+  { id: 5, name: 'Võ Thu Hằng', code: 'NV-0126', branch: 'Thủ Đức — Kha Vạn Cân', role: 'Thu ngân', shift: 'Nghỉ phép đến 08/09', phone: '0905 678 901', status: 'leave', week: ['off', 'off', 'off', 'off', 'off', 'off', 'off'] }
+];
+const EMPTY_FORM = { name: '', phone: '', email: '', branch: '', role: '', start: '', salary: '' };
+const VIET_MAP = {
+  'à':'a','á':'a','ạ':'a','ả':'a','ã':'a','â':'a','ầ':'a','ấ':'a','ậ':'a','ẩ':'a','ẫ':'a','ă':'a','ằ':'a','ắ':'a','ặ':'a','ẳ':'a','ẵ':'a',
+  'è':'e','é':'e','ẹ':'e','ẻ':'e','ẽ':'e','ê':'e','ề':'e','ế':'e','ệ':'e','ể':'e','ễ':'e',
+  'ì':'i','í':'i','ị':'i','ỉ':'i','ĩ':'i',
+  'ò':'o','ó':'o','ọ':'o','ỏ':'o','õ':'o','ô':'o','ồ':'o','ố':'o','ộ':'o','ổ':'o','ỗ':'o','ơ':'o','ờ':'o','ớ':'o','ợ':'o','ở':'o','ỡ':'o',
+  'ù':'u','ú':'u','ụ':'u','ủ':'u','ũ':'u','ư':'u','ừ':'u','ứ':'u','ự':'u','ử':'u','ữ':'u',
+  'ỳ':'y','ý':'y','ỵ':'y','ỷ':'y','ỹ':'y',
+  'đ':'d'
+};
+const BRANCH_STATUS_STYLE = {
+  active: ['#E7EEE2', '#3A5430', 'Đang mở'],
+  paused: ['#F7E9CC', '#8C5E14', 'Tạm đóng']
+};
+const INITIAL_BRANCHES = [
+  { id: 1, name: 'Trụ sở', address: '45 Trần Quốc Thảo, Quận 3, TP.HCM', manager: 'An Nguyễn', phone: '0901 234 567', hours: '08:00–17:00', revenue: '—', status: 'active' },
+  { id: 2, name: 'Quận 3 — Võ Văn Tần', address: '284 Võ Văn Tần, Quận 3, TP.HCM', manager: 'Trần Văn Bình', phone: '0902 345 678', hours: '10:00–21:00', revenue: '32.480.000₫', status: 'active' },
+  { id: 3, name: 'Quận 1 — Lê Lợi', address: '58 Lê Lợi, Bến Nghé, Quận 1, TP.HCM', manager: 'Đặng Bảo Châu', phone: '0932 887 665', hours: '10:00–22:00', revenue: '27.140.000₫', status: 'active' },
+  { id: 4, name: 'Tân Bình — Hoàng Việt', address: '19 Hoàng Việt, Tân Bình, TP.HCM', manager: 'Lê Thị Cúc', phone: '0903 456 789', hours: '10:00–20:30', revenue: '19.620.000₫', status: 'paused' },
+  { id: 5, name: 'Thủ Đức — Kha Vạn Cân', address: '432 Kha Vạn Cân, Thủ Đức, TP.HCM', manager: 'Phạm Minh Dũng', phone: '0904 567 890', hours: '10:00–21:00', revenue: '15.280.000₫', status: 'active' },
+  { id: 6, name: 'Phú Nhuận — Phan Xích Long', address: '12 Phan Xích Long, Phú Nhuận, TP.HCM', manager: 'Võ Thu Hằng', phone: '0905 678 901', hours: '10:00–21:00', revenue: '11.940.000₫', status: 'active' }
+];
+const EMPTY_BRANCH_FORM = { name: '', address: '', manager: '', phone: '', hours: '' };
+
+class Component extends DCLogic {
+  state = {
+    list: INITIAL_STAFF,
+    nextNum: 187,
+    dialogOpen: false,
+    form: { ...EMPTY_FORM },
+    errors: {},
+    menuOpenId: null,
+    profileId: null,
+    terminateId: null,
+    toastMsg: '',
+    query: '', filterBranch: '', filterRole: '',
+    page: 'staff',
+    branchList: INITIAL_BRANCHES,
+    branchQuery: '',
+    branchDialogOpen: false,
+    branchForm: { ...EMPTY_BRANCH_FORM },
+    branchErrors: {},
+    branchMenuOpenId: null,
+    newStaffPickedId: '', newStaffEmail: '', newStaffPassword: ''
+  };
+
+  initials(name) { return name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase(); }
+  flash(msg) { this.setState({ toastMsg: msg }); setTimeout(() => this.setState({ toastMsg: '' }), 3000); }
+
+  openAdd() { this.setState({ dialogOpen: true, form: { ...EMPTY_FORM }, errors: {} }); }
+  closeAdd() { this.setState({ dialogOpen: false }); }
+  stopClick(e) { e.stopPropagation(); }
+  setField(key) { return e => { const v = e.target.value; this.setState(s => ({ form: { ...s.form, [key]: v } })); }; }
+  setField2(key) { return e => { const v = e.target.value; this.setState({ [key]: v }); }; }
+
+  scrollTop() { try { window.scrollTo(0, 0); } catch (e) {} }
+  goStaff() { this.setState({ page: 'staff' }); this.scrollTop(); }
+  goBranches() { this.setState({ page: 'branches' }); this.scrollTop(); }
+  goNewStaff() { this.setState({ page: 'newStaff' }); this.scrollTop(); }
+
+  randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  slug(name) {
+    return name.trim().toLowerCase().split('').map(ch => VIET_MAP[ch] || ch).join('').replace(/[^a-z0-9]+/g, '.').replace(/^\.+|\.+$/g, '');
+  }
+  pickedStaff() { return this.state.list.find(x => String(x.id) === String(this.state.newStaffPickedId)) || null; }
+  randomGmail() {
+    const p = this.pickedStaff();
+    const base = p ? this.slug(p.name) : 'nhanvien';
+    this.setState({ newStaffEmail: base + this.randomInt(10, 999) + '@gmail.com' });
+  }
+  randomPassword() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%';
+    let out = '';
+    for (let i = 0; i < 10; i++) out += chars[this.randomInt(0, chars.length - 1)];
+    this.setState({ newStaffPassword: out });
+  }
+  randomStaffAccount() { this.randomGmail(); this.randomPassword(); }
+  createNewStaffAccount() {
+    const p = this.pickedStaff();
+    if (!p || !this.state.newStaffEmail || !this.state.newStaffPassword) {
+      this.flash('Chọn nhân viên và random đủ Gmail, mật khẩu trước khi tạo');
+      return;
+    }
+    this.flash('Đã tạo tài khoản cho ' + p.name + ' — gửi thông tin này cho họ để đăng nhập lần đầu.');
+    this.setState({ newStaffPickedId: '', newStaffEmail: '', newStaffPassword: '' });
+  }
+
+  openAddBranch() { this.setState({ branchDialogOpen: true, branchForm: { ...EMPTY_BRANCH_FORM }, branchErrors: {} }); }
+  closeAddBranch() { this.setState({ branchDialogOpen: false }); }
+  setBrField(key) { return e => { const v = e.target.value; this.setState(s => ({ branchForm: { ...s.branchForm, [key]: v }, branchErrors: { ...s.branchErrors, [key]: null } })); }; }
+
+  submitAddBranch() {
+    const f = this.state.branchForm;
+    const errors = {};
+    if (!f.name.trim()) errors.name = 'Nhập tên chi nhánh';
+    if (!f.address.trim()) errors.address = 'Nhập địa chỉ';
+    if (!f.phone.trim()) errors.phone = 'Nhập số điện thoại';
+    if (Object.keys(errors).length) { this.setState({ branchErrors: errors }); return; }
+    const row = {
+      id: Date.now(), name: f.name.trim(), address: f.address.trim(),
+      manager: f.manager.trim() || '—', phone: f.phone.trim(), hours: f.hours.trim() || '—',
+      revenue: '—', status: 'active'
+    };
+    this.setState(s => ({ branchList: [row, ...s.branchList], branchDialogOpen: false }));
+    this.flash('Đã thêm chi nhánh');
+  }
+
+  toggleBranchMenu(id) { this.setState(s => ({ branchMenuOpenId: s.branchMenuOpenId === id ? null : id })); }
+  closeBranchMenu() { this.setState({ branchMenuOpenId: null }); }
+  toggleBranchStatus(id) {
+    this.setState(s => ({
+      branchList: s.branchList.map(b => b.id === id ? { ...b, status: b.status === 'active' ? 'paused' : 'active' } : b),
+      branchMenuOpenId: null
+    }));
+    this.flash('Đã cập nhật trạng thái chi nhánh');
+  }
+
+  positionBranchMenu() {
+    const pop = document.querySelector('[data-branch-menu-pop]');
+    if (!pop) return;
+    const id = this.state.branchMenuOpenId;
+    if (id == null) return;
+    const btn = document.querySelector('[data-branch-menu-btn="' + id + '"]');
+    if (!btn) return;
+    const r = btn.getBoundingClientRect();
+    pop.style.top = (r.bottom + 4) + 'px';
+    pop.style.left = (r.right - 190) + 'px';
+    pop.style.visibility = 'visible';
+  }
+
+  importCsv() {
+    const input = document.querySelector('[data-csv-input]');
+    if (input) input.click();
+  }
+
+  onCsvChosen(e) {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = String(reader.result || '');
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      if (!lines.length) { this.flash('Tệp CSV trống'); return; }
+      let start = 0;
+      const first = lines[0].toLowerCase();
+      if (first.includes('tên') || first.includes('ten') || first.includes('name')) start = 1;
+      const added = [];
+      let num = this.state.nextNum;
+      for (let i = start; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim());
+        const [name, phone, branch, role] = cols;
+        if (!name) continue;
+        added.push({
+          id: Date.now() + i, name, code: 'NV-' + String(num).padStart(4, '0'),
+          branch: branch || BRANCHES[0], role: role || ROLES[0], shift: 'Chưa xếp ca',
+          phone: phone || '', status: 'active', week: ['off', 'off', 'off', 'off', 'off', 'off', 'off']
+        });
+        num++;
+      }
+      if (!added.length) { this.flash('Không đọc được dòng nhân viên nào từ CSV'); return; }
+      this.setState(s => ({ list: [...added, ...s.list], nextNum: num }));
+      this.flash('Đã nhập ' + added.length + ' nhân viên từ CSV');
+    };
+    reader.onerror = () => this.flash('Không đọc được tệp CSV');
+    reader.readAsText(file);
+  }
+
+  submitAdd() {
+    const f = this.state.form;
+    const errors = {};
+    if (!f.name.trim()) errors.name = 'Nhập họ và tên';
+    if (!f.phone.trim()) errors.phone = 'Nhập số điện thoại';
+    if (!f.branch) errors.branch = 'Chọn chi nhánh';
+    if (!f.role) errors.role = 'Chọn vai trò';
+    if (Object.keys(errors).length) { this.setState({ errors }); return; }
+    const num = this.state.nextNum;
+    const row = {
+      id: Date.now(), name: f.name.trim(), code: 'NV-' + String(num).padStart(4, '0'),
+      branch: f.branch, role: f.role, shift: 'Chưa xếp ca', phone: f.phone.trim(), status: 'active',
+      week: ['off', 'off', 'off', 'off', 'off', 'off', 'off']
+    };
+    this.setState(s => ({ list: [row, ...s.list], nextNum: num + 1, dialogOpen: false }));
+    this.flash('Đã thêm nhân viên');
+  }
+
+  toggleMenu(id) { this.setState(s => ({ menuOpenId: s.menuOpenId === id ? null : id })); }
+  closeMenu() { this.setState({ menuOpenId: null }); }
+  viewProfile(id) { this.setState({ profileId: id, menuOpenId: null }); }
+  closeProfile() { this.setState({ profileId: null }); }
+  askTerminate(id) { this.setState({ terminateId: id, menuOpenId: null }); }
+  cancelTerminate() { this.setState({ terminateId: null }); }
+  confirmTerminate() {
+    const id = this.state.terminateId;
+    this.setState(s => ({ list: s.list.map(x => x.id === id ? { ...x, status: 'terminated' } : x), terminateId: null }));
+    this.flash('Đã cập nhật trạng thái nhân viên');
+  }
+
+  componentDidMount() { this.positionMenu(); this.positionBranchMenu(); }
+  componentDidUpdate() { this.positionMenu(); this.positionBranchMenu(); }
+  positionMenu() {
+    const pop = document.querySelector('[data-menu-pop]');
+    if (!pop) return;
+    const id = this.state.menuOpenId;
+    if (id == null) return;
+    const btn = document.querySelector('[data-menu-btn="' + id + '"]');
+    if (!btn) return;
+    const r = btn.getBoundingClientRect();
+    pop.style.top = (r.bottom + 4) + 'px';
+    pop.style.left = (r.right - 190) + 'px';
+    pop.style.visibility = 'visible';
+  }
+
+  renderVals() {
+    const f = this.state.form, er = this.state.errors;
+    const borderFor = k => er[k] ? 'var(--danger)' : 'var(--border-strong)';
+    const q = this.state.query.trim().toLowerCase();
+    const qDigits = q.replace(/\s+/g, '');
+    const filtered = this.state.list.filter(s => {
+      const matchesQuery = !q || s.name.toLowerCase().includes(q) || s.phone.replace(/\s+/g, '').includes(qDigits);
+      const matchesBranch = !this.state.filterBranch || s.branch === this.state.filterBranch;
+      const matchesRole = !this.state.filterRole || s.role === this.state.filterRole;
+      return matchesQuery && matchesBranch && matchesRole;
+    });
+    const rows = filtered.map(s => {
+      const [roleBg, roleColor] = ROLE_STYLE[s.role] || ['#F3EDE2', '#6B6455'];
+      const [statusBg, statusColor, statusLabel] = STATUS_STYLE[s.status] || STATUS_STYLE.active;
+      return {
+        ...s, initials: this.initials(s.name), roleBg, roleColor, statusBg, statusColor, statusLabel,
+        menuOpen: this.state.menuOpenId === s.id, canTerminate: s.status !== 'terminated',
+        toggleMenu: () => this.toggleMenu(s.id), viewProfile: () => this.viewProfile(s.id), askTerminate: () => this.askTerminate(s.id)
+      };
+    });
+
+    const prof = this.state.list.find(x => x.id === this.state.profileId) || null;
+    const [profRoleBg, profRoleColor] = prof ? (ROLE_STYLE[prof.role] || ['#F3EDE2', '#6B6455']) : ['#F3EDE2', '#6B6455'];
+    const [, , profStatusLabel] = prof ? (STATUS_STYLE[prof.status] || STATUS_STYLE.active) : ['', '', ''];
+    const profileWeek = prof ? DAYS.map(([day, date], i) => {
+      const [bg, border, text, label] = SHIFT_CELL[prof.week[i]] || SHIFT_CELL.off;
+      return { day, date, bg, border, text, label };
+    }) : [];
+
+    const term = this.state.list.find(x => x.id === this.state.terminateId) || null;
+
+    const bq = this.state.branchQuery.trim().toLowerCase();
+    const filteredBranches = this.state.branchList.filter(b =>
+      !bq || b.name.toLowerCase().includes(bq) || b.address.toLowerCase().includes(bq)
+    );
+    const branchRows = filteredBranches.map(b => {
+      const [statusBg, statusColor, statusLabel] = BRANCH_STATUS_STYLE[b.status] || BRANCH_STATUS_STYLE.active;
+      return {
+        ...b, statusBg, statusColor, statusLabel,
+        menuOpen: this.state.branchMenuOpenId === b.id,
+        toggleMenu: () => this.toggleBranchMenu(b.id),
+        toggleStatus: () => this.toggleBranchStatus(b.id),
+        toggleStatusLabel: b.status === 'active' ? 'Tạm đóng cửa' : 'Mở lại'
+      };
+    });
+    const brf = this.state.branchForm, brer = this.state.branchErrors;
+    const brBorderFor = k => brer[k] ? 'var(--danger)' : 'var(--border-strong)';
+
+    return {
+      rows, count: this.state.list.length, filteredCount: filtered.length, activeCount: this.state.list.filter(x => x.status === 'active').length,
+      query: this.state.query, onQuery: this.setField2('query'),
+      filterBranch: this.state.filterBranch, onFilterBranch: this.setField2('filterBranch'), filterBranchOptions: BRANCHES,
+      filterRole: this.state.filterRole, onFilterRole: this.setField2('filterRole'), filterRoleOptions: ROLES,
+      importCsv: () => this.importCsv(), onCsvChosen: e => this.onCsvChosen(e),
+      dialogOpen: this.state.dialogOpen,
+      openAdd: () => this.openAdd(), closeAdd: () => this.closeAdd(),
+      stopClick: e => this.stopClick(e), submitAdd: () => this.submitAdd(),
+      name: f.name, onName: this.setField('name'), nameBorder: borderFor('name'), nameError: er.name || '',
+      phone: f.phone, onPhone: this.setField('phone'), phoneBorder: borderFor('phone'), phoneError: er.phone || '',
+      email: f.email, onEmail: this.setField('email'),
+      branch: f.branch, onBranch: this.setField('branch'), branchBorder: borderFor('branch'), branchError: er.branch || '', branchOptions: BRANCHES,
+      role: f.role, onRole: this.setField('role'), roleBorder: borderFor('role'), roleError: er.role || '', roleOptions: ROLES,
+      start: f.start, onStart: this.setField('start'),
+      salary: f.salary, onSalary: this.setField('salary'),
+      anyMenuOpen: this.state.menuOpenId != null, closeMenu: () => this.closeMenu(),
+      profileOpen: !!prof, closeProfile: () => this.closeProfile(),
+      profileInitials: prof ? this.initials(prof.name) : '', profileName: prof ? prof.name : '',
+      profileRole: prof ? prof.role : '', profileRoleBg: profRoleBg, profileRoleColor: profRoleColor,
+      profileMeta: prof ? (prof.branch + ' · ' + prof.phone) : '',
+      profileCode: prof ? prof.code : '', profileBranch: prof ? prof.branch : '', profilePhone: prof ? prof.phone : '',
+      profileStatusLabel: profStatusLabel, profileWeek,
+      terminateOpen: !!term, terminateName: term ? term.name : '',
+      cancelTerminate: () => this.cancelTerminate(), confirmTerminate: () => this.confirmTerminate(),
+      toastMsg: this.state.toastMsg,
+
+      isStaffPage: this.state.page === 'staff', isBranchesPage: this.state.page === 'branches', isNewStaffPage: this.state.page === 'newStaff',
+      staffNavActive: this.state.page === 'staff' ? 'active' : '', branchesNavActive: this.state.page === 'branches' ? 'active' : '', newStaffNavActive: this.state.page === 'newStaff' ? 'active' : '',
+      goStaff: () => this.goStaff(), goBranches: () => this.goBranches(), goNewStaff: () => this.goNewStaff(),
+      staffPickOptions: this.state.list.filter(s => s.status !== 'terminated').map(s => ({ id: s.id, label: s.name + ' — ' + s.branch })),
+      newStaffPickedId: this.state.newStaffPickedId, onNewStaffPickedId: this.setField2('newStaffPickedId'),
+      hasPickedStaff: !!this.pickedStaff(), pickedStaffName: this.pickedStaff() ? this.pickedStaff().name : '', pickedStaffPhone: this.pickedStaff() ? this.pickedStaff().phone : '',
+      newStaffEmail: this.state.newStaffEmail, onNewStaffEmail: this.setField2('newStaffEmail'),
+      newStaffPassword: this.state.newStaffPassword, onNewStaffPassword: this.setField2('newStaffPassword'),
+      randomGmail: () => this.randomGmail(), randomPassword: () => this.randomPassword(),
+      randomStaffAccount: () => this.randomStaffAccount(), createNewStaffAccount: () => this.createNewStaffAccount(),
+
+      branchRows, branchCount: this.state.branchList.length, branchFilteredCount: filteredBranches.length,
+      branchActiveCount: this.state.branchList.filter(b => b.status === 'active').length,
+      branchRevenueTotal: (() => {
+        const total = this.state.branchList.reduce((sum, b) => {
+          const n = Number(String(b.revenue).replace(/[^\d]/g, ''));
+          return sum + (isNaN(n) ? 0 : n);
+        }, 0);
+        return total.toLocaleString('vi-VN') + '₫';
+      })(),
+      branchQuery: this.state.branchQuery, onBranchQuery: this.setField2('branchQuery'),
+      openAddBranch: () => this.openAddBranch(), closeAddBranch: () => this.closeAddBranch(), submitAddBranch: () => this.submitAddBranch(),
+      anyBranchMenuOpen: this.state.branchMenuOpenId != null, closeBranchMenu: () => this.closeBranchMenu(),
+      branchDialogOpen: this.state.branchDialogOpen,
+      brName: brf.name, onBrName: this.setBrField('name'), brNameBorder: brBorderFor('name'), brNameError: brer.name || '',
+      brAddress: brf.address, onBrAddress: this.setBrField('address'), brAddressBorder: brBorderFor('address'), brAddressError: brer.address || '',
+      brManager: brf.manager, onBrManager: this.setBrField('manager'),
+      brPhone: brf.phone, onBrPhone: this.setBrField('phone'), brPhoneBorder: brBorderFor('phone'), brPhoneError: brer.phone || '',
+      brHours: brf.hours, onBrHours: this.setBrField('hours')
+    };
+  }
+}
+</script>
+</body>
+</html>

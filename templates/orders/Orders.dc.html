@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Đặt hàng & Giao hàng" description="Bảng đơn hàng với thẻ tổng quan, tab trạng thái, lọc chi nhánh/ngày và panel chi tiết có timeline giao hàng." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+<style>body{margin:0;background:#FAF7F2}</style>
+</helmet>
+<div style="font-family:'Be Vietnam Pro',system-ui,sans-serif;color:#2E2A22;background:#FAF7F2;font-size:15px;line-height:1.6;min-height:100vh;display:flex;align-items:stretch">
+
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Sidebar" items="{{ navItems }}" active="{{ active }}" onSelect="{{ setActive }}" footer="{{ userFooter }}" style="position:sticky;top:0;height:100vh" hint-size="248px,100vh"></x-import>
+
+<div style="flex:1;min-width:0">
+
+<div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:#FFFFFF;border-bottom:1px solid #E4DCC8;position:sticky;top:0;z-index:10">
+<div style="flex:1">
+<h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">Đặt hàng &amp; Giao hàng</h2>
+<div style="font-size:12px;color:#6B6455">{{ countLine }}</div>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="bell" label="Thông báo" hint-size="40px,40px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" icon="plus" hint-size="130px,40px">Tạo đơn</x-import>
+</div>
+
+<div style="padding:32px;display:flex;flex-direction:column;gap:24px">
+
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="inbox" label="Đơn mới" value="9" delta="Chờ xác nhận" deltaTone="warning" hint-size="100%,116px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="chef-hat" label="Đang xử lý" value="14" delta="Bếp đang chuẩn bị" deltaTone="warning" hint-size="100%,116px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="truck" label="Đang giao" value="6" delta="1 đơn quá 30 phút" deltaTone="danger" hint-size="100%,116px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="circle-check" label="Hoàn tất hôm nay" value="235" delta="+12 đơn so với hôm qua" hint-size="100%,116px"></x-import>
+</div>
+
+<section style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden">
+
+<div style="padding:20px 24px 0;display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Select" size="sm" label="Chi nhánh" options="{{ branchOptions }}" value="{{ branch }}" onChange="{{ onBranch }}" wrapperStyle="{{ filterWrap }}" hint-size="190px,58px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" size="sm" label="Từ ngày" icon="calendar-days" value="{{ from }}" onChange="{{ onFrom }}" wrapperStyle="{{ dateWrap }}" hint-size="150px,58px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" size="sm" label="Đến ngày" icon="calendar-days" value="{{ to }}" onChange="{{ onTo }}" wrapperStyle="{{ dateWrap }}" hint-size="150px,58px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" size="sm" label="Tìm kiếm" icon="search" placeholder="Mã đơn hoặc tên khách" value="{{ query }}" onChange="{{ onQuery }}" wrapperStyle="{{ searchWrap }}" hint-size="240px,58px"></x-import>
+<div style="flex:1"></div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="download" label="Xuất Excel" size="sm" variant="outline" hint-size="32px,32px"></x-import>
+</div>
+
+<div style="padding:16px 24px 0">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Tabs" items="{{ tabItems }}" value="{{ tab }}" onChange="{{ setTab }}" hint-size="100%,40px"></x-import>
+</div>
+
+{{ table }}
+
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Pagination" page="{{ one }}" pageCount="{{ pageCount }}" total="{{ total }}" hint-size="100%,52px"></x-import>
+</section>
+
+</div>
+</div>
+
+<sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:60;display:flex;justify-content:flex-end">
+<div style="position:absolute;inset:0;background:rgba(46,42,34,.38)" onClick="{{ closeDetail }}"></div>
+<aside style="position:relative;width:520px;max-width:92vw;height:100%;background:#FFFFFF;border-left:1px solid #E4DCC8;box-shadow:0 16px 40px rgba(46,42,34,.14);display:flex;flex-direction:column">
+
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 24px 20px;border-bottom:1px solid #E4DCC8">
+<div>
+<div style="display:flex;align-items:center;gap:10px">
+<h2 style="margin:0;font-size:26px;font-weight:600;letter-spacing:-0.01em">{{ detail.code }}</h2>
+{{ detail.chip }}
+</div>
+<p style="margin:6px 0 0;font-size:14px;color:#6B6455">{{ detail.meta }}</p>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="x" label="Đóng" onClick="{{ closeDetail }}" hint-size="40px,40px"></x-import>
+</div>
+
+<div style="padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:24px;flex:1">
+
+<section>
+<h3 style="margin:0 0 12px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#6B6455">Trạng thái đơn</h3>
+<div style="display:flex;flex-direction:column;gap:0">
+<sc-for list="{{ detail.timeline }}" as="s" hint-placeholder-count="4">
+<div style="display:flex;gap:14px">
+<div style="display:flex;flex-direction:column;align-items:center;flex:0 0 auto">
+<span style="width:26px;height:26px;border-radius:999px;display:grid;place-items:center;font-size:12px;font-weight:600;background:#F3EDE2;color:#928B79;border:1px solid #E4DCC8" data-step-dot="{{ s.state }}">{{ s.num }}</span>
+<span style="flex:1;width:2px;background:#E4DCC8;min-height:26px" data-step-line="{{ s.lineState }}"></span>
+</div>
+<div style="flex:1;padding-bottom:18px">
+<div style="font-size:14px;font-weight:600;color:#928B79" data-step-label="{{ s.state }}">{{ s.label }}</div>
+<div style="font-size:12px;color:#6B6455">{{ s.time }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section>
+<h3 style="margin:0 0 12px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#6B6455">Khách hàng &amp; địa chỉ giao</h3>
+<div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+<div style="display:flex;gap:10px"><span style="width:110px;color:#6B6455">Khách hàng</span><span style="flex:1;font-weight:500">{{ detail.customer }}</span></div>
+<div style="display:flex;gap:10px"><span style="width:110px;color:#6B6455">Điện thoại</span><span style="flex:1;font-weight:500">{{ detail.phone }}</span></div>
+<div style="display:flex;gap:10px"><span style="width:110px;color:#6B6455">Địa chỉ giao</span><span style="flex:1;font-weight:500">{{ detail.address }}</span></div>
+<div style="display:flex;gap:10px"><span style="width:110px;color:#6B6455">Ghi chú</span><span style="flex:1;color:#6B6455">{{ detail.note }}</span></div>
+</div>
+</section>
+
+<section>
+<h3 style="margin:0 0 12px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#6B6455">Danh sách món</h3>
+<div style="border:1px solid #E4DCC8;border-radius:12px;overflow:hidden">
+<sc-for list="{{ detail.items }}" as="it" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #EFE9DC">
+<span style="width:26px;height:26px;flex:0 0 auto;border-radius:8px;background:#F6EEE1;color:#8E5726;display:grid;place-items:center;font-size:12px;font-weight:600">{{ it.qty }}</span>
+<span style="flex:1;min-width:0;font-size:14px">{{ it.name }}</span>
+<span style="font-size:14px;font-weight:500;font-variant-numeric:tabular-nums">{{ it.total }}</span>
+</div>
+</sc-for>
+<div style="display:flex;justify-content:space-between;padding:12px 16px;background:#FAF7F2">
+<span style="font-size:14px;font-weight:600">Tổng cộng</span>
+<span style="font-size:16px;font-weight:600;font-variant-numeric:tabular-nums">{{ detail.total }}</span>
+</div>
+</div>
+</section>
+
+<section>
+<h3 style="margin:0 0 12px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#6B6455">Shipper phụ trách</h3>
+<div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid #E4DCC8;border-radius:12px;background:#FAF7F2">
+<span style="width:38px;height:38px;flex:0 0 auto;border-radius:999px;background:#DFE7EF;color:#3F5C79;display:grid;place-items:center;font-weight:600;font-size:13px">{{ detail.shipperInitials }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:14px;font-weight:600">{{ detail.shipper }}</span>
+<span style="display:block;font-size:12px;color:#6B6455">{{ detail.shipperMeta }}</span>
+</span>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="phone" label="Gọi shipper" size="sm" variant="outline" hint-size="32px,32px"></x-import>
+</div>
+</section>
+
+</div>
+
+<div style="display:flex;gap:8px;padding:20px 24px;border-top:1px solid #E4DCC8">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" icon="printer" variant="secondary" full-width="{{ true }}" hint-size="100%,40px">In hoá đơn</x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" variant="danger" hint-size="110px,40px">Huỷ đơn</x-import>
+</div>
+
+</aside>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:980}}">
+const BRANCHES = ['Tất cả chi nhánh', 'Quận 3 — Võ Văn Tần', 'Quận 1 — Lê Lợi', 'Tân Bình — Hoàng Việt', 'Thủ Đức — Kha Vạn Cân'];
+
+const ORDERS = [
+  { id: 1, code: 'DP-1042', cus: 'Trần Mỹ Linh', phone: '0912 334 556', br: 'Quận 3', items: '3 phần cơm, 1 canh', qty: 4, total: '385.000₫', st: 'delivering', shipper: 'Phạm Minh Dũng', placed: '14:20 02/09/2026', eta: '14:55 02/09/2026', address: '12 Nguyễn Đình Chiểu, P.6, Quận 3', note: 'Ít cay, gọi trước khi tới.', lines: [['Cơm chay thập cẩm', 3, '195.000₫'], ['Canh nấm rong biển', 1, '45.000₫'], ['Trà sen vàng', 2, '70.000₫'], ['Phí giao hàng', 1, '25.000₫']] },
+  { id: 2, code: 'DP-1041', cus: 'Công ty Lá Xanh', phone: '028 3822 4455', br: 'Quận 1', items: '25 phần cơm hộp', qty: 25, total: '1.250.000₫', st: 'completed', shipper: 'Bùi Quốc Khánh', placed: '11:05 02/09/2026', eta: '11:45 02/09/2026', address: 'Tầng 8, 58 Lê Lợi, Bến Nghé, Quận 1', note: 'Xuất hoá đơn công ty.', lines: [['Cơm chay thập cẩm', 15, '975.000₫'], ['Cơm sen hạt dẻ', 10, '780.000₫']] },
+  { id: 3, code: 'DP-1040', cus: 'Nguyễn Văn Hải', phone: '0903 221 118', br: 'Tân Bình', items: '1 cơm sen, 1 chè', qty: 2, total: '96.000₫', st: 'processing', shipper: 'Chưa phân công', placed: '13:41 02/09/2026', eta: '14:20 02/09/2026', address: '19 Hoàng Việt, P.4, Tân Bình', note: '—', lines: [['Cơm sen hạt dẻ', 1, '78.000₫'], ['Chè hạt sen long nhãn', 1, '32.000₫']] },
+  { id: 4, code: 'DP-1039', cus: 'Lê Thu Hà', phone: '0977 654 321', br: 'Quận 1', items: '2 phần cơm phần', qty: 2, total: '210.000₫', st: 'cancelled', shipper: '—', placed: '13:02 02/09/2026', eta: '—', address: '124 Phan Xích Long, P.2, Phú Nhuận', note: 'Khách đổi ý, huỷ trước khi giao.', lines: [['Cơm chay thập cẩm', 2, '130.000₫'], ['Canh bí đỏ hạt sen', 2, '84.000₫']] },
+  { id: 5, code: 'DP-1038', cus: 'Phạm Quốc Anh', phone: '0908 112 334', br: 'Thủ Đức', items: '8 phần cơm chay', qty: 8, total: '540.000₫', st: 'completed', shipper: 'Vũ Đức Long', placed: '12:47 02/09/2026', eta: '13:25 02/09/2026', address: '432 Kha Vạn Cân, Linh Đông, Thủ Đức', note: 'Giao tại bảo vệ toà nhà.', lines: [['Cơm chay thập cẩm', 8, '520.000₫'], ['Phí giao hàng', 1, '20.000₫']] },
+  { id: 6, code: 'DP-1037', cus: 'Đặng Bảo Châu', phone: '0932 887 665', br: 'Quận 3', items: '1 gỏi cuốn, 1 canh', qty: 2, total: '87.000₫', st: 'late', shipper: 'Phạm Minh Dũng', placed: '12:20 02/09/2026', eta: '12:50 02/09/2026', address: '284 Võ Văn Tần, P.5, Quận 3', note: 'Đơn trễ 18 phút — đã báo khách.', lines: [['Gỏi cuốn chay', 1, '42.000₫'], ['Canh nấm rong biển', 1, '45.000₫']] },
+  { id: 7, code: 'DP-1036', cus: 'Ngô Thanh Tùng', phone: '0987 445 220', br: 'Quận 1', items: '2 cơm sen, 1 trà', qty: 3, total: '164.000₫', st: 'pending', shipper: 'Chưa phân công', placed: '11:58 02/09/2026', eta: '12:40 02/09/2026', address: '38 Nguyễn Chí Thanh, Ba Đình, Hà Nội', note: 'Chờ khách xác nhận địa chỉ.', lines: [['Cơm sen hạt dẻ', 2, '156.000₫'], ['Nước gạo rang', 1, '25.000₫']] }
+];
+
+const TABS = [
+  { id: 'all', label: 'Tất cả', match: null },
+  { id: 'new', label: 'Mới', match: ['pending'] },
+  { id: 'proc', label: 'Đang xử lý', match: ['processing'] },
+  { id: 'deliv', label: 'Đang giao', match: ['delivering', 'late'] },
+  { id: 'done', label: 'Hoàn tất', match: ['completed'] },
+  { id: 'cancel', label: 'Đã huỷ', match: ['cancelled'] }
+];
+
+const STEPS = ['Đã đặt', 'Đang chuẩn bị', 'Đang giao', 'Đã giao'];
+
+class Component extends DCLogic {
+  state = { tab: 'all', branch: BRANCHES[0], query: '', from: '02/09/2026', to: '02/09/2026', detailId: null, active: 'orders' };
+
+  componentDidMount() { this.syncSteps(); }
+  componentDidUpdate() { this.syncSteps(); }
+
+  /* Timeline step colours are per-row runtime state; applied after render so the template stays literal. */
+  syncSteps() {
+    const DOT = { done: ['#4B6B3E', '#FFFDFA', '#4B6B3E'], stop: ['#F6DED7', '#8E3421', '#F6DED7'], todo: ['#F3EDE2', '#928B79', '#E4DCC8'] };
+    const TEXT = { done: '#2E2A22', stop: '#8E3421', todo: '#928B79' };
+    document.querySelectorAll('[data-step-dot]').forEach(el => {
+      const [bg, fg, bd] = DOT[el.getAttribute('data-step-dot')] || DOT.todo;
+      el.style.background = bg; el.style.color = fg; el.style.borderColor = bd;
+    });
+    document.querySelectorAll('[data-step-line]').forEach(el => {
+      el.style.background = el.getAttribute('data-step-line') === 'done' ? '#4B6B3E' : '#E4DCC8';
+    });
+    document.querySelectorAll('[data-step-label]').forEach(el => {
+      el.style.color = TEXT[el.getAttribute('data-step-label')] || TEXT.todo;
+    });
+  }
+
+  reached(st) {
+    if (st === 'cancelled') return 1;
+    if (st === 'pending') return 1;
+    if (st === 'processing') return 2;
+    if (st === 'delivering' || st === 'late') return 3;
+    return 4;
+  }
+
+  renderVals() {
+    const R = React.createElement;
+    const NS = window.DuyNPhNDesignSystem_e06890 || {};
+    const { tab, branch, query } = this.state;
+    const q = query.trim().toLowerCase();
+    const tabDef = TABS.find(t => t.id === tab) || TABS[0];
+
+    const list = ORDERS.filter(o =>
+      (!tabDef.match || tabDef.match.includes(o.st)) &&
+      (branch === BRANCHES[0] || branch.startsWith(o.br)) &&
+      (!q || o.code.toLowerCase().includes(q) || o.cus.toLowerCase().includes(q))
+    );
+
+    const shipperCell = o => R('span', { style: { display: 'flex', alignItems: 'center', gap: 8 } }, [
+      NS.Icon ? R(NS.Icon, { key: 'i', name: o.shipper === 'Chưa phân công' || o.shipper === '—' ? 'user-round-x' : 'bike', size: 16, color: '#6B6455' }) : null,
+      R('span', { key: 't', style: { color: o.shipper === 'Chưa phân công' || o.shipper === '—' ? '#928B79' : '#2E2A22' } }, o.shipper)
+    ]);
+
+    const table = NS.DataTable ? R(NS.DataTable, {
+      rows: list,
+      onRowClick: o => this.setState({ detailId: o.id }),
+      emptyText: 'Không có đơn nào khớp bộ lọc',
+      columns: [
+        { key: 'code', label: 'Mã đơn', render: o => R('span', { style: { fontWeight: 600 } }, o.code) },
+        { key: 'cus', label: 'Khách hàng', render: o => R('span', null, [
+          R('span', { key: 'a', style: { display: 'block' } }, o.cus),
+          R('span', { key: 'b', style: { display: 'block', fontSize: 12, color: '#6B6455' } }, o.phone)
+        ]) },
+        { key: 'br', label: 'Chi nhánh' },
+        { key: 'items', label: 'Món / Số lượng', render: o => R('span', null, [
+          R('span', { key: 'a', style: { display: 'block' } }, o.items),
+          R('span', { key: 'b', style: { display: 'block', fontSize: 12, color: '#6B6455' } }, o.qty + ' phần')
+        ]) },
+        { key: 'total', label: 'Tổng tiền', align: 'right' },
+        { key: 'st', label: 'Trạng thái', render: o => NS.StatusChip ? R(NS.StatusChip, { status: o.st }) : null },
+        { key: 'shipper', label: 'Người giao', render: shipperCell },
+        { key: 'placed', label: 'Đặt lúc', muted: true },
+        { key: 'eta', label: 'Giao dự kiến', align: 'right', muted: true }
+      ]
+    }) : null;
+
+    const d = ORDERS.find(o => o.id === this.state.detailId);
+    const done = d ? this.reached(d.st) : 0;
+    const cancelled = d && d.st === 'cancelled';
+
+    const detail = d ? {
+      code: d.code,
+      chip: NS.StatusChip ? R(NS.StatusChip, { status: d.st }) : null,
+      meta: 'Chi nhánh ' + d.br + ' · đặt lúc ' + d.placed,
+      customer: d.cus, phone: d.phone, address: d.address, note: d.note, total: d.total,
+      items: d.lines.map(([name, qty, total]) => ({ name, qty: 'x' + qty, total })),
+      shipper: d.shipper,
+      shipperInitials: d.shipper.split(' ').filter(w => /\w/.test(w)).map(w => w[0]).slice(0, 2).join('') || '—',
+      shipperMeta: d.st === 'delivering' || d.st === 'late'
+        ? 'Đang trên đường · dự kiến ' + d.eta
+        : d.st === 'completed' ? 'Đã hoàn tất lúc ' + d.eta : 'Chưa nhận đơn',
+      timeline: STEPS.map((label, i) => {
+        const n = i + 1;
+        const isDone = n <= done && !(cancelled && n > 1);
+        const isCurrent = n === done && !cancelled;
+        const stop = cancelled && n > 1;
+        return {
+          num: String(n), label: stop ? label + ' (đã huỷ)' : label,
+          time: isDone ? (n === 1 ? d.placed : n === done ? (d.st === 'completed' ? d.eta : 'đang diễn ra') : '—') : stop ? '—' : 'chưa tới',
+          state: stop ? 'stop' : isDone || isCurrent ? 'done' : 'todo',
+          lineState: n < done && !cancelled ? 'done' : 'todo'
+        };
+      })
+    } : null;
+
+    return {
+      active: this.state.active, setActive: id => this.setState({ active: id }),
+      countLine: list.length + ' đơn hiển thị · 264 đơn hôm nay · 12 chi nhánh',
+      tab, setTab: id => this.setState({ tab: id }),
+      tabItems: TABS.map(t => ({ id: t.id, label: t.label, count: t.match ? ORDERS.filter(o => t.match.includes(o.st)).length : 264 })),
+      branch: this.state.branch, onBranch: e => this.setState({ branch: e.target.value }), branchOptions: BRANCHES,
+      from: this.state.from, onFrom: e => this.setState({ from: e.target.value }),
+      to: this.state.to, onTo: e => this.setState({ to: e.target.value }),
+      query: this.state.query, onQuery: e => this.setState({ query: e.target.value }),
+      filterWrap: { width: 200 }, dateWrap: { width: 150 }, searchWrap: { width: 240 },
+      table, one: 1, pageCount: 12, total: 264,
+      detail, closeDetail: () => this.setState({ detailId: null }),
+      navItems: [
+        { id: 'dash', label: 'Tổng quan', icon: 'layout-dashboard' },
+        { section: 'Vận hành' },
+        { id: 'branches', label: 'Chi nhánh', icon: 'store' },
+        { id: 'menu', label: 'Thực đơn', icon: 'utensils' },
+        { id: 'orders', label: 'Đặt hàng & Giao hàng', icon: 'truck', badge: 12 },
+        { section: 'Nội bộ' },
+        { id: 'staff', label: 'Nhân viên', icon: 'users' },
+        { id: 'finance', label: 'Doanh thu & Chi tiêu', icon: 'wallet' }
+      ],
+      userFooter: R('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } }, [
+        R('span', { key: 'a', style: { width: 32, height: 32, flex: '0 0 auto', borderRadius: 999, background: '#E8D9BE', color: '#8E5726', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 12 } }, 'AN'),
+        R('span', { key: 'n', style: { flex: 1, minWidth: 0, fontSize: 13, lineHeight: 1.35 } }, [
+          R('span', { key: 'x', style: { display: 'block', fontWeight: 600 } }, 'An Nguyễn'),
+          R('span', { key: 'y', style: { display: 'block', color: '#6B6455' } }, 'Quản lý chuỗi')
+        ]),
+        NS.IconButton ? R(NS.IconButton, { key: 'o', icon: 'log-out', label: 'Đăng xuất', size: 'sm' }) : null
+      ])
+    };
+  }
+}
+</script>
+</body>
+</html>

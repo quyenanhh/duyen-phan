@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Quản lý thực đơn" description="Grid thẻ món ăn 4 cột với tìm kiếm, lọc danh mục và panel thêm/sửa món." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+<script src="../../image-slot.js"></script>
+<style>body{margin:0;background:#FAF7F2}.dish:hover .dish-act{opacity:1}</style>
+</helmet>
+<div style="font-family:'Be Vietnam Pro',system-ui,sans-serif;color:#2E2A22;background:#FAF7F2;font-size:15px;line-height:1.6;min-height:100vh;display:flex;align-items:stretch">
+
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Sidebar" items="{{ navItems }}" active="{{ active }}" onSelect="{{ setActive }}" footer="{{ userFooter }}" style="position:sticky;top:0;height:100vh" hint-size="248px,100vh"></x-import>
+
+<div style="flex:1;min-width:0">
+
+<div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:#FFFFFF;border-bottom:1px solid #E4DCC8;position:sticky;top:0;z-index:10">
+<div style="flex:1">
+<h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">Thực đơn</h2>
+<div style="font-size:12px;color:#6B6455">{{ countLine }}</div>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="bell" label="Thông báo" hint-size="40px,40px"></x-import>
+</div>
+
+<div style="padding:32px;display:flex;flex-direction:column;gap:24px">
+
+<div style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);padding:16px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" size="sm" icon="search" placeholder="Tìm tên món ăn" value="{{ query }}" onChange="{{ onQuery }}" wrapperStyle="{{ searchWrap }}" hint-size="280px,32px"></x-import>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="6">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Tag" selected="{{ c.on }}" onClick="{{ c.pick }}" hint-size="90px,28px">{{ c.label }}</x-import>
+</sc-for>
+</div>
+<div style="flex:1"></div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" icon="plus" onClick="{{ openNew }}" hint-size="150px,40px">Thêm món mới</x-import>
+</div>
+
+<sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+<sc-for list="{{ dishes }}" as="d" hint-placeholder-count="8">
+<article class="dish" style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden;display:flex;flex-direction:column">
+<div style="height:140px;position:relative;background:#F6EEE1">
+<image-slot id="{{ d.slotId }}" shape="rect" fit="cover" placeholder="Ảnh món"></image-slot>
+<div class="dish-act" style="position:absolute;top:10px;right:10px;display:flex;gap:6px;opacity:0;transition:opacity 120ms cubic-bezier(.22,.61,.36,1)">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="pencil" label="Sửa món" size="sm" variant="outline" onClick="{{ d.edit }}" hint-size="32px,32px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="trash-2" label="Xoá món" size="sm" variant="outline" onClick="{{ d.remove }}" hint-size="32px,32px"></x-import>
+</div>
+</div>
+<div style="padding:16px;display:flex;flex-direction:column;gap:10px;flex:1">
+<div>
+<h3 style="margin:0;font-size:16px;font-weight:600;letter-spacing:-0.01em">{{ d.name }}</h3>
+<p style="margin:2px 0 0;font-size:12px;color:#6B6455">{{ d.cat }}</p>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto">
+<span style="font-size:16px;font-weight:600;font-variant-numeric:tabular-nums">{{ d.price }}</span>
+{{ d.chip }}
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+<div style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06)">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.EmptyState" icon="soup" title="Không tìm thấy món nào" description="Thử đổi từ khoá hoặc chọn danh mục khác." action="{{ resetAction }}" hint-size="100%,240px"></x-import>
+</div>
+</sc-if>
+
+</div>
+</div>
+
+<sc-if value="{{ form }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:60;display:flex;justify-content:flex-end">
+<div style="position:absolute;inset:0;background:rgba(46,42,34,.38)" onClick="{{ closeForm }}"></div>
+<aside style="position:relative;width:480px;max-width:92vw;height:100%;background:#FFFFFF;border-left:1px solid #E4DCC8;box-shadow:0 16px 40px rgba(46,42,34,.14);display:flex;flex-direction:column">
+
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 24px 0">
+<div>
+<h2 style="margin:0;font-size:26px;font-weight:600;letter-spacing:-0.01em">{{ form.title }}</h2>
+<p style="margin:6px 0 0;font-size:14px;color:#6B6455">{{ form.subtitle }}</p>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="x" label="Đóng" onClick="{{ closeForm }}" hint-size="40px,40px"></x-import>
+</div>
+
+<div style="padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;flex:1">
+
+<div>
+<span style="display:block;margin-bottom:6px;font-size:13px;font-weight:500">Ảnh món</span>
+<div style="height:180px;border-radius:12px;overflow:hidden;border:1px dashed #DCB98E;background:#F6EEE1">
+<image-slot id="{{ form.slotId }}" shape="rect" fit="cover" placeholder="Kéo ảnh món vào đây (JPG/PNG, tối thiểu 800×600)"></image-slot>
+</div>
+</div>
+
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" label="Tên món" value="{{ form.name }}" onChange="{{ onName }}" icon="utensils" hint-size="100%,66px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Textarea" label="Mô tả ngắn" rows="{{ three }}" value="{{ form.desc }}" onChange="{{ onDesc }}" hint="Tối đa 160 ký tự." hint-size="100%,110px"></x-import>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Select" label="Danh mục" options="{{ catOptions }}" value="{{ form.cat }}" onChange="{{ onCat }}" hint-size="100%,66px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Input" label="Giá bán" value="{{ form.price }}" onChange="{{ onPrice }}" suffix="₫" hint-size="100%,66px"></x-import>
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;background:#FAF7F2;border:1px solid #E4DCC8;border-radius:12px">
+<span>
+<span style="display:block;font-size:14px;font-weight:600">Trạng thái bán</span>
+<span style="display:block;font-size:13px;color:#6B6455">{{ form.stateHint }}</span>
+</span>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Switch" checked="{{ form.on }}" onChange="{{ onToggle }}" hint-size="40px,22px"></x-import>
+</div>
+
+</div>
+
+<div style="display:flex;gap:8px;padding:20px 24px;border-top:1px solid #E4DCC8">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" full-width="{{ true }}" onClick="{{ closeForm }}" hint-size="100%,40px">Lưu món</x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" variant="secondary" onClick="{{ closeForm }}" hint-size="100px,40px">Huỷ</x-import>
+</div>
+
+</aside>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:980}}">
+const CATS = ['Tất cả', 'Món chính', 'Canh', 'Khai vị', 'Tráng miệng', 'Đồ uống'];
+
+const DISHES = [
+  ['m1', 'Cơm chay thập cẩm', 'Món chính', '65.000₫', true, 'Gạo lứt, đậu hũ áp chảo, rau củ hấp theo mùa.'],
+  ['m2', 'Cơm sen hạt dẻ', 'Món chính', '78.000₫', true, 'Gạo sen, hạt dẻ rang, hấp trong lá sen.'],
+  ['m3', 'Đậu hũ sốt tiêu xanh', 'Món chính', '58.000₫', true, 'Đậu hũ non, tiêu xanh Phú Quốc.'],
+  ['m4', 'Nấm kho tiêu', 'Món chính', '62.000₫', false, 'Nấm rơm kho tiêu, ăn cùng cơm nóng.'],
+  ['m5', 'Canh nấm rong biển', 'Canh', '45.000₫', true, 'Nấm hương, rong biển, cà rốt.'],
+  ['m6', 'Canh bí đỏ hạt sen', 'Canh', '42.000₫', true, 'Bí đỏ Đà Lạt, hạt sen Đồng Tháp.'],
+  ['m7', 'Gỏi cuốn chay', 'Khai vị', '42.000₫', true, 'Bún tươi, nấm, rau thơm · 4 cuốn.'],
+  ['m8', 'Chả giò khoai môn', 'Khai vị', '48.000₫', true, 'Khoai môn, nấm mèo, cuốn giòn.'],
+  ['m9', 'Chè hạt sen long nhãn', 'Tráng miệng', '32.000₫', true, 'Sen Đồng Tháp, long nhãn Hưng Yên.'],
+  ['m10', 'Bánh flan lá dứa', 'Tráng miệng', '28.000₫', false, 'Không trứng, làm từ sữa hạt.'],
+  ['m11', 'Trà sen vàng', 'Đồ uống', '35.000₫', true, 'Trà xanh ướp sen, uống nóng hoặc đá.'],
+  ['m12', 'Nước gạo rang', 'Đồ uống', '25.000₫', true, 'Gạo lứt rang, hậu ngọt tự nhiên.']
+].map(([id, name, cat, price, on, desc]) => ({ id, name, cat, price, on, desc }));
+
+class Component extends DCLogic {
+  state = { query: '', cat: 'Tất cả', form: null, active: 'menu' };
+
+  chip(on) {
+    const NS = window.DuyNPhNDesignSystem_e06890 || {};
+    if (!NS.StatusChip) return null;
+    return React.createElement(NS.StatusChip, { status: on ? 'open' : 'cancelled', label: on ? 'Đang bán' : 'Ngừng bán' });
+  }
+
+  openForm(d) {
+    this.setState({
+      form: d
+        ? { mode: 'edit', id: d.id, name: d.name, desc: d.desc, cat: d.cat, price: d.price.replace('₫', ''), on: d.on }
+        : { mode: 'new', id: 'new', name: '', desc: '', cat: 'Món chính', price: '', on: true }
+    });
+  }
+
+  renderVals() {
+    const R = React.createElement;
+    const NS = window.DuyNPhNDesignSystem_e06890 || {};
+    const q = this.state.query.trim().toLowerCase();
+    const cat = this.state.cat;
+    const list = DISHES.filter(d => (!q || d.name.toLowerCase().includes(q)) && (cat === 'Tất cả' || d.cat === cat));
+    const f = this.state.form;
+
+    return {
+      active: this.state.active, setActive: id => this.setState({ active: id }),
+      countLine: list.length + ' / ' + DISHES.length + ' món · 5 danh mục · cập nhật 14:32 02/09/2026',
+      query: this.state.query, onQuery: e => this.setState({ query: e.target.value }),
+      searchWrap: { width: 260 },
+      three: 3,
+      cats: CATS.map(c => ({ label: c, on: cat === c, pick: () => this.setState({ cat: c }) })),
+      catOptions: CATS.slice(1),
+      hasResults: list.length > 0,
+      isEmpty: list.length === 0,
+      dishes: list.map(d => ({
+        ...d, slotId: 'dp-dish-' + d.id, chip: this.chip(d.on),
+        edit: () => this.openForm(d),
+        remove: () => {}
+      })),
+      openNew: () => this.openForm(null),
+      closeForm: () => this.setState({ form: null }),
+      form: f ? {
+        ...f,
+        slotId: 'dp-dish-form-' + f.id,
+        title: f.mode === 'edit' ? 'Sửa món ăn' : 'Thêm món mới',
+        subtitle: f.mode === 'edit' ? 'Cập nhật thông tin món trong thực đơn.' : 'Món mới sẽ áp dụng cho tất cả chi nhánh.',
+        stateHint: f.on ? 'Món đang được bán trên web và tại quầy.' : 'Món tạm ẩn khỏi thực đơn.'
+      } : null,
+      onName: e => this.setState(s => ({ form: { ...s.form, name: e.target.value } })),
+      onDesc: e => this.setState(s => ({ form: { ...s.form, desc: e.target.value } })),
+      onCat: e => this.setState(s => ({ form: { ...s.form, cat: e.target.value } })),
+      onPrice: e => this.setState(s => ({ form: { ...s.form, price: e.target.value } })),
+      onToggle: v => this.setState(s => ({ form: { ...s.form, on: v } })),
+      resetAction: NS.Button ? R(NS.Button, { variant: 'secondary', onClick: () => this.setState({ query: '', cat: 'Tất cả' }) }, 'Xoá bộ lọc') : null,
+      navItems: [
+        { id: 'dash', label: 'Tổng quan', icon: 'layout-dashboard' },
+        { section: 'Vận hành' },
+        { id: 'branches', label: 'Chi nhánh', icon: 'store' },
+        { id: 'menu', label: 'Thực đơn', icon: 'utensils' },
+        { id: 'orders', label: 'Đặt hàng & Giao hàng', icon: 'truck', badge: 12 },
+        { section: 'Nội bộ' },
+        { id: 'staff', label: 'Nhân viên', icon: 'users' },
+        { id: 'finance', label: 'Doanh thu & Chi tiêu', icon: 'wallet' }
+      ],
+      userFooter: R('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } }, [
+        R('span', { key: 'a', style: { width: 32, height: 32, flex: '0 0 auto', borderRadius: 999, background: '#E8D9BE', color: '#8E5726', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 12 } }, 'AN'),
+        R('span', { key: 'n', style: { flex: 1, minWidth: 0, fontSize: 13, lineHeight: 1.35 } }, [
+          R('span', { key: 'x', style: { display: 'block', fontWeight: 600 } }, 'An Nguyễn'),
+          R('span', { key: 'y', style: { display: 'block', color: '#6B6455' } }, 'Quản lý chuỗi')
+        ]),
+        NS.IconButton ? R(NS.IconButton, { key: 'o', icon: 'log-out', label: 'Đăng xuất', size: 'sm' }) : null
+      ])
+    };
+  }
+}
+</script>
+</body>
+</html>

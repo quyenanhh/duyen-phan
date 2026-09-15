@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Trang chủ công khai" description="Landing page thương hiệu: header + hero ảnh lớn, câu chuyện, món nổi bật, chi nhánh, footer liên hệ." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+<script src="../../image-slot.js"></script>
+<style>body{margin:0;background:#FAF7F2}</style>
+</helmet>
+<div style="font-family:'Be Vietnam Pro',system-ui,sans-serif;color:#2E2A22;background:#FAF7F2;font-size:15px;line-height:1.6">
+
+<header style="position:sticky;top:0;z-index:20;background:rgba(250,247,242,.9);backdrop-filter:blur(8px);border-bottom:1px solid #E4DCC8">
+<div style="max-width:1200px;margin:0 auto;padding:0 32px;height:76px;display:flex;align-items:center;gap:40px">
+<a href="#" style="font-family:Lora,Georgia,serif;font-size:23px;font-weight:600;color:#4B6B3E;text-decoration:none;letter-spacing:-0.01em">Duyên Phần</a>
+<nav style="display:flex;gap:28px;flex:1;font-size:14px;white-space:nowrap">
+<a href="#" style="color:#4B6B3E;font-weight:600;text-decoration:none">Trang chủ</a>
+<a href="#thuc-don" style="color:#6B6455;text-decoration:none">Thực đơn</a>
+<a href="#chi-nhanh" style="color:#6B6455;text-decoration:none">Chi nhánh</a>
+<a href="#cau-chuyen" style="color:#6B6455;text-decoration:none">Về chúng tôi</a>
+<a href="#lien-he" style="color:#6B6455;text-decoration:none">Liên hệ</a>
+</nav>
+<div style="display:flex;align-items:center;gap:16px">
+<span style="display:flex;align-items:center;gap:6px;font-size:13px;color:#6B6455"><x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Icon" name="phone" size="15" hint-size="15px,15px"></x-import>1900 6088</span>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" icon="log-in" hint-size="190px,40px">Đăng nhập quản trị</x-import>
+</div>
+</div>
+</header>
+
+<section style="position:relative;height:600px;display:flex;align-items:center;overflow:hidden">
+<div style="position:absolute;inset:0"><image-slot id="dp-hero" shape="rect" fit="cover" placeholder="Ảnh nền: bàn cơm chay nhiều món, tông ấm, ánh sáng tự nhiên"></image-slot></div>
+<div style="position:absolute;inset:0;background:rgba(46,42,34,.52);pointer-events:none"></div>
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:0 32px;width:100%;pointer-events:none">
+<div style="max-width:660px">
+<span style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#DCB98E">Cơm chay thuần Việt · từ 2016</span>
+<h1 style="font-family:Lora,Georgia,serif;font-size:54px;line-height:1.15;font-weight:600;color:#FFFDFA;margin:18px 0 0;letter-spacing:-0.01em">Cơm chay lành mạnh,<br><em style="color:#E8D9BE">trọn vị yêu thương</em></h1>
+<p style="margin-top:20px;font-size:17px;color:#F3EDE2;max-width:520px;text-wrap:pretty">Rau củ theo mùa, gạo lứt và đậu hũ làm mỗi sáng. Mỗi bếp chỉ nấu vừa đủ cho một ngày — để bữa cơm luôn tươi và không dư thừa.</p>
+<div style="display:flex;gap:12px;margin-top:36px;pointer-events:auto">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" size="lg" icon="utensils" hint-size="196px,48px">Xem thực đơn</x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" size="lg" variant="accent" icon="calendar-days" hint-size="190px,48px">Đặt bàn ngay</x-import>
+</div>
+</div>
+</div>
+</section>
+
+<section id="cau-chuyen" style="max-width:1200px;margin:0 auto;padding:80px 32px;display:grid;grid-template-columns:1.15fr 1fr;gap:64px;align-items:center">
+<div>
+<span style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#8E5726">Câu chuyện</span>
+<h2 style="font-family:Lora,Georgia,serif;font-size:34px;font-weight:600;margin:12px 0 0;line-height:1.3">Duyên phần — cái duyên của một bữa cơm</h2>
+<p style="margin-top:18px;font-size:17px;color:#6B6455;text-wrap:pretty">Chúng tôi bắt đầu từ một quán nhỏ trên đường Võ Văn Tần năm 2016, với đúng mười hai chỗ ngồi và một chiếc bếp than.</p>
+<p style="margin-top:14px;font-size:17px;color:#6B6455;text-wrap:pretty">Đến nay Duyên Phần có 12 chi nhánh, nhưng nguyên tắc vẫn không đổi: rau củ đặt trực tiếp từ nông trại Đà Lạt, đậu hũ làm mỗi sáng, và nấu vừa đủ ăn trong ngày.</p>
+<div style="display:flex;gap:40px;margin-top:32px;padding-top:24px;border-top:1px solid #E4DCC8">
+<span><span style="display:block;font-size:26px;font-weight:600">12</span><span style="font-size:13px;color:#6B6455">chi nhánh</span></span>
+<span><span style="display:block;font-size:26px;font-weight:600">48</span><span style="font-size:13px;color:#6B6455">món theo mùa</span></span>
+<span><span style="display:block;font-size:26px;font-weight:600">9 năm</span><span style="font-size:13px;color:#6B6455">nấu chay mỗi ngày</span></span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<div style="grid-column:1 / -1;height:220px"><image-slot id="dp-story-1" radius="12" placeholder="Ảnh gian bếp, người nấu đang chuẩn bị món"></image-slot></div>
+<div style="height:140px"><image-slot id="dp-story-2" radius="12" placeholder="Ảnh rau củ theo mùa"></image-slot></div>
+<div style="height:140px"><image-slot id="dp-story-3" radius="12" placeholder="Ảnh đậu hũ làm mỗi sáng"></image-slot></div>
+</div>
+</section>
+
+<section id="thuc-don" style="background:#FFFFFF;border-top:1px solid #E4DCC8;border-bottom:1px solid #E4DCC8;padding:80px 0">
+<div style="max-width:1200px;margin:0 auto;padding:0 32px">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+<div>
+<span style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#8E5726">Món ăn nổi bật</span>
+<h2 style="font-family:Lora,Georgia,serif;font-size:34px;font-weight:600;margin:12px 0 0">Nấu theo mùa, đổi theo ngày</h2>
+</div>
+<a href="#" style="font-size:14px;font-weight:500;color:#4B6B3E">Xem toàn bộ thực đơn</a>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:32px">
+
+<article style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden">
+<div style="height:180px"><image-slot id="dp-dish-1" shape="rect" placeholder="Ảnh cơm chay thập cẩm"></image-slot></div>
+<div style="padding:20px">
+<h3 style="font-size:18px;font-weight:600;margin:0">Cơm chay thập cẩm</h3>
+<p style="margin-top:6px;font-size:14px;color:#6B6455">Gạo lứt, đậu hũ áp chảo, rau củ hấp</p>
+<div style="margin-top:16px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums">65.000₫</div>
+</div>
+</article>
+
+<article style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden">
+<div style="height:180px"><image-slot id="dp-dish-2" shape="rect" placeholder="Ảnh cơm sen hạt dẻ"></image-slot></div>
+<div style="padding:20px">
+<h3 style="font-size:18px;font-weight:600;margin:0">Cơm sen hạt dẻ</h3>
+<p style="margin-top:6px;font-size:14px;color:#6B6455">Gạo sen, hạt dẻ rang, hấp trong lá sen</p>
+<div style="margin-top:16px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums">78.000₫</div>
+</div>
+</article>
+
+<article style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden">
+<div style="height:180px"><image-slot id="dp-dish-3" shape="rect" placeholder="Ảnh đậu hũ sốt tiêu xanh"></image-slot></div>
+<div style="padding:20px">
+<h3 style="font-size:18px;font-weight:600;margin:0">Đậu hũ sốt tiêu xanh</h3>
+<p style="margin-top:6px;font-size:14px;color:#6B6455">Đậu hũ non, tiêu xanh Phú Quốc</p>
+<div style="margin-top:16px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums">58.000₫</div>
+</div>
+</article>
+
+<article style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden">
+<div style="height:180px"><image-slot id="dp-dish-4" shape="rect" placeholder="Ảnh chè hạt sen long nhãn"></image-slot></div>
+<div style="padding:20px">
+<h3 style="font-size:18px;font-weight:600;margin:0">Chè hạt sen long nhãn</h3>
+<p style="margin-top:6px;font-size:14px;color:#6B6455">Sen Đồng Tháp, long nhãn Hưng Yên</p>
+<div style="margin-top:16px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums">32.000₫</div>
+</div>
+</article>
+
+</div>
+</div>
+</section>
+
+<section id="chi-nhanh" style="max-width:1200px;margin:0 auto;padding:80px 32px">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+<div>
+<span style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#8E5726">Hệ thống chi nhánh</span>
+<h2 style="font-family:Lora,Georgia,serif;font-size:34px;font-weight:600;margin:12px 0 0">Ghé Duyên Phần gần bạn nhất</h2>
+</div>
+<span style="font-size:14px;color:#6B6455">12 chi nhánh tại TP.HCM và Hà Nội · giao trong bán kính 5km</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:32px">
+
+<article style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden;display:flex;flex-direction:column">
+<div style="height:160px"><image-slot id="dp-branch-1" shape="rect" placeholder="Ảnh chi nhánh Quận 3"></image-slot></div>
+<div style="padding:20px;display:flex;flex-direction:column;gap:12px;flex:1">
+<div>
+<h3 style="font-size:18px;font-weight:600;margin:0">Quận 3 — Võ Văn Tần</h3>
+<p style="margin-top:6px;font-size:14px;color:#6B6455">218 Võ Văn Tần, P.5, Quận 3</p>
+<p style="margin-top:4px;font-size:13px;color:#928B79">10:00 – 21:00 mỗi ngày</p>
+</div>
+<div style="margin-top:auto"><x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" variant="secondary" size="sm" icon="map-pin" full-width="{{ true }}" hint-size="100%,32px">Xem trên bản đồ</x-import></div>
+</div>
+</article>
+
+<article style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden;display:flex;flex-direction:column">
+<div style="height:160px"><image-slot id="dp-branch-2" shape="rect" placeholder="Ảnh chi nhánh Quận 1"></image-slot></div>
+<div style="padding:20px;display:flex;flex-direction:column;gap:12px;flex:1">
+<div>
+<h3 style="font-size:18px;font-weight:600;margin:0">Quận 1 — Lê Lợi</h3>
+<p style="margin-top:6px;font-size:14px;color:#6B6455">45 Lê Lợi, P.Bến Nghé, Quận 1</p>
+<p style="margin-top:4px;font-size:13px;color:#928B79">10:00 – 22:00 mỗi ngày</p>
+</div>
+<div style="margin-top:auto"><x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" variant="secondary" size="sm" icon="map-pin" full-width="{{ true }}" hint-size="100%,32px">Xem trên bản đồ</x-import></div>
+</div>
+</article>
+
+<article style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden;display:flex;flex-direction:column">
+<div style="height:160px"><image-slot id="dp-branch-3" shape="rect" placeholder="Ảnh chi nhánh Tân Bình"></image-slot></div>
+<div style="padding:20px;display:flex;flex-direction:column;gap:12px;flex:1">
+<div>
+<h3 style="font-size:18px;font-weight:600;margin:0">Tân Bình — Hoàng Việt</h3>
+<p style="margin-top:6px;font-size:14px;color:#6B6455">12 Hoàng Việt, P.4, Tân Bình</p>
+<p style="margin-top:4px;font-size:13px;color:#928B79">10:00 – 20:30 mỗi ngày</p>
+</div>
+<div style="margin-top:auto"><x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" variant="secondary" size="sm" icon="map-pin" full-width="{{ true }}" hint-size="100%,32px">Xem trên bản đồ</x-import></div>
+</div>
+</article>
+
+<article style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden;display:flex;flex-direction:column">
+<div style="height:160px"><image-slot id="dp-branch-4" shape="rect" placeholder="Ảnh chi nhánh Thủ Đức"></image-slot></div>
+<div style="padding:20px;display:flex;flex-direction:column;gap:12px;flex:1">
+<div>
+<h3 style="font-size:18px;font-weight:600;margin:0">Thủ Đức — Kha Vạn Cân</h3>
+<p style="margin-top:6px;font-size:14px;color:#6B6455">301 Kha Vạn Cân, P.Linh Đông</p>
+<p style="margin-top:4px;font-size:13px;color:#928B79">10:00 – 21:00 mỗi ngày</p>
+</div>
+<div style="margin-top:auto"><x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" variant="secondary" size="sm" icon="map-pin" full-width="{{ true }}" hint-size="100%,32px">Xem trên bản đồ</x-import></div>
+</div>
+</article>
+
+</div>
+</section>
+
+<footer id="lien-he" style="background:#2C4022;color:#FFFDFA;padding:64px 0 28px">
+<div style="max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1.2fr;gap:48px">
+<div>
+<div style="font-family:Lora,Georgia,serif;font-size:23px;font-weight:600;color:#FFFDFA">Duyên Phần</div>
+<p style="margin-top:12px;font-size:14px;color:#A8BE9C;max-width:280px;text-wrap:pretty">Chuỗi nhà hàng cơm chay thuần Việt. Nấu vừa đủ, ăn vừa lành.</p>
+<div style="display:flex;gap:10px;margin-top:20px">
+<a href="#" style="width:36px;height:36px;border-radius:999px;border:1px solid rgba(255,253,250,.2);display:grid;place-items:center;color:#FFFDFA"><x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Icon" name="facebook" size="17" hint-size="17px,17px"></x-import></a>
+<a href="#" style="width:36px;height:36px;border-radius:999px;border:1px solid rgba(255,253,250,.2);display:grid;place-items:center;color:#FFFDFA"><x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Icon" name="instagram" size="17" hint-size="17px,17px"></x-import></a>
+<a href="#" style="width:36px;height:36px;border-radius:999px;border:1px solid rgba(255,253,250,.2);display:grid;place-items:center;color:#FFFDFA"><x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Icon" name="youtube" size="17" hint-size="17px,17px"></x-import></a>
+</div>
+</div>
+<div>
+<div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#DCB98E">Liên hệ</div>
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:#A8BE9C">
+<span>1900 6088</span>
+<span>xinchao@duyenphan.vn</span>
+<span>Đặt tiệc chay: 0901 234 567</span>
+</div>
+</div>
+<div>
+<div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#DCB98E">Giờ mở cửa</div>
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:#A8BE9C">
+<span>Thứ Hai – Thứ Sáu: 10:00 – 21:00</span>
+<span>Thứ Bảy – Chủ Nhật: 09:00 – 22:00</span>
+<span>Rằm &amp; mùng một: mở từ 07:00</span>
+</div>
+</div>
+<div>
+<div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#DCB98E">Trụ sở</div>
+<p style="margin-top:14px;font-size:14px;color:#A8BE9C">218 Võ Văn Tần, P.5, Quận 3, TP.HCM</p>
+<div style="margin-top:12px;height:110px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,253,250,.16)"><image-slot id="dp-map" shape="rect" placeholder="Ảnh bản đồ trụ sở"></image-slot></div>
+</div>
+</div>
+<div style="max-width:1200px;margin:32px auto 0;padding:20px 32px 0;border-top:1px solid rgba(255,253,250,.14);display:flex;justify-content:space-between;font-size:12px;color:#A8BE9C">
+<span>© 2026 Duyên Phần. Giấy phép ĐKKD 0312xxxxxx.</span>
+<span>Chính sách bảo mật · Điều khoản sử dụng</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+</body>
+</html>

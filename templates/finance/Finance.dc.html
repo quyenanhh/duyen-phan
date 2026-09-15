@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Doanh thu & Chi tiêu" description="Báo cáo tài chính: lọc tháng/quý/năm, KPI, biểu đồ cột kết hợp đường, so sánh chi nhánh và bảng giao dịch." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+<style>body{margin:0;background:#FAF7F2}</style>
+</helmet>
+<div style="font-family:'Be Vietnam Pro',system-ui,sans-serif;color:#2E2A22;background:#FAF7F2;font-size:15px;line-height:1.6;min-height:100vh;display:flex;align-items:stretch">
+
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Sidebar" items="{{ navItems }}" active="{{ active }}" onSelect="{{ setActive }}" footer="{{ userFooter }}" style="position:sticky;top:0;height:100vh" hint-size="248px,100vh"></x-import>
+
+<div style="flex:1;min-width:0">
+
+<div style="display:flex;align-items:center;gap:20px;padding:0 32px;height:64px;background:#FFFFFF;border-bottom:1px solid #E4DCC8;position:sticky;top:0;z-index:10">
+<div style="flex:1">
+<h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">Doanh thu &amp; Chi tiêu</h2>
+<div style="font-size:12px;color:#6B6455">{{ countLine }}</div>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="bell" label="Thông báo" hint-size="40px,40px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" variant="secondary" icon="file-text" hint-size="120px,40px">Xuất PDF</x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Button" icon="download" hint-size="150px,40px">Xuất báo cáo Excel</x-import>
+</div>
+
+<div style="padding:32px;display:flex;flex-direction:column;gap:24px">
+
+<div style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);padding:20px 24px;display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap">
+<div>
+<div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#6B6455;margin-bottom:8px">Xem theo</div>
+<div style="display:flex;gap:2px;padding:3px;background:#F3EDE2;border:1px solid #E4DCC8;border-radius:999px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.ModeTabs" value="{{ mode }}" onChange="{{ setMode }}" hint-size="230px,30px"></x-import>
+</div>
+</div>
+<div style="width:1px;height:44px;background:#EFE9DC"></div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Select" size="sm" label="Từ tháng" options="{{ monthOptions }}" value="{{ from }}" onChange="{{ onFrom }}" wrapperStyle="{{ selWrap }}" hint-size="150px,58px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Select" size="sm" label="Đến tháng" options="{{ monthOptions }}" value="{{ to }}" onChange="{{ onTo }}" wrapperStyle="{{ selWrap }}" hint-size="150px,58px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Select" size="sm" label="Chi nhánh" options="{{ branchOptions }}" value="{{ branch }}" onChange="{{ onBranch }}" wrapperStyle="{{ branchWrap }}" hint-size="200px,58px"></x-import>
+<div style="flex:1"></div>
+<div style="font-size:13px;color:#6B6455">{{ rangeNote }}</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="wallet" label="Tổng doanh thu" value="{{ kpi.revenue }}" delta="{{ kpi.revenueDelta }}" hint-size="100%,116px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="receipt" label="Tổng chi tiêu" value="{{ kpi.cost }}" delta="{{ kpi.costDelta }}" deltaTone="warning" hint-size="100%,116px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="trending-up" label="Lợi nhuận ròng" value="{{ kpi.profit }}" delta="{{ kpi.profitDelta }}" hint-size="100%,116px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.StatCard" icon="percent" label="Biên lợi nhuận" value="{{ kpi.margin }}" delta="{{ kpi.marginDelta }}" hint-size="100%,116px"></x-import>
+</div>
+
+<section style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);padding:24px">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+<div>
+<h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">Thu · Chi · Lợi nhuận</h3>
+<p style="margin:4px 0 0;font-size:14px;color:#6B6455">{{ chartSubtitle }}</p>
+</div>
+<div style="display:flex;align-items:center;gap:16px;font-size:12px;color:#6B6455;flex-wrap:wrap">
+<span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#4B6B3E"></span>Doanh thu</span>
+<span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#DCB98E"></span>Chi tiêu</span>
+<span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:2px;border-radius:2px;background:#B9773A"></span>Lợi nhuận ròng</span>
+</div>
+</div>
+<div style="margin-top:20px">{{ chart }}</div>
+</section>
+
+<section style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 24px">
+<div>
+<h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">So sánh theo chi nhánh</h3>
+<p style="margin:4px 0 0;font-size:14px;color:#6B6455">{{ rangeNote }}</p>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.IconButton" icon="download" label="Xuất Excel" size="sm" variant="outline" hint-size="32px,32px"></x-import>
+</div>
+{{ branchTable }}
+</section>
+
+<section style="background:#FFFFFF;border:1px solid #E4DCC8;border-radius:12px;box-shadow:0 2px 8px rgba(46,42,34,.06);overflow:hidden">
+<div style="padding:20px 24px;display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+<div style="flex:1;min-width:220px">
+<h3 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">Chi tiết giao dịch</h3>
+<p style="margin:4px 0 0;font-size:14px;color:#6B6455">Các khoản thu và chi đã ghi nhận trong kỳ</p>
+</div>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Select" size="sm" label="Danh mục" options="{{ catOptions }}" value="{{ cat }}" onChange="{{ onCat }}" wrapperStyle="{{ selWrap }}" hint-size="180px,58px"></x-import>
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Select" size="sm" label="Loại" options="{{ kindOptions }}" value="{{ kind }}" onChange="{{ onKind }}" wrapperStyle="{{ kindWrap }}" hint-size="140px,58px"></x-import>
+</div>
+{{ txTable }}
+<x-import component-from-global-scope="DuyNPhNDesignSystem_e06890.Pagination" page="{{ one }}" pageCount="{{ pageCount }}" total="{{ total }}" hint-size="100%,52px"></x-import>
+</section>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:1100}}">
+const MONTHS = [
+  '01/2025', '02/2025', '03/2025', '04/2025', '05/2025', '06/2025',
+  '07/2025', '08/2025', '09/2025', '10/2025', '11/2025', '12/2025',
+  '01/2026', '02/2026', '03/2026', '04/2026', '05/2026', '06/2026',
+  '07/2026', '08/2026', '09/2026'
+];
+const BRANCHES = ['Tất cả chi nhánh', 'Quận 3 — Võ Văn Tần', 'Quận 1 — Lê Lợi', 'Tân Bình — Hoàng Việt', 'Thủ Đức — Kha Vạn Cân', 'Hà Nội — Nguyễn Chí Thanh'];
+const CATS = ['Tất cả danh mục', 'Nguyên liệu', 'Lương nhân viên', 'Mặt bằng', 'Marketing', 'Khác'];
+const KINDS = ['Thu & Chi', 'Thu', 'Chi'];
+const MODES = [{ id: 'month', label: 'Tháng' }, { id: 'quarter', label: 'Quý' }, { id: 'year', label: 'Năm' }];
+
+/* doanh thu / chi tiêu theo tháng, đơn vị triệu ₫ */
+const SERIES = [
+  { m: '01/2025', rev: 352, cost: 268 }, { m: '02/2025', rev: 328, cost: 259 },
+  { m: '03/2025', rev: 381, cost: 284 }, { m: '04/2025', rev: 396, cost: 292 },
+  { m: '05/2025', rev: 418, cost: 306 }, { m: '06/2025', rev: 404, cost: 298 },
+  { m: '07/2025', rev: 449, cost: 322 }, { m: '08/2025', rev: 412, cost: 308 },
+  { m: '09/2025', rev: 398, cost: 296 }, { m: '10/2025', rev: 421, cost: 311 },
+  { m: '11/2025', rev: 438, cost: 318 }, { m: '12/2025', rev: 476, cost: 342 },
+  { m: '01/2026', rev: 412, cost: 305 }, { m: '02/2026', rev: 386, cost: 298 },
+  { m: '03/2026', rev: 448, cost: 322 }, { m: '04/2026', rev: 465, cost: 331 },
+  { m: '05/2026', rev: 492, cost: 344 }, { m: '06/2026', rev: 476, cost: 338 },
+  { m: '07/2026', rev: 528, cost: 362 }, { m: '08/2026', rev: 486, cost: 349 },
+  { m: '09/2026', rev: 214, cost: 158 }
+];
+
+const BR_ROWS = [
+  ['Quận 3 — Võ Văn Tần', 1086, 742], ['Quận 1 — Lê Lợi', 924, 648],
+  ['Tân Bình — Hoàng Việt', 682, 498], ['Thủ Đức — Kha Vạn Cân', 524, 396],
+  ['Hà Nội — Nguyễn Chí Thanh', 690, 487], ['8 chi nhánh khác', 401, 296]
+];
+
+const TX = [
+  ['02/09/2026', 'Nguyên liệu', 'Quận 3 — Võ Văn Tần', -48200000, 'Rau củ Đà Lạt · phiếu NL-2291'],
+  ['02/09/2026', 'Khác', 'Tất cả chi nhánh', 386400000, 'Doanh thu bán hàng ngày 01/09'],
+  ['01/09/2026', 'Lương nhân viên', 'Tất cả chi nhánh', -1284000000, 'Quỹ lương kỳ 08/2026'],
+  ['01/09/2026', 'Mặt bằng', 'Quận 1 — Lê Lợi', -185000000, 'Thuê mặt bằng tháng 09/2026'],
+  ['31/08/2026', 'Marketing', 'Tất cả chi nhánh', -62500000, 'Chiến dịch thực đơn mùa thu'],
+  ['31/08/2026', 'Khác', 'Tất cả chi nhánh', 486320000, 'Doanh thu tổng kết tháng 08'],
+  ['30/08/2026', 'Nguyên liệu', 'Tân Bình — Hoàng Việt', -32800000, 'Đậu hũ, nấm · phiếu NL-2284'],
+  ['29/08/2026', 'Mặt bằng', 'Hà Nội — Nguyễn Chí Thanh', -142000000, 'Thuê mặt bằng tháng 09/2026'],
+  ['28/08/2026', 'Khác', 'Thủ Đức — Kha Vạn Cân', 54800000, 'Đơn tiệc chay doanh nghiệp'],
+  ['27/08/2026', 'Nguyên liệu', 'Quận 1 — Lê Lợi', -56400000, 'Gạo lứt, gia vị · phiếu NL-2276']
+];
+
+const fmt = n => {
+  const s = Math.abs(Math.round(n)).toString();
+  return s.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '₫';
+};
+const fmtM = m => fmt(m * 1000000);
+
+class Component extends DCLogic {
+  state = { mode: 'month', from: '01/2026', to: '09/2026', branch: BRANCHES[0], cat: CATS[0], kind: KINDS[0], active: 'finance' };
+
+  componentDidMount() { this.registerGlobals(); }
+  componentDidUpdate() { this.registerGlobals(); }
+
+  registerGlobals() {
+    const NS = window.DuyNPhNDesignSystem_e06890;
+    if (!NS || NS.ModeTabs) return;
+    const R = React.createElement;
+
+    NS.ModeTabs = ({ value, onChange }) => R('div', { style: { display: 'flex', gap: 2 } },
+      MODES.map(m => {
+        const on = value === m.id;
+        return R('button', {
+          key: m.id, type: 'button', onClick: () => onChange && onChange(m.id),
+          style: {
+            border: 0, cursor: 'pointer', padding: '0 16px', height: 30, borderRadius: 999,
+            fontFamily: 'inherit', fontSize: 13, fontWeight: on ? 600 : 400,
+            background: on ? '#FFFFFF' : 'transparent', color: on ? '#3A5430' : '#6B6455',
+            boxShadow: on ? '0 1px 3px rgba(46,42,34,.10)' : 'none',
+            transition: 'background 120ms cubic-bezier(.22,.61,.36,1)'
+          }
+        }, m.label);
+      })
+    );
+
+    NS.FinanceChart = ({ data }) => {
+      const W = 1040, H = 300, PL = 56, PR = 16, PT = 16, PB = 34;
+      const n = data.length;
+      const max = Math.max(...data.map(d => Math.max(d.rev, d.cost))) * 1.15 || 1;
+      const plotW = W - PL - PR, plotH = H - PT - PB;
+      const band = plotW / n;
+      const bw = Math.min(22, band * 0.28);
+      const y = v => PT + (1 - v / max) * plotH;
+      const cx = i => PL + band * i + band / 2;
+      const profitLine = data.map((d, i) => `${i ? 'L' : 'M'}${cx(i).toFixed(1)},${y(d.rev - d.cost).toFixed(1)}`).join(' ');
+      const ticks = [0, 0.25, 0.5, 0.75, 1].map(t => Math.round(max * t));
+
+      return R('svg', { viewBox: `0 0 ${W} ${H}`, style: { display: 'block', width: '100%', height: 300 } }, [
+        ...ticks.map((t, i) => R('g', { key: 'g' + i }, [
+          R('line', { key: 'l', x1: PL, x2: W - PR, y1: y(t), y2: y(t), stroke: '#EFE9DC', strokeWidth: 1 }),
+          R('text', { key: 't', x: PL - 10, y: y(t) + 4, textAnchor: 'end', fill: '#928B79', fontSize: 11, fontFamily: "'Be Vietnam Pro',sans-serif" }, t + 'tr')
+        ])),
+        ...data.map((d, i) => R('g', { key: 'b' + i }, [
+          R('rect', { key: 'r', x: cx(i) - bw - 2, y: y(d.rev), width: bw, height: Math.max(0, y(0) - y(d.rev)), rx: 4, fill: '#4B6B3E' }),
+          R('rect', { key: 'c', x: cx(i) + 2, y: y(d.cost), width: bw, height: Math.max(0, y(0) - y(d.cost)), rx: 4, fill: '#DCB98E' }),
+          R('text', { key: 'x', x: cx(i), y: H - 10, textAnchor: 'middle', fill: '#6B6455', fontSize: 11, fontFamily: "'Be Vietnam Pro',sans-serif" }, d.label || d.m)
+        ])),
+        R('path', { key: 'pl', d: profitLine, fill: 'none', stroke: '#B9773A', strokeWidth: 2.5, strokeLinecap: 'round', strokeLinejoin: 'round' }),
+        ...data.map((d, i) => R('circle', { key: 'p' + i, cx: cx(i), cy: y(d.rev - d.cost), r: 4, fill: '#FFFFFF', stroke: '#B9773A', strokeWidth: 2.5 }))
+      ]);
+    };
+    this.forceUpdate();
+  }
+
+  renderVals() {
+    const R = React.createElement;
+    const NS = window.DuyNPhNDesignSystem_e06890 || {};
+    const { mode, from, to, branch, cat, kind } = this.state;
+
+    let fi = MONTHS.indexOf(from), ti = MONTHS.indexOf(to);
+    if (fi > ti) { const t = fi; fi = ti; ti = t; }
+    const slice = SERIES.slice(fi, ti + 1);
+
+    let data = slice;
+    if (mode === 'quarter') {
+      data = [];
+      for (let i = 0; i < slice.length; i += 3) {
+        const g = slice.slice(i, i + 3);
+        const mn = parseInt(g[0].m.slice(0, 2), 10);
+        data.push({ m: 'Q' + (Math.floor((mn - 1) / 3) + 1) + '/' + g[0].m.slice(3), rev: g.reduce((s, x) => s + x.rev, 0), cost: g.reduce((s, x) => s + x.cost, 0) });
+      }
+    } else if (mode === 'year') {
+      const years = [...new Set(slice.map(x => x.m.slice(3)))];
+      data = years.map(yr => {
+        const g = slice.filter(x => x.m.slice(3) === yr);
+        return { m: yr, rev: g.reduce((s, x) => s + x.rev, 0), cost: g.reduce((s, x) => s + x.cost, 0) };
+      });
+    }
+
+    const rev = slice.reduce((s, x) => s + x.rev, 0);
+    const cost = slice.reduce((s, x) => s + x.cost, 0);
+    const profit = rev - cost;
+    const margin = rev ? (profit / rev) * 100 : 0;
+    const prev = SERIES.slice(Math.max(0, fi - slice.length), fi);
+    const pRev = prev.reduce((s, x) => s + x.rev, 0);
+    const pCost = prev.reduce((s, x) => s + x.cost, 0);
+    const pProfit = pRev - pCost;
+    const pMargin = pRev ? (pProfit / pRev) * 100 : 0;
+    const sign = v => (v >= 0 ? '+' : '−');
+    const cmp = (a, b) => {
+      if (!prev.length || !b) return 'Chưa có kỳ trước để so sánh';
+      const d = (a - b) / b * 100;
+      return sign(d) + Math.abs(d).toFixed(1).replace('.', ',') + '% so với kỳ trước';
+    };
+
+    const brRows = BR_ROWS.filter(([n]) => branch === BRANCHES[0] || n === branch).map(([name, r, c]) => ({
+      name, rev: fmtM(r), cost: fmtM(c), profit: fmtM(r - c),
+      share: ((r / BR_ROWS.reduce((s, x) => s + x[1], 0)) * 100).toFixed(1).replace('.', ',') + '%'
+    }));
+
+    const branchTable = NS.DataTable ? R(NS.DataTable, {
+      rows: brRows,
+      columns: [
+        { key: 'name', label: 'Chi nhánh', render: r => R('span', { style: { fontWeight: 600 } }, r.name) },
+        { key: 'rev', label: 'Doanh thu', align: 'right' },
+        { key: 'cost', label: 'Chi tiêu', align: 'right' },
+        { key: 'profit', label: 'Lợi nhuận', align: 'right' },
+        { key: 'share', label: '% đóng góp', align: 'right', muted: true }
+      ]
+    }) : null;
+
+    const txRows = TX
+      .filter(([, c]) => cat === CATS[0] || c === cat)
+      .filter(([, , , amt]) => kind === KINDS[0] || (kind === 'Thu' ? amt > 0 : amt < 0))
+      .filter(([, , br]) => branch === BRANCHES[0] || br === branch || br === 'Tất cả chi nhánh')
+      .map(([date, category, br, amt, note], i) => ({ id: i, date, category, br, amt, note }));
+
+    const txTable = NS.DataTable ? R(NS.DataTable, {
+      rows: txRows,
+      emptyText: 'Không có giao dịch nào khớp bộ lọc',
+      columns: [
+        { key: 'date', label: 'Ngày', width: 120 },
+        { key: 'category', label: 'Danh mục', render: r => NS.Badge ? R(NS.Badge, { tone: r.amt > 0 ? 'brand' : 'neutral' }, r.category) : r.category },
+        { key: 'br', label: 'Chi nhánh' },
+        { key: 'note', label: 'Diễn giải', muted: true },
+        { key: 'amt', label: 'Số tiền', align: 'right', render: r => R('span', { style: { fontWeight: 600, color: r.amt > 0 ? '#3A5430' : '#2E2A22' } }, (r.amt > 0 ? '+' : '−') + fmt(r.amt)) },
+        { key: 'kind', label: 'Loại', render: r => NS.StatusChip ? R(NS.StatusChip, { status: r.amt > 0 ? 'completed' : 'processing', label: r.amt > 0 ? 'Thu' : 'Chi' }) : null }
+      ]
+    }) : null;
+
+    const rangeNote = 'Kỳ ' + MONTHS[fi] + ' – ' + MONTHS[ti] + ' · ' + slice.length + ' tháng';
+
+    return {
+      active: this.state.active, setActive: id => this.setState({ active: id }),
+      countLine: 'Lũy kế ' + rangeNote.toLowerCase() + ' · cập nhật 14:32 02/09/2026',
+      mode, setMode: id => this.setState({ mode: id }),
+      from, to, onFrom: e => this.setState({ from: e.target.value }), onTo: e => this.setState({ to: e.target.value }),
+      monthOptions: MONTHS, branchOptions: BRANCHES, catOptions: CATS, kindOptions: KINDS,
+      branch, onBranch: e => this.setState({ branch: e.target.value }),
+      cat, onCat: e => this.setState({ cat: e.target.value }),
+      kind, onKind: e => this.setState({ kind: e.target.value }),
+      selWrap: { width: 150 }, branchWrap: { width: 210 }, kindWrap: { width: 140 },
+      rangeNote,
+      chartSubtitle: (mode === 'year' ? 'Cộng theo năm · ' : mode === 'quarter' ? 'Cộng theo quý · ' : 'Theo tháng · ') + rangeNote,
+      kpi: {
+        revenue: fmtM(rev), revenueDelta: cmp(rev, pRev),
+        cost: fmtM(cost), costDelta: cmp(cost, pCost),
+        profit: fmtM(profit), profitDelta: cmp(profit, pProfit),
+        margin: margin.toFixed(1).replace('.', ',') + '%',
+        marginDelta: prev.length ? sign(margin - pMargin) + Math.abs(margin - pMargin).toFixed(1).replace('.', ',') + ' điểm so với kỳ trước' : 'Chưa có kỳ trước để so sánh'
+      },
+      chart: NS.FinanceChart ? R(NS.FinanceChart, {
+        data: data.map(d => ({
+          ...d,
+          label: mode === 'month'
+            ? d.m.slice(0, 2) + '/' + d.m.slice(5)
+            : d.m
+        }))
+      }) : null,
+      branchTable, txTable,
+      one: 1, pageCount: 8, total: 96,
+      navItems: [
+        { id: 'dash', label: 'Tổng quan', icon: 'layout-dashboard' },
+        { section: 'Vận hành' },
+        { id: 'branches', label: 'Chi nhánh', icon: 'store' },
+        { id: 'menu', label: 'Thực đơn', icon: 'utensils' },
+        { id: 'orders', label: 'Đặt hàng & Giao hàng', icon: 'truck', badge: 12 },
+        { section: 'Nội bộ' },
+        { id: 'staff', label: 'Nhân viên', icon: 'users' },
+        { id: 'finance', label: 'Doanh thu & Chi tiêu', icon: 'wallet' }
+      ],
+      userFooter: R('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } }, [
+        R('span', { key: 'a', style: { width: 32, height: 32, flex: '0 0 auto', borderRadius: 999, background: '#E8D9BE', color: '#8E5726', display: 'grid', placeItems: 'center', fontWeight: 600, fontSize: 12 } }, 'AN'),
+        R('span', { key: 'n', style: { flex: 1, minWidth: 0, fontSize: 13, lineHeight: 1.35 } }, [
+          R('span', { key: 'x', style: { display: 'block', fontWeight: 600 } }, 'An Nguyễn'),
+          R('span', { key: 'y', style: { display: 'block', color: '#6B6455' } }, 'Quản lý chuỗi')
+        ]),
+        NS.IconButton ? R(NS.IconButton, { key: 'o', icon: 'log-out', label: 'Đăng xuất', size: 'sm' }) : null
+      ])
+    };
+  }
+}
+</script>
+</body>
+</html>
