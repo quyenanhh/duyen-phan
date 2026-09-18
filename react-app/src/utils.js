@@ -51,7 +51,12 @@ export function buildStaffCalendar(weekPattern, year, month, STAFF_SHIFT_CELL) {
   const mondayIndex = (new Date(year, month, 1).getDay() + 6) % 7;
   const cells = [];
   for (let i = 0; i < mondayIndex; i++) cells.push({ day: '', bg: 'transparent', border: 'transparent', text: 'transparent', label: '' });
-  const today = new Date(2026, 8, 3);
+  // Ngày thật hiện tại — KHÔNG hardcode một mốc cố định ở đây nữa. Trước đây để cố định
+  // "hôm nay" = 03/09/2026 (dữ liệu mẫu ban đầu), nên mỗi tháng thật trôi qua, các ngày sau
+  // mốc đó bị tính nhầm là "chưa tới" (ô trống) mãi mãi — lịch (và lương ước tính suy ra từ
+  // lịch, xem estimateMonthlyPay) không tự cập nhật theo tháng thật nữa.
+  const today = new Date();
+  today.setHours(23, 59, 59, 999); // tính trọn ngày hôm nay là "đã qua", không bị lệch múi giờ/giờ trong ngày
   for (let day = 1; day <= daysInMonth; day++) {
     if (new Date(year, month, day) > today) {
       cells.push({ day, bg: 'transparent', border: 'var(--border-soft)', text: 'var(--text-subtle)', label: '' });
@@ -66,6 +71,47 @@ export function buildStaffCalendar(weekPattern, year, month, STAFF_SHIFT_CELL) {
 
 export function fmtVnd(n) {
   return n.toLocaleString('vi-VN') + '₫';
+}
+
+// Thứ Hai của tuần chứa `refDate` (mặc định hôm nay) — mốc dùng để lật qua tuần
+// trước/sau (xem weekDaysFor, mondayOfWeek(refDate, +-7*n) khi cần đổi tuần).
+export function mondayOfWeek(refDate = new Date()) {
+  const mondayOffset = (refDate.getDay() + 6) % 7; // Chủ nhật (getDay()=0) -> lùi 6 ngày về T2
+  return new Date(refDate.getFullYear(), refDate.getMonth(), refDate.getDate() - mondayOffset);
+}
+
+// Ngày thật (T2 -> CN) của tuần chứa `monday` — thay cho mảng ngày viết cứng trước đây
+// (STAFF_WEEK_DAYS trong data.js, ví dụ luôn cố định "31/08"..."06/09"). Nhờ tính từ ngày
+// thật mỗi lần gọi (và nhận `monday` bất kỳ, không chỉ tuần hiện tại), "Ca làm tuần này" ở
+// màn Nhân viên/Thu ngân/Bếp vừa tự đúng tuần thật, vừa lật được sang tuần khác/tháng khác.
+export function weekDaysFor(monday) {
+  const labels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+  return labels.map((label, i) => {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    return [label, `${dd}/${mm}`];
+  });
+}
+
+// Lương ước tính = đơn giá/ca × số ca ĐÃ LÀM (tính đến hôm nay) trong tháng đang xem trên
+// lịch (đối số `cells` là kết quả của buildStaffCalendar ở trên). Đơn giá/ca suy ra từ
+// "Lương/tháng" (field có sẵn, không cần thêm cột DB mới) chia cho tổng số ca CHUẨN của
+// tháng đó nếu đi làm đủ theo ca tuần đang đăng ký (week pattern × số tuần trong tháng) —
+// nên khi nhân viên nghỉ nhiều hơn/ít hơn bình thường, số tiền ước tính tự thấp/cao hơn
+// lương chuẩn, không phải một con số cố định vô nghĩa với lịch bên cạnh. Dùng chung cho cả
+// màn Quản lý xem hồ sơ nhân viên (StaffList.jsx) lẫn màn nhân viên tự xem lịch của mình
+// (StaffView.jsx). Chỉ là số tạm tính để tham khảo, không phải bảng lương chính thức.
+export function estimateMonthlyPay(weekPattern, salary, cells, year, month, defaultWeekPattern) {
+  const pattern = weekPattern && weekPattern.length === 7 ? weekPattern : defaultWeekPattern;
+  const shiftsPerWeek = pattern.filter(t => t !== 'off').length;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const standardShifts = Math.round((shiftsPerWeek * daysInMonth) / 7) || 0;
+  const workedShifts = cells.filter(c => c.label === 'Ca sáng' || c.label === 'Ca chiều').length;
+  const ratePerShift = standardShifts > 0 ? Math.round((salary || 0) / standardShifts) : 0;
+  const estimatedPay = Math.round((ratePerShift * workedShifts) / 1000) * 1000;
+  return { standardShifts, workedShifts, ratePerShift, estimatedPay };
 }
 
 // Bo cong đường biểu đồ bằng cubic bezier (điểm điều khiển ở giữa hai mốc) thay vì nối thẳng góc cạnh.

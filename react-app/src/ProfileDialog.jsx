@@ -10,6 +10,7 @@ export default function ProfileDialog({ ctx }) {
   } = ctx;
   const [avatarUploading, setAvatarUploading] = useState(false);
   if (!profileOpen) return null;
+  const isCustomer = userRole === 'customer';
   function changePassword() { closeProfile(); openSecurity(); }
 
   async function handleAvatarFile(e) {
@@ -70,13 +71,15 @@ export default function ProfileDialog({ ctx }) {
           </label>
           <div style={{ display: 'flex', gap: 12 }}>
             <label className="field-wrap" style={{ flex: 1 }}>
-              <label>Mã nhân viên</label>
+              <label>{isCustomer ? 'Mã khách hàng' : 'Mã nhân viên'}</label>
               <span className="field" style={{ background: 'var(--surface-page)' }}><input value={staffCode || '—'} disabled style={{ fontVariantNumeric: 'tabular-nums' }} /></span>
             </label>
-            <label className="field-wrap" style={{ flex: 1 }}>
-              <label>Vai trò</label>
-              <span className="field" style={{ background: 'var(--surface-page)' }}><input value={userRoleLabel} disabled /></span>
-            </label>
+            {!isCustomer && (
+              <label className="field-wrap" style={{ flex: 1 }}>
+                <label>Vai trò</label>
+                <span className="field" style={{ background: 'var(--surface-page)' }}><input value={userRoleLabel} disabled /></span>
+              </label>
+            )}
           </div>
           {userBranch && (
             <label className="field-wrap">

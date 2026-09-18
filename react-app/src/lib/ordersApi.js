@@ -7,7 +7,7 @@ function fromRow(row) {
   return {
     id: row.id, code: row.code, br: row.branch, st: row.status, total: fmtVnd(Number(row.total)), totalRaw: Number(row.total),
     t: row.order_time, customer: row.customer, phone: row.phone, address: row.address,
-    payment: row.payment, items: row.items, note: row.note
+    payment: row.payment, items: row.items, note: row.note, createdAt: row.created_at
   };
 }
 
@@ -29,6 +29,22 @@ function toRow(o) {
 
 export async function listOrders() {
   const { data, error } = await supabase.from('orders').select('*').order('id', { ascending: false });
+  if (error) throw error;
+  return data.map(fromRow);
+}
+
+// Đơn giao hàng đã hoàn tất trong khoảng thời gian — dùng để gộp vào doanh thu toàn chuỗi
+// (xem BranchPerformance.jsx) cùng với đơn tại bàn (table_orders) và đơn khách tự đặt
+// (customer_orders). Lọc theo created_at vì order_time chỉ là chuỗi hiển thị, không dùng
+// để truy vấn khoảng thời gian được.
+export async function listCompletedOrdersSince(sinceIso) {
+  const { data, error } = await supabase.from('orders').select('*').eq('status', 'completed').gte('created_at', sinceIso).order('created_at', { ascending: false });
+  if (error) throw error;
+  return data.map(fromRow);
+}
+
+export async function listCompletedOrdersBetween(sinceIso, untilIso) {
+  const { data, error } = await supabase.from('orders').select('*').eq('status', 'completed').gte('created_at', sinceIso).lt('created_at', untilIso).order('created_at', { ascending: false });
   if (error) throw error;
   return data.map(fromRow);
 }

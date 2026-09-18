@@ -5,9 +5,11 @@ export default function SiteHeader({ ctx, active }) {
   const {
     theme, toggleTheme, isLoggedIn, goAuth, goLanding, goMenu, goBranchesPublic, goAbout, goContact, userInitials, userName, loggedAvatarUrl,
     landingAcctMenuOpen, setLandingAcctMenuOpen, userRoleLabel,
-    openProfileFromLanding, openSecurityFromLanding, switchAccount, logout
+    openProfileFromLanding, openSecurityFromLanding, switchAccount, logout,
+    isCustomerLoggedIn
   } = ctx;
-  const isLoggedOut = !isLoggedIn;
+  const isAnyoneLoggedIn = isLoggedIn || isCustomerLoggedIn;
+  const isLoggedOut = !isAnyoneLoggedIn;
   const isDark = theme === 'dark';
 
   const [scrolled, setScrolled] = useState(false);
@@ -39,7 +41,7 @@ export default function SiteHeader({ ctx, active }) {
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" /></svg>
             )}
           </button>
-          {isLoggedIn && (
+          {isAnyoneLoggedIn && (
             <span style={{ position: 'relative' }}>
               <a onClick={() => setLandingAcctMenuOpen(v => !v)} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '4px 12px 4px 4px', borderRadius: 999, background: 'var(--surface-brand-soft)' }}>
                 {loggedAvatarUrl ? (
@@ -73,10 +75,12 @@ export default function SiteHeader({ ctx, active }) {
                       <ChevronRight style={{ color: 'var(--text-subtle)' }} />
                     </a>
                     <div style={{ marginTop: 16, paddingTop: 12, borderTop: '1px solid var(--border-soft)', display: 'flex', flexDirection: 'column', gap: 2 }}>
-                      <a onClick={goAuth} className="nav-link" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 4px', cursor: 'pointer', color: 'var(--text-body)' }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" /></svg>
-                        Vào trang quản trị
-                      </a>
+                      {isLoggedIn && (
+                        <a onClick={goAuth} className="nav-link" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 4px', cursor: 'pointer', color: 'var(--text-body)' }}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" /></svg>
+                          Vào trang quản trị
+                        </a>
+                      )}
                       <a onClick={e => e.preventDefault()} className="nav-link" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 4px', cursor: 'pointer', color: 'var(--text-body)' }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
                         Hỗ trợ
@@ -98,7 +102,7 @@ export default function SiteHeader({ ctx, active }) {
           {isLoggedOut && (
             <a onClick={goAuth} className="btn btn-primary btn-md">
               <LoginArrowIcon />
-              Đăng nhập quản trị
+              Đăng nhập / Đăng ký
             </a>
           )}
         </span>

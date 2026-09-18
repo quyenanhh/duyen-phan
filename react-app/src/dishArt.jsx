@@ -1,5 +1,77 @@
 // Minh hoạ món ăn dạng vẽ tay (SVG) dùng chung giữa trang chủ và trang Thực đơn —
 // dự án chưa có ảnh món thật nên dùng minh hoạ trừu tượng thay cho ảnh chụp.
+// "Cơm phần đậu hũ sả ớt" là ngoại lệ — đã có ảnh chụp thật, dùng DauHuSaOtArt bên dưới.
+
+import dauHuSaOtPhoto from './assets/com-dau-hu-sa-ot.jpg';
+import dauHuSotCaChuaPhoto from './assets/dau-hu-sot-ca-chua.jpg';
+import canhChuaChayPhoto from './assets/canh-chua-chay.jpg';
+import cheDauXanhPhoto from './assets/che-dau-xanh-nuoc-cot-dua.jpg';
+import traDaoCamSaPhoto from './assets/tra-dao-cam-sa.png';
+import namKhoTieuPhoto from './assets/com-nam-kho-tieu.jpg';
+import namKhoToPhoto from './assets/nam-kho-to.webp';
+import canhBiDoDauPhongPhoto from './assets/canh-bi-do-dau-phong.jpg';
+import rauCauLaDuaPhoto from './assets/rau-cau-la-dua.jpg';
+import nuocSamBiDaoPhoto from './assets/nuoc-sam-bi-dao.jpg';
+import comChaGioChayPhoto from './assets/com-cha-gio-chay.webp';
+import rauCuXaoThapCamPhoto from './assets/rau-cu-xao-thap-cam.jpeg';
+import supNamBonMuaPhoto from './assets/sup-nam-bon-mua.webp';
+import suaHatSenPhoto from './assets/sua-hat-sen.webp';
+
+export function DauHuSaOtArt() {
+  return <img src={dauHuSaOtPhoto} alt="Cơm phần đậu hũ sả ớt" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function DauHuSotCaChuaArt() {
+  return <img src={dauHuSotCaChuaPhoto} alt="Đậu hũ sốt cà chua" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function CanhChuaChayArt() {
+  return <img src={canhChuaChayPhoto} alt="Canh chua chay" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function CheDauXanhArt() {
+  return <img src={cheDauXanhPhoto} alt="Chè đậu xanh nước cốt dừa" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function TraDaoCamSaArt() {
+  return <img src={traDaoCamSaPhoto} alt="Trà đào cam sả" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function NamKhoTieuArt() {
+  return <img src={namKhoTieuPhoto} alt="Cơm phần nấm kho tiêu" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function NamKhoToArt() {
+  return <img src={namKhoToPhoto} alt="Nấm kho tộ" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function CanhBiDoDauPhongArt() {
+  return <img src={canhBiDoDauPhongPhoto} alt="Canh bí đỏ nấu đậu phộng" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function RauCauLaDuaArt() {
+  return <img src={rauCauLaDuaPhoto} alt="Rau câu lá dứa" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function NuocSamBiDaoArt() {
+  return <img src={nuocSamBiDaoPhoto} alt="Nước sâm bí đao" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function ComChaGioChayArt() {
+  return <img src={comChaGioChayPhoto} alt="Cơm phần chả giò chay" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function RauCuXaoThapCamArt() {
+  return <img src={rauCuXaoThapCamPhoto} alt="Rau củ xào thập cẩm" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function SupNamBonMuaArt() {
+  return <img src={supNamBonMuaPhoto} alt="Súp nấm bốn mùa" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
+
+export function SuaHatSenArt() {
+  return <img src={suaHatSenPhoto} alt="Sữa hạt sen" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />;
+}
 
 export function ThapCamArt() {
   return (
@@ -105,6 +177,20 @@ const DISH_ART = { thapcam: ThapCamArt, sen: SenHatDeArt, canh: CanhArt, goicuon
 // để mọi nơi hiển thị món ăn đều nhất quán về hình ảnh.
 export function pickDishArt(item) {
   const name = (item.name || '').toLowerCase();
+  if (name.includes('đậu hũ sả ớt')) return DauHuSaOtArt;
+  if (name.includes('đậu hũ sốt cà chua')) return DauHuSotCaChuaArt;
+  if (name.includes('canh chua chay')) return CanhChuaChayArt;
+  if (name.includes('chè đậu xanh')) return CheDauXanhArt;
+  if (name.includes('trà đào cam sả')) return TraDaoCamSaArt;
+  if (name.includes('nấm kho tiêu')) return NamKhoTieuArt;
+  if (name.includes('nấm kho tộ')) return NamKhoToArt;
+  if (name.includes('canh bí đỏ')) return CanhBiDoDauPhongArt;
+  if (name.includes('rau câu lá dứa')) return RauCauLaDuaArt;
+  if (name.includes('nước sâm bí đao')) return NuocSamBiDaoArt;
+  if (name.includes('chả giò chay')) return ComChaGioChayArt;
+  if (name.includes('rau củ xào thập cẩm')) return RauCuXaoThapCamArt;
+  if (name.includes('súp nấm bốn mùa')) return SupNamBonMuaArt;
+  if (name.includes('sữa hạt sen')) return SuaHatSenArt;
   if (item.category === 'Canh & súp') return CanhArt;
   if (item.category === 'Tráng miệng' || item.category === 'Nước uống') return DrinkArt;
   if (name.includes('cuốn')) return GoiCuonArt;

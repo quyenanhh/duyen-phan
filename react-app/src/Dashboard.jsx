@@ -16,7 +16,8 @@ import { LogoutIcon } from './icons.jsx';
 export default function Dashboard({ ctx }) {
   const {
     goLanding, userRole, managerTab, setManagerTab, staffTab, setStaffTab,
-    userInitials, userName, userRoleLabel, loggedAvatarUrl, openProfile, logout, orderRecords, orderingTableId, checkoutTableId
+    userInitials, userName, userRoleLabel, loggedAvatarUrl, openProfile, logout, orderRecords, orderingTableId, checkoutTableId,
+    customerOrigin
   } = ctx;
 
   const isManager = userRole === 'Quản lý';
@@ -87,6 +88,10 @@ export default function Dashboard({ ctx }) {
                 <span className="nav-medallion"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18" /><path d="M7 15l4-5 3 3 5-7" /></svg></span>
                 <span style={{ flex: 1, textAlign: 'left' }}>Hiệu suất chi nhánh</span>
               </button>
+              <a className="nav-item" href={customerOrigin} target="_blank" rel="noopener noreferrer" title="Mở trang khách hàng ở tab mới">
+                <span className="nav-medallion"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6" /><path d="M10 14 21 3" /></svg></span>
+                <span style={{ flex: 1, textAlign: 'left' }}>Xem trang khách hàng</span>
+              </a>
               <span className="section-label">Nội bộ</span>
               <button className={`nav-item ${managerTab === 'staffList' ? 'active' : ''}`} onClick={() => setManagerTab('staffList')}>
                 <span className="nav-medallion"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg></span>

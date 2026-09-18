@@ -33,6 +33,7 @@
 --brand:#4D5A4A;--brand-hover:#62725F;--accent:#A88F76;--accent-hover:#8F775F;
 --border:#D2C4B4;--border-soft:#E6DCCE;--border-strong:#BCA98F;
 --header-bg:rgba(249,248,246,.88);
+color:var(--text-body);
 }
 .dark-mode{
 --surface-page:#1B211F;--surface-card:#252C29;--surface-sunken:#2E3532;

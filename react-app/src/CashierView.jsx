@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fmtVnd } from './utils.js';
 import SummaryCard from './SummaryCard.jsx';
+import { ShiftAndPaySection } from './StaffView.jsx';
 import { supabaseEnabled, listPaidTableOrdersByCashier } from './lib/tableOrdersApi.js';
 
 function startOfTodayIso() {
@@ -65,6 +66,8 @@ export default function CashierView({ ctx }) {
             <button type="button" className="btn btn-secondary btn-md" onClick={logout}>Đăng xuất</button>
           </div>
         </section>
+
+        <ShiftAndPaySection ctx={ctx} />
 
         <section className="panel" style={{ padding: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>

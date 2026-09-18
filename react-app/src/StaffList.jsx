@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { STAFF_ROLES, STAFF_ROLE_STYLE, STAFF_STATUS_STYLE, STAFF_SHIFT_CELL, CONTRACT_TYPES } from './data.js';
-import { buildStaffCalendar, fmtVnd, periodStartDate, initials } from './utils.js';
+import { STAFF_ROLES, STAFF_ROLE_STYLE, STAFF_STATUS_STYLE, STAFF_SHIFT_CELL, STAFF_WEEK_PATTERN, CONTRACT_TYPES } from './data.js';
+import { buildStaffCalendar, estimateMonthlyPay, fmtVnd, periodStartDate, initials } from './utils.js';
 import { SearchIcon, XIcon, TrashIcon, PauseUserIcon, PersonIcon, ChevronLeft, ChevronRight, CheckIcon, EditIcon, PackageIcon } from './icons.jsx';
 import SummaryCard from './SummaryCard.jsx';
 import { supabaseEnabled, updateProfileRow, deleteProfileRow, listProfiles, uploadAvatar } from './lib/profilesApi.js';
@@ -376,6 +376,7 @@ function StaffProfileDialog({ ctx }) {
   const [roleBg, roleColor] = STAFF_ROLE_STYLE[p.role] || STAFF_ROLE_STYLE['Nhân viên'];
   const [stBg, stColor, stLabel] = STAFF_STATUS_STYLE[p.status] || STAFF_STATUS_STYLE.active;
   const cells = buildStaffCalendar(p.week, staffCalYear, staffCalMonth, STAFF_SHIFT_CELL);
+  const pay = estimateMonthlyPay(p.week, p.salary, cells, staffCalYear, staffCalMonth, STAFF_WEEK_PATTERN);
 
   function close() { setStaffProfileId(null); setEditOpen(false); }
   function prevMonth() {
@@ -570,6 +571,19 @@ function StaffProfileDialog({ ctx }) {
             <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><span style={{ width: 10, height: 10, borderRadius: 3, background: '#F7E9CC', border: '1px solid #C98A2C' }} />Ca chiều</span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><span style={{ width: 10, height: 10, borderRadius: 3, background: '#F0EBE3', border: '1px solid #D2C4B4' }} />Nghỉ</span>
           </div>
+
+          {p.role !== 'Quản lý' && (
+            <div style={{ marginTop: 16, padding: 16, background: 'var(--surface-page)', border: '1px solid var(--border-soft)', borderRadius: 'var(--radius-control)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontSize: 'var(--fs-caption)', color: 'var(--text-subtle)' }}>Lương ước tính tháng {staffCalMonth + 1}/{staffCalYear}</div>
+                <div style={{ fontSize: 20, fontWeight: 700, marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(pay.estimatedPay)}</div>
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)', textAlign: 'right' }}>
+                {pay.workedShifts} / {pay.standardShifts} ca đã làm tính đến hôm nay<br />
+                {fmtVnd(pay.ratePerShift)} / ca (theo lương {fmtVnd(p.salary || 0)}/tháng)
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

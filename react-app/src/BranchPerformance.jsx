@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react';
 import { fmtVnd, periodStartDate, previousPeriodStart, parseVnDate, buildChart, smoothPathFromPoints } from './utils.js';
 import { supabaseEnabled, listPaidTableOrdersSince, listPaidTableOrdersBetween } from './lib/tableOrdersApi.js';
+import { listCompletedOrdersSince, listCompletedOrdersBetween } from './lib/ordersApi.js';
+import { listCompletedCustomerOrdersSince, listCompletedCustomerOrdersBetween } from './lib/customerOrdersApi.js';
 import SummaryCard from './SummaryCard.jsx';
+
+// Chuẩn hoá 3 nguồn đơn đã hoàn tất/thanh toán (khác cấu trúc cột) về cùng một hình dạng
+// { branch, amount, at } để cộng gộp doanh thu toàn chuỗi — xem lựa chọn gộp nguồn trong
+// buổi trao đổi yêu cầu (bàn + giao hàng + khách tự đặt).
+function normalizeTable(list) { return list.map(o => ({ branch: o.branch, amount: o.total - o.discount, at: o.paidAt })); }
+function normalizeDelivery(list) { return list.map(o => ({ branch: o.br, amount: o.totalRaw, at: o.createdAt })); }
+function normalizeCustomer(list) { return list.map(o => ({ branch: o.branch, amount: o.total, at: o.createdAt })); }
 
 const RANK_TINTS = ['#E7ECE5', '#F3E7D2', '#E4E9E4', '#F6DED7'];
 const RANK_FG = ['#2E3B35', '#A8792E', '#4C5A50', '#8E3421'];
@@ -18,9 +27,9 @@ function lastNDays(n) {
     return d;
   });
 }
-function sumInDay(orders, day) {
+function sumInDay(transactions, day) {
   const next = new Date(day); next.setDate(next.getDate() + 1);
-  return orders.filter(o => { const t = new Date(o.paidAt); return t >= day && t < next; });
+  return transactions.filter(o => { const t = new Date(o.at); return t >= day && t < next; });
 }
 
 export default function BranchPerformance({ ctx }) {
@@ -29,6 +38,10 @@ export default function BranchPerformance({ ctx }) {
   const [loading, setLoading] = useState(false);
   const [paidOrders, setPaidOrders] = useState([]);
   const [prevOrders, setPrevOrders] = useState([]);
+  const [deliveryOrders, setDeliveryOrders] = useState([]);
+  const [prevDeliveryOrders, setPrevDeliveryOrders] = useState([]);
+  const [customerOrders, setCustomerOrders] = useState([]);
+  const [prevCustomerOrders, setPrevCustomerOrders] = useState([]);
   const [err, setErr] = useState(false);
 
   function load() {
@@ -39,13 +52,26 @@ export default function BranchPerformance({ ctx }) {
     const prevStart = previousPeriodStart(period, start);
     Promise.all([
       listPaidTableOrdersSince(start.toISOString()),
-      listPaidTableOrdersBetween(prevStart.toISOString(), start.toISOString())
+      listPaidTableOrdersBetween(prevStart.toISOString(), start.toISOString()),
+      listCompletedOrdersSince(start.toISOString()),
+      listCompletedOrdersBetween(prevStart.toISOString(), start.toISOString()),
+      listCompletedCustomerOrdersSince(start.toISOString()),
+      listCompletedCustomerOrdersBetween(prevStart.toISOString(), start.toISOString())
     ])
-      .then(([cur, prev]) => { setPaidOrders(cur); setPrevOrders(prev); })
+      .then(([tableCur, tablePrev, deliveryCur, deliveryPrev, customerCur, customerPrev]) => {
+        setPaidOrders(tableCur); setPrevOrders(tablePrev);
+        setDeliveryOrders(deliveryCur); setPrevDeliveryOrders(deliveryPrev);
+        setCustomerOrders(customerCur); setPrevCustomerOrders(customerPrev);
+      })
       .catch(e => { console.error('[Supabase] Không tải được hiệu suất chi nhánh:', e); setErr(true); })
       .finally(() => setLoading(false));
   }
   useEffect(load, [period]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Doanh thu toàn chuỗi = tại bàn (table_orders, đã thanh toán) + giao hàng (orders, hoàn
+  // tất) + khách tự đặt qua Cổng khách hàng (customer_orders, hoàn tất) — gộp cả 3 kênh bán.
+  const allPaid = [...normalizeTable(paidOrders), ...normalizeDelivery(deliveryOrders), ...normalizeCustomer(customerOrders)];
+  const allPrev = [...normalizeTable(prevOrders), ...normalizeDelivery(prevDeliveryOrders), ...normalizeCustomer(prevCustomerOrders)];
 
   const start = periodStartDate(period);
   const branchExpenses = {};
@@ -58,10 +84,10 @@ export default function BranchPerformance({ ctx }) {
   });
 
   const rows = branchRecords.map(b => {
-    const orders = paidOrders.filter(o => o.branch === b.name);
-    const revenue = orders.reduce((sum, o) => sum + (o.total - o.discount), 0);
+    const transactions = allPaid.filter(o => o.branch === b.name);
+    const revenue = transactions.reduce((sum, o) => sum + o.amount, 0);
     const expense = branchExpenses[b.name] || 0;
-    return { name: b.name, revenue, orderCount: orders.length, expense, profit: revenue - expense };
+    return { name: b.name, revenue, orderCount: transactions.length, expense, profit: revenue - expense };
   }).sort((a, b) => b.revenue - a.revenue);
 
   const totalRevenue = rows.reduce((s, r) => s + r.revenue, 0);
@@ -71,7 +97,7 @@ export default function BranchPerformance({ ctx }) {
   const maxRevenue = Math.max(1, ...rows.map(r => r.revenue));
   const activeBranches = rows.filter(r => r.revenue > 0).length;
 
-  const prevRevenue = prevOrders.reduce((s, o) => s + (o.total - o.discount), 0);
+  const prevRevenue = allPrev.reduce((s, o) => s + o.amount, 0);
   const revenueGrowth = prevRevenue > 0 ? Math.round(((totalRevenue - prevRevenue) / prevRevenue) * 100) : (totalRevenue > 0 ? 100 : 0);
   const branchCoveragePct = Math.round((activeBranches / (rows.length || 1)) * 100);
   const costRatioPct = totalRevenue > 0 ? Math.round((totalExpense / totalRevenue) * 100) : 0;
@@ -79,8 +105,8 @@ export default function BranchPerformance({ ctx }) {
 
   // Xu hướng doanh thu toàn chuỗi — 7 ngày gần nhất.
   const last7 = lastNDays(7);
-  const dayRevenue = last7.map(d => sumInDay(paidOrders, d).reduce((s, o) => s + (o.total - o.discount), 0));
-  const dayOrderCount = last7.map(d => sumInDay(paidOrders, d).length);
+  const dayRevenue = last7.map(d => sumInDay(allPaid, d).reduce((s, o) => s + o.amount, 0));
+  const dayOrderCount = last7.map(d => sumInDay(allPaid, d).length);
   const maxDay = Math.max(1, ...dayRevenue);
   const revChart = buildChart(last7.map(d => d.toLocaleDateString('vi-VN', { weekday: 'short' })), dayRevenue.map(v => (v / maxDay) * 100), null);
   const revSmoothLine = smoothPathFromPoints(revChart.chartPoints);
@@ -88,12 +114,12 @@ export default function BranchPerformance({ ctx }) {
 
   // Doanh thu theo thứ trong tuần — kỳ này so với kỳ trước (dùng 7 ngày liền trước 7 ngày hiện tại để so sánh cùng vị trí thứ).
   const prev7 = lastNDays(14).slice(0, 7);
-  const prevDayRevenue = prev7.map(d => sumInDay(prevOrders.length ? prevOrders : paidOrders, d).reduce((s, o) => s + (o.total - o.discount), 0));
+  const prevDayRevenue = prev7.map(d => sumInDay(allPrev.length ? allPrev : allPaid, d).reduce((s, o) => s + o.amount, 0));
   const maxBar = Math.max(1, ...dayRevenue, ...prevDayRevenue);
 
   // Top chi nhánh — sparkline riêng của chi nhánh dẫn đầu.
   const topBranch = rows[0];
-  const topBranchDay = topBranch ? last7.map(d => sumInDay(paidOrders.filter(o => o.branch === topBranch.name), d).reduce((s, o) => s + (o.total - o.discount), 0)) : [];
+  const topBranchDay = topBranch ? last7.map(d => sumInDay(allPaid.filter(o => o.branch === topBranch.name), d).reduce((s, o) => s + o.amount, 0)) : [];
   const topMax = Math.max(1, ...topBranchDay);
 
   return (
@@ -101,7 +127,7 @@ export default function BranchPerformance({ ctx }) {
       <div className="toolbar">
         <div style={{ flex: 1 }}>
           <h2 style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.01em' }}>Hiệu suất chi nhánh</h2>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Doanh thu tính từ các hoá đơn đã thanh toán tại bàn — cập nhật theo thời gian thực.</div>
+          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Doanh thu gộp từ đơn tại bàn (đã thanh toán), đơn giao hàng và đơn khách tự đặt (đã hoàn tất) — cập nhật theo thời gian thực.</div>
         </div>
         <div style={{ display: 'flex', gap: 2, padding: 3, background: 'var(--surface-page)', border: '1px solid var(--border)', borderRadius: 999 }}>
           <button type="button" className={`tabp ${period === 'week' ? 'active' : ''}`} onClick={() => setPeriod('week')}>7 ngày qua</button>

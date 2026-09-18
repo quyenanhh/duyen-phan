@@ -34,7 +34,8 @@ export async function getMyProfile(userId) {
 }
 
 export async function listProfiles() {
-  const { data, error } = await supabase.from('profiles').select('*').order('created_at', { ascending: true });
+  // Loại role "customer" (đăng ký công khai) khỏi danh sách nhân sự nội bộ.
+  const { data, error } = await supabase.from('profiles').select('*').neq('role', 'customer').order('created_at', { ascending: true });
   if (error) throw error;
   return data.map(fromRow);
 }

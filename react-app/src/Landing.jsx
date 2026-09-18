@@ -4,8 +4,11 @@ import { fmtVnd } from './utils.js';
 import SiteHeader from './SiteHeader.jsx';
 import SiteFooter from './SiteFooter.jsx';
 import { Reveal, useInView } from './reveal.jsx';
-import { Dish, pickDishArt, GoiCuonArt, ThapCamArt } from './dishArt.jsx';
+import { Dish, pickDishArt } from './dishArt.jsx';
 import { MENU_CATEGORIES } from './data.js';
+import heroQuanPhoto from './assets/hero-quan.jpg';
+import rauCu2Photo from './assets/rau-cu-2.jpg';
+import rauCu1Photo from './assets/rau-cu-1.jpg';
 
 // Lấy nhiều món tiêu biểu hơn thẳng từ thực đơn thật (Supabase khi đã cấu hình, hoặc dữ
 // liệu mẫu MENU_ITEMS khi chưa) — luân phiên qua từng danh mục (mỗi vòng lấy 1 món/danh
@@ -85,8 +88,8 @@ export default function Landing({ ctx }) {
 
           <Reveal delay={.24} style={{ position: 'relative', marginTop: 56 }}>
             <div className="wrap" style={{ position: 'relative' }}>
-              <div className="photo-card" style={{ height: 420, padding: 32 }}>
-                <RiceBowlArt />
+              <div className="photo-card" style={{ height: 420, padding: 0 }}>
+                <img src={heroQuanPhoto} alt="Không gian quán Duyên Phần" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div className="float-badge" style={{ position: 'absolute', left: 40, bottom: 20 }}>
                 <span style={{ width: 40, height: 40, flex: '0 0 auto', borderRadius: 10, background: 'var(--surface-brand-soft)', color: 'var(--brand)', display: 'grid', placeItems: 'center' }}>
@@ -138,10 +141,14 @@ export default function Landing({ ctx }) {
           </Reveal>
           <Reveal delay={.12} style={{ position: 'relative', height: 440 }}>
             <div style={{ position: 'absolute', width: '64%', height: 260, left: 0, top: 6, transform: 'rotate(-3deg)' }}>
-              <div className="photo-card" style={{ height: '100%', padding: 22 }}><GoiCuonArt /></div>
+              <div className="photo-card" style={{ height: '100%', padding: 0 }}>
+                <img src={rauCu2Photo} alt="Rau củ tươi theo mùa" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
             </div>
             <div style={{ position: 'absolute', width: '56%', height: 230, right: 0, bottom: 6, transform: 'rotate(4deg)' }}>
-              <div className="photo-card" style={{ height: '100%', padding: 20 }}><ThapCamArt /></div>
+              <div className="photo-card" style={{ height: '100%', padding: 0 }}>
+                <img src={rauCu1Photo} alt="Rau củ tươi theo mùa" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
             </div>
             <div className="float-badge" style={{ position: 'absolute', left: 4, bottom: 12 }}>
               <span style={{ width: 36, height: 36, flex: '0 0 auto', borderRadius: '50%', background: 'var(--surface-brand-soft)', color: 'var(--brand)', display: 'grid', placeItems: 'center' }}><LeafIcon size={16} /></span>
@@ -268,7 +275,7 @@ function Stat({ icon, value, label }) {
     <div ref={ref} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '0 40px' }}>
       <span className="icon-badge" style={{ color: 'var(--text-accent)', flex: '0 0 auto' }}>{icon}</span>
       <span>
-        <span style={{ display: 'block', fontFamily: 'var(--font-serif)', fontSize: 30, fontWeight: 600, lineHeight: 1 }}>{match ? `${count}${match[2]}` : value}</span>
+        <span style={{ display: 'block', fontFamily: 'var(--font-serif)', fontSize: 30, fontWeight: 600, lineHeight: 1, color: 'var(--text-brand)' }}>{match ? `${count}${match[2]}` : value}</span>
         <span style={{ fontSize: 'var(--fs-label)', color: 'var(--text-muted)' }}>{label}</span>
       </span>
     </div>
@@ -308,29 +315,6 @@ function CoreValue({ title, desc }) {
     </div>
   );
 }
-function RiceBowlArt() {
-  return (
-    <svg viewBox="0 0 300 220" width="100%" height="100%" style={{ maxHeight: 400 }} role="img" aria-label="Mâm cơm chay nhiều món, tông ấm">
-      <ellipse cx="170" cy="198" rx="128" ry="10" fill="var(--border-strong)" opacity=".25" />
-      <path d="M18 140a52 52 0 0 0 96 0Z" fill="var(--clay-50)" stroke="var(--border-strong)" strokeWidth="2" />
-      <ellipse cx="66" cy="140" rx="48" ry="9" fill="none" stroke="var(--border-strong)" strokeWidth="2" />
-      <path d="M40 138c6-9 18-12 28-7" stroke="var(--green-700)" strokeWidth="2" fill="none" strokeLinecap="round" opacity=".7" />
-      <path d="M108 120a108 108 0 0 0 204 0Z" fill="var(--surface-card)" stroke="var(--border-strong)" strokeWidth="2.5" />
-      <ellipse cx="210" cy="120" rx="102" ry="15" fill="none" stroke="var(--border-strong)" strokeWidth="2.5" />
-      <ellipse cx="176" cy="110" rx="52" ry="18" fill="var(--cream-50)" stroke="var(--border-strong)" strokeWidth="1.5" />
-      <path d="M148 98c-9-6-22-4-28 5 9 4 21 2 28-5Z" fill="var(--green-300)" />
-      <path d="M164 92c-4-7-15-11-24-7 5 7 16 11 24 7Z" fill="var(--green-700)" />
-      <circle cx="222" cy="102" r="10" fill="var(--clay-600)" />
-      <circle cx="238" cy="113" r="7" fill="var(--clay-300)" />
-      <rect x="192" y="92" width="18" height="18" rx="3" fill="var(--cream-50)" stroke="var(--green-700)" strokeWidth="1.5" />
-      <rect x="244" y="52" width="4" height="88" rx="2" fill="var(--green-700)" transform="rotate(20 246 96)" />
-      <rect x="256" y="48" width="4" height="88" rx="2" fill="var(--green-700)" transform="rotate(20 258 92)" />
-      <path d="M168 64c-6-8 4-13-2-22" stroke="var(--green-300)" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".7" />
-      <path d="M188 60c-6-8 4-13-2-22" stroke="var(--green-300)" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".5" />
-    </svg>
-  );
-}
-
 function KitchenArt() {
   return (
     <svg viewBox="0 0 240 300" width="100%" height="100%" style={{ maxHeight: 380 }} role="img" aria-label="Người nấu trong bếp">

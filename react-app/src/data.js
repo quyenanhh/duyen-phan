@@ -143,7 +143,6 @@ export const EXPENSE_LIST = [
 ].map((e, i) => ({ ...e, id: i + 1 }));
 
 
-export const STAFF_WEEK_DAYS = [['T2', '31/08'], ['T3', '01/09'], ['T4', '02/09'], ['T5', '03/09'], ['T6', '04/09'], ['T7', '05/09'], ['CN', '06/09']];
 export const STAFF_WEEK_PATTERN = ['am', 'am', 'am', 'off', 'am', 'am', 'off'];
 export const STAFF_SHIFT_CELL = { am: ['#E7ECE5', '#B7C2B4', '#2E3B35', 'Ca sáng'], pm: ['#F7E9CC', '#C98A2C', '#8C5E14', 'Ca chiều'], off: ['#F0EBE3', '#D2C4B4', '#8A948F', 'Nghỉ'] };
 

@@ -106,12 +106,15 @@ Deno.serve(async (req) => {
 
   const newUserId = created.user!.id;
 
-  // handle_new_user (trigger) đã tự tạo dòng profiles từ user_metadata ở trên — Quản lý
-  // tạo trực tiếp nên duyệt sẵn luôn (không cần chờ tự duyệt như đăng ký công khai), và bắt
-  // buộc đổi mật khẩu tạm thời ở lần đăng nhập đầu tiên.
+  // handle_new_user (trigger) đã tự tạo dòng profiles, nhưng KHÔNG đọc "role" từ
+  // user_metadata nữa (022_signup_admin_token.sql cố tình bỏ, để chặn client tự gán role qua
+  // console) — nên dòng vừa tạo luôn có role = 'customer'. Sửa lại đúng role/branch ở đây,
+  // ngay sau khi tạo, bằng service_role key (025_fix_staff_role_bug.sql đã cho phép
+  // service_role ghi đè enforce_profile_update_rules). Quản lý tạo trực tiếp nên duyệt sẵn
+  // luôn, và bắt buộc đổi mật khẩu tạm thời ở lần đăng nhập đầu tiên.
   const { error: updateErr } = await admin
     .from('profiles')
-    .update({ approved: true, must_change_password: true })
+    .update({ role, branch, approved: true, must_change_password: true })
     .eq('id', newUserId);
 
   if (updateErr) {

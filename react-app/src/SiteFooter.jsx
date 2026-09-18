@@ -1,7 +1,12 @@
 import { LeafIcon } from './icons.jsx';
 
 export default function SiteFooter({ ctx }) {
-  const { goAuth, isLoggedIn } = ctx;
+  const { goAuth, isLoggedIn, appMode, internalOrigin } = ctx;
+  // Trên web khách hàng (dev:customer), khu vực nội bộ không tồn tại trong app này nữa — link
+  // "Đăng nhập quản trị" phải trỏ hẳn sang web nội bộ (dev:internal, cổng khác), không gọi
+  // goAuth() nội bộ nữa (nếu không sẽ chỉ bị app tự đá về trang chủ, xem effect chặn theo cổng
+  // trong App.jsx).
+  const isCrossPort = appMode === 'customer';
   return (
     <footer style={{ background: 'var(--surface-card)', borderTop: '1px solid var(--border)', padding: '72px 0 32px' }}>
       <div className="wrap foot-grid">
@@ -25,7 +30,11 @@ export default function SiteFooter({ ctx }) {
             <a className="foot-link" href="#">Câu chuyện</a>
             <a className="foot-link" href="#">Nhượng quyền</a>
             <a className="foot-link" href="#">Liên hệ</a>
-            <a className="foot-link" onClick={goAuth} style={{ cursor: 'pointer' }}>{isLoggedIn ? 'Vào trang quản trị' : 'Đăng nhập quản trị'}</a>
+            {isCrossPort ? (
+              <a className="foot-link" href={`${internalOrigin}/dang-nhap`}>Đăng nhập quản trị</a>
+            ) : (
+              <a className="foot-link" onClick={goAuth} style={{ cursor: 'pointer' }}>{isLoggedIn ? 'Vào trang quản trị' : 'Đăng nhập quản trị'}</a>
+            )}
           </div>
         </div>
         <div>
