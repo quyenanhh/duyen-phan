@@ -23,6 +23,12 @@ export function slug(name) {
   return name.trim().toLowerCase().split('').map(ch => VIET_MAP[ch] || ch).join('').replace(/[^a-z0-9]+/g, '.').replace(/^\.+|\.+$/g, '');
 }
 
+// Bỏ dấu tiếng Việt, viết hoa — dùng cho nội dung chuyển khoản VietQR (addInfo), vì một số
+// app ngân hàng hiển thị sai/lược bỏ ký tự có dấu.
+export function toPlainAscii(str) {
+  return str.trim().toLowerCase().split('').map(ch => VIET_MAP[ch] || ch).join('').toUpperCase();
+}
+
 export function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }

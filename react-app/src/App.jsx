@@ -116,6 +116,13 @@ export default function App() {
   const [cart, setCart] = useState([]); // [{ id, name, price, quantity }]
   const [myReservations, setMyReservations] = useState([]);
   const [myCustomerOrders, setMyCustomerOrders] = useState([]);
+  // Tab đang mở trong Cổng khách hàng (/app) — nâng lên đây (thay vì state cục bộ trong
+  // CustomerDashboard.jsx) để trang chủ có thể điều hướng thẳng tới đúng tab (goReservation/
+  // goOrderFood bên dưới), giống cách các trang khác trong app đã nâng state lên App.jsx.
+  const [customerDashboardTab, setCustomerDashboardTab] = useState('menu'); // menu | reservation | orders
+  // Nhớ lại "khách đang định vào /app" khi họ bấm Đặt bàn/Đặt món lúc CHƯA đăng nhập, để sau
+  // khi đăng nhập/đăng ký xong tự vào thẳng /app thay vì bị đưa về trang chủ như luồng thường.
+  const [pendingCustomerPage, setPendingCustomerPage] = useState(null);
 
   // change password
   const [newPassword, setNewPassword] = useState('');
@@ -238,10 +245,18 @@ export default function App() {
       setIsCustomerLoggedIn(true);
       setAuthLoading(false);
       setPassword('');
-      // Chỉ ép về "landing" khi đây là lần đăng nhập chủ động (đang đứng ở màn hình đăng
-      // nhập/đăng ký) — nếu đang khôi phục phiên có sẵn từ một đường dẫn sâu (ví dụ mở thẳng
-      // /app khi đã đăng nhập từ trước), giữ nguyên trang đang đứng, không nhảy về trang chủ.
-      setPage(prev => (prev === 'auth' || prev === 'signup' ? 'landing' : prev));
+      // Nếu khách bấm Đặt bàn/Đặt món lúc chưa đăng nhập (goReservation/goOrderFood đã ghi
+      // pendingCustomerPage='account' trước khi bị đưa sang màn đăng nhập), vào thẳng /app
+      // đúng tab đã chọn thay vì về trang chủ. Ngược lại, chỉ ép về "landing" khi đây là lần
+      // đăng nhập chủ động (đang đứng ở màn hình đăng nhập/đăng ký) — nếu đang khôi phục phiên
+      // có sẵn từ một đường dẫn sâu (ví dụ mở thẳng /app khi đã đăng nhập từ trước), giữ
+      // nguyên trang đang đứng, không nhảy về trang chủ.
+      if (pendingCustomerPage) {
+        setPage(pendingCustomerPage);
+        setPendingCustomerPage(null);
+      } else {
+        setPage(prev => (prev === 'auth' || prev === 'signup' ? 'landing' : prev));
+      }
       flash('Đăng nhập thành công. Chào mừng bạn quay lại Duyên Phần.');
       return;
     }
@@ -476,6 +491,26 @@ export default function App() {
     setPage('auth'); setErrors({});
   }
   function goAccount(e) { if (e) e.preventDefault(); setLandingAcctMenuOpen(false); setPage('account'); window.scrollTo(0, 0); }
+  // Đặt bàn/Đặt món từ trang chủ — mở thẳng đúng tab trong Cổng khách hàng (/app). Nếu chưa
+  // đăng nhập, effect chặn "account" ở dưới sẽ tự đưa sang màn đăng nhập; ghi nhớ ý định qua
+  // pendingCustomerPage để applySessionUser (đăng nhập) và submitSignup (đăng ký) biết đường
+  // quay lại đúng /app thay vì mặc định về trang chủ.
+  function goReservation(e) {
+    if (e) e.preventDefault();
+    setLandingAcctMenuOpen(false);
+    setCustomerDashboardTab('reservation');
+    if (!isCustomerLoggedIn) setPendingCustomerPage('account');
+    setPage('account');
+    window.scrollTo(0, 0);
+  }
+  function goOrderFood(e) {
+    if (e) e.preventDefault();
+    setLandingAcctMenuOpen(false);
+    setCustomerDashboardTab('menu');
+    if (!isCustomerLoggedIn) setPendingCustomerPage('account');
+    setPage('account');
+    window.scrollTo(0, 0);
+  }
   // Web nội bộ không có "landing" (trang này nằm trong CUSTOMER_ONLY_PAGES) — nếu set 'landing'
   // lúc đang đăng nhập (isLoggedIn=true), effect chặn CUSTOMER_ONLY_PAGES ở trên sẽ tự đưa
   // thẳng về lại 'dashboard', khiến bấm logo "Duyên Phần" trong Dashboard.jsx tưởng như không
@@ -637,6 +672,7 @@ export default function App() {
     setLoggedPhone((profile && profile.phone) || '');
     setUserRole('customer');
     setIsCustomerLoggedIn(true);
+    setPendingCustomerPage(null);
     setPage('account');
     flash('Đăng ký thành công. Chào mừng bạn đến với Duyên Phần.');
   }
@@ -748,9 +784,10 @@ export default function App() {
 
   const ctx = {
     page, setPage, theme, toggleTheme, goAuth, goLanding, goMenu, goBranchesPublic, goAbout, goContact, goAccount, logout, switchAccount,
-    goSignup, goLoginFromSignup,
+    goSignup, goLoginFromSignup, goReservation, goOrderFood,
     isCustomerLoggedIn, cart, addToCart, updateCartQty, removeFromCart, clearCart, cartCount, cartTotal,
     myReservations, setMyReservations, myCustomerOrders, setMyCustomerOrders,
+    customerDashboardTab, setCustomerDashboardTab,
     email, setEmail, password, setPassword, remember, setRemember, errors, setErrors,
     submitLogin, submitGoogleLogin, authLoading,
     signupPhone, setSignupPhone, signupNotice, submitSignup,

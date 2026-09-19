@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { MENU_CATEGORIES, BRANCHES } from './data.js';
-import { fmtVnd } from './utils.js';
-import { TrashIcon, CalendarIcon, ReceiptIcon, CartIcon } from './icons.jsx';
+import { MENU_CATEGORIES, BRANCHES, BANK_ACCOUNTS } from './data.js';
+import { fmtVnd, toPlainAscii } from './utils.js';
+import { TrashIcon, CalendarIcon, ReceiptIcon, CartIcon, SearchIcon, ChevronLeft, ChevronRight } from './icons.jsx';
+import { pickDishArt } from './dishArt.jsx';
+import heroQuanPhoto from './assets/hero-quan.jpg';
 import SiteHeader from './SiteHeader.jsx';
 import SiteFooter from './SiteFooter.jsx';
 import { supabaseEnabled, createReservation, cancelReservation } from './lib/reservationsApi.js';
@@ -40,10 +42,41 @@ const TABS = [
   { id: 'orders', label: 'Đơn của tôi' }
 ];
 
+// QR chuyển khoản (VietQR, miễn phí — không qua cổng thanh toán trả phí) cho phương thức
+// "Chuyển khoản". Dùng chung cho cả lúc đặt món (OrderFoodTab) lẫn xem lại đơn chưa thanh
+// toán (MyOrdersTab). `content` nên là nội dung chuyển khoản để nhân viên đối soát (mã đơn
+// nếu đã có, hoặc số điện thoại nếu đang ở bước đặt món, chưa có mã đơn).
+function BankTransferInfo({ amount, content }) {
+  const [selected, setSelected] = useState(0);
+  if (!BANK_ACCOUNTS.length) return null;
+  const acc = BANK_ACCOUNTS[selected] || BANK_ACCOUNTS[0];
+  const safeContent = toPlainAscii(content);
+  const qrUrl = `https://img.vietqr.io/image/${acc.bankCode}-${acc.accountNumber}-compact2.png?amount=${Math.max(0, Math.round(amount || 0))}&addInfo=${encodeURIComponent(safeContent)}&accountName=${encodeURIComponent(acc.accountName)}`;
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: 16, background: 'var(--surface-sunken)', borderRadius: 'var(--radius-card)' }}>
+      {BANK_ACCOUNTS.length > 1 && (
+        <div style={{ display: 'flex', gap: 6, padding: 4, background: 'var(--surface-card)', borderRadius: 999, overflowX: 'auto' }}>
+          {BANK_ACCOUNTS.map((b, i) => (
+            <button key={b.accountNumber} type="button" className={`tabp ${selected === i ? 'active' : ''}`} onClick={() => setSelected(i)}>{b.bank}</button>
+          ))}
+        </div>
+      )}
+      <img src={qrUrl} alt={`QR chuyển khoản ${acc.bank}`} width={180} height={180} style={{ width: 180, height: 180, alignSelf: 'center', borderRadius: 'var(--radius-sm)', background: '#fff' }} />
+      <p style={{ fontSize: 12, textAlign: 'center', color: 'var(--text-subtle)' }}>Quét mã bằng app ngân hàng bất kỳ, hoặc chuyển khoản thủ công theo thông tin bên dưới.</p>
+      <div style={{ fontSize: 13, textAlign: 'center', lineHeight: 1.6 }}>
+        <div style={{ fontWeight: 600 }}>{acc.bank}</div>
+        <div style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>{acc.accountNumber}</div>
+        <div style={{ color: 'var(--text-muted)' }}>{acc.accountName}</div>
+      </div>
+      <div style={{ fontSize: 12, textAlign: 'center', color: 'var(--text-subtle)' }}>Nội dung chuyển khoản: <b>{safeContent}</b></div>
+    </div>
+  );
+}
+
 export default function CustomerDashboard({ ctx }) {
-  const { theme, loggedName, loggedEmail, loggedPhone } = ctx;
+  const { theme, loggedName, loggedEmail, loggedPhone, customerDashboardTab: tab, setCustomerDashboardTab: setTab } = ctx;
   const themeClass = theme === 'dark' ? 'dark-mode' : '';
-  const [tab, setTab] = useState('menu');
 
   return (
     <div className={`landing-scope ${themeClass}`} style={{ background: 'var(--surface-page)', minHeight: '100vh' }}>
@@ -79,12 +112,13 @@ export default function CustomerDashboard({ ctx }) {
 }
 
 // ---------------------------------------------------------------------------
-// Tab 1 — Đặt món: chọn chi nhánh + hình thức, thêm món vào giỏ, gửi đơn.
+// Tab 1 — Đặt món: lưới thực đơn (lọc theo danh mục/tìm kiếm) bên trái, giỏ hàng
+// dính (sticky) bên phải — bố cục theo mẫu POS khách hàng gửi.
 // ---------------------------------------------------------------------------
 function OrderFoodTab({ ctx }) {
   const {
     menuRecords, cart, addToCart, updateCartQty, removeFromCart, clearCart, cartTotal,
-    loggedName, loggedPhone, flash, setMyCustomerOrders, setMyReservations
+    loggedName, loggedPhone, flash, setMyCustomerOrders
   } = ctx;
 
   const [branch, setBranch] = useState(BRANCHES[0] || '');
@@ -92,20 +126,13 @@ function OrderFoodTab({ ctx }) {
   const [paymentMethod, setPaymentMethod] = useState('tien_mat');
   const [note, setNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
-  // Đặt bàn nhanh — dùng chung ô chọn chi nhánh phía dưới với phần đặt món.
-  const [resDate, setResDate] = useState('');
-  const [resTime, setResTime] = useState('18:00');
-  const [resGuests, setResGuests] = useState(2);
-  const [resErrors, setResErrors] = useState({});
-  const [resSubmitting, setResSubmitting] = useState(false);
+  const [query, setQuery] = useState('');
+  const [activeCat, setActiveCat] = useState('');
 
   const availableItems = menuRecords.filter(m => m.status === 'available' && m.visible !== false);
-  const grouped = MENU_CATEGORIES
-    .map(cat => [cat, availableItems.filter(m => m.category === cat)])
-    .filter(([, items]) => items.length > 0);
-  const extraCats = [...new Set(availableItems.map(m => m.category))].filter(c => !MENU_CATEGORIES.includes(c));
-  extraCats.forEach(cat => grouped.push([cat, availableItems.filter(m => m.category === cat)]));
+  const categories = MENU_CATEGORIES.filter(c => availableItems.some(m => m.category === c));
+  const q = query.trim().toLowerCase();
+  const filtered = availableItems.filter(m => (!activeCat || m.category === activeCat) && (!q || m.name.toLowerCase().includes(q)));
 
   async function submitOrder() {
     if (!cart.length) { flash('Chưa chọn món nào để đặt.'); return; }
@@ -128,177 +155,188 @@ function OrderFoodTab({ ctx }) {
     }
   }
 
-  async function submitQuickReservation() {
-    const errs = {};
-    if (!branch) errs.branch = 'Chọn chi nhánh';
-    if (!resDate) errs.date = 'Chọn ngày';
-    if (!resTime) errs.time = 'Chọn giờ';
-    if (!resGuests || resGuests < 1) errs.guests = 'Nhập số khách hợp lệ';
-    if (Object.keys(errs).length) { setResErrors(errs); return; }
-
-    if (!supabaseEnabled) { flash('Chưa cấu hình Supabase — không thể đặt bàn lúc này.'); return; }
-
-    setResErrors({});
-    setResSubmitting(true);
-    try {
-      const created = await createReservation({ branch, date: resDate, time: resTime, guests: Number(resGuests), note: '', customerName: loggedName, customerPhone: loggedPhone });
-      setMyReservations(prev => [created, ...prev]);
-      setResDate('');
-      flash('Đã gửi yêu cầu đặt bàn — chi nhánh sẽ xác nhận sớm.');
-    } catch (err) {
-      console.error('[Supabase] Đặt bàn thất bại:', err);
-      flash('Không đặt được bàn, vui lòng thử lại.');
-    } finally {
-      setResSubmitting(false);
-    }
-  }
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-      {/* Lưới thực đơn — chiếm toàn bộ chiều rộng vì đã bỏ sidebar giỏ hàng bên phải */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        {grouped.length === 0 && (
-          <div className="panel" style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>Hiện chưa có món nào để đặt.</div>
-        )}
-        {grouped.map(([cat, items]) => (
-          <section key={cat}>
-            <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10 }}>{cat}</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
-              {items.map(item => (
-                <button key={item.id} type="button" className="panel" onClick={() => addToCart(item)}
-                  style={{ padding: '14px 16px', textAlign: 'left', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 4, border: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600 }}>{item.name}</span>
-                  {item.desc && <span style={{ fontSize: 12, color: 'var(--text-subtle)' }}>{item.desc}</span>}
-                  <span style={{ fontSize: 13, color: 'var(--text-accent)', fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(item.price)}</span>
-                </button>
-              ))}
-            </div>
-          </section>
-        ))}
-      </div>
-
-      {/* 2 khu vực chính, canh giữa, nằm giữa lưới thực đơn và ô chọn chi nhánh dùng chung */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: 24, maxWidth: 960, margin: '0 auto', width: '100%' }}>
-        <section className="panel" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <h3 style={{ fontSize: 17, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><CartIcon size={17} />Đặt món</h3>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {cart.length === 0 ? (
-              <p style={{ fontSize: 13, color: 'var(--text-subtle)', textAlign: 'center', margin: '16px 0' }}>Chưa chọn món nào — bấm vào món bên trên để thêm.</p>
-            ) : cart.map(it => (
-              <div key={it.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: '1px solid var(--border-soft)' }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 14, fontWeight: 600 }}>{it.name}</div>
-                  <div style={{ fontSize: 12.5, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(it.price)}</div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <button type="button" className="icon-btn" style={{ width: 28, height: 28 }} onClick={() => updateCartQty(it.id, it.quantity - 1)}>−</button>
-                  <span style={{ width: 22, textAlign: 'center', fontSize: 13, fontVariantNumeric: 'tabular-nums' }}>{it.quantity}</span>
-                  <button type="button" className="icon-btn" style={{ width: 28, height: 28 }} onClick={() => updateCartQty(it.id, it.quantity + 1)}>+</button>
-                </div>
-                <div style={{ width: 96, textAlign: 'right', fontSize: 13.5, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(it.price * it.quantity)}</div>
-                <button type="button" className="icon-btn" style={{ width: 28, height: 28 }} onClick={() => removeFromCart(it.id)}><TrashIcon size={14} /></button>
-              </div>
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 360px', gap: 24, alignItems: 'start' }}>
+      {/* Lưới thực đơn */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 6, padding: 4, background: 'var(--surface-sunken)', borderRadius: 999, overflowX: 'auto' }}>
+            <button type="button" className={`tabp ${!activeCat ? 'active' : ''}`} onClick={() => setActiveCat('')}>Tất cả</button>
+            {categories.map(c => (
+              <button key={c} type="button" className={`tabp ${activeCat === c ? 'active' : ''}`} onClick={() => setActiveCat(c)}>{c}</button>
             ))}
           </div>
+          <span style={{ flex: 1 }} />
+          <span className="field" style={{ width: 220 }}>
+            <SearchIcon style={{ color: 'var(--text-subtle)', flex: '0 0 auto' }} />
+            <input placeholder="Tìm món" value={query} onChange={e => setQuery(e.target.value)} />
+          </span>
+        </div>
 
-          <label className="field-wrap">
-            <label>Hình thức</label>
-            <span className="field"><select value={orderMode} onChange={e => setOrderMode(e.target.value)}>
-              <option value="mang_ve">Mang về</option>
-              <option value="tai_ban">Dùng tại quán</option>
-            </select></span>
-          </label>
-          <label className="field-wrap">
-            <label>Ghi chú</label>
-            <span className="field"><input placeholder="Ví dụ: số bàn, ít cay, không hành..." value={note} onChange={e => setNote(e.target.value)} /></span>
-          </label>
-          <label className="field-wrap">
-            <label>Thanh toán</label>
-            <span className="field"><select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
-              <option value="tien_mat">Tiền mặt khi nhận</option>
-              <option value="chuyen_khoan">Chuyển khoản</option>
-              <option value="the">Quẹt thẻ khi nhận</option>
-            </select></span>
-          </label>
-          <p style={{ fontSize: 12, color: 'var(--text-subtle)' }}>
-            Dự án chưa tích hợp cổng thanh toán trực tuyến — nhân viên sẽ xác nhận trạng thái thanh toán khi giao/nhận món.
-          </p>
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 15, fontWeight: 600, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
-            <span>Tổng cộng</span>
-            <span style={{ fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(cartTotal)}</span>
+        {filtered.length === 0 ? (
+          <div className="panel" style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>Không tìm thấy món phù hợp.</div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16 }}>
+            {filtered.map(item => {
+              const Art = pickDishArt(item);
+              const inCart = cart.find(it => it.id === item.id);
+              return (
+                <div key={item.id} className="panel" style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <div className="photo-card" style={{ height: 110, padding: 12 }}><Art /></div>
+                  <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{item.name}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                    <span style={{ fontSize: 13.5, color: 'var(--text-accent)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(item.price)}</span>
+                    <button type="button" className="btn btn-secondary btn-md" style={{ height: 32, padding: '0 12px', fontSize: 12.5 }} onClick={() => addToCart(item)}>
+                      {inCart ? `Thêm (${inCart.quantity})` : 'Thêm'}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          <button type="button" className="btn btn-primary btn-lg btn-block" onClick={submitOrder} disabled={submitting}>{submitting ? 'Đang đặt…' : 'Đặt món'}</button>
-        </section>
-
-        <section className="panel" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <h3 style={{ fontSize: 17, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><CalendarIcon size={17} />Đặt bàn</h3>
-
-          <div style={{ display: 'flex', gap: 12 }}>
-            <label className="field-wrap" style={{ flex: 1 }}>
-              <label>Ngày</label>
-              <span className="field" style={{ borderColor: resErrors.date ? 'var(--danger)' : undefined }}>
-                <input type="date" value={resDate} onChange={e => setResDate(e.target.value)} />
-              </span>
-              {resErrors.date && <span className="err-msg">{resErrors.date}</span>}
-            </label>
-            <label className="field-wrap" style={{ flex: 1 }}>
-              <label>Giờ</label>
-              <span className="field" style={{ borderColor: resErrors.time ? 'var(--danger)' : undefined }}>
-                <input type="time" value={resTime} onChange={e => setResTime(e.target.value)} />
-              </span>
-              {resErrors.time && <span className="err-msg">{resErrors.time}</span>}
-            </label>
-          </div>
-          <label className="field-wrap">
-            <label>Số khách</label>
-            <span className="field" style={{ borderColor: resErrors.guests ? 'var(--danger)' : undefined }}>
-              <input type="number" min={1} value={resGuests} onChange={e => setResGuests(e.target.value)} />
-            </span>
-            {resErrors.guests && <span className="err-msg">{resErrors.guests}</span>}
-          </label>
-
-          <button type="button" className="btn btn-primary btn-lg btn-block" style={{ marginTop: 'auto' }} onClick={submitQuickReservation} disabled={resSubmitting}>{resSubmitting ? 'Đang gửi…' : 'Gửi yêu cầu đặt bàn'}</button>
-        </section>
+        )}
       </div>
 
-      {/* Ô chọn chi nhánh dùng chung — áp dụng cho cả đặt món lẫn đặt bàn ở trên */}
-      <div className="panel" style={{ padding: 20, maxWidth: 420, margin: '0 auto', width: '100%' }}>
+      {/* Giỏ hàng — dính bên phải, giống panel "Order" trong mẫu */}
+      <section className="panel" style={{ position: 'sticky', top: 96, padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <h3 style={{ fontSize: 16, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><CartIcon size={16} />Đơn của bạn</h3>
+
+        <div style={{ display: 'flex', gap: 4, padding: 4, background: 'var(--surface-sunken)', borderRadius: 999 }}>
+          <button type="button" className={`tabp ${orderMode === 'tai_ban' ? 'active' : ''}`} style={{ flex: 1 }} onClick={() => setOrderMode('tai_ban')}>Dùng tại quán</button>
+          <button type="button" className={`tabp ${orderMode === 'mang_ve' ? 'active' : ''}`} style={{ flex: 1 }} onClick={() => setOrderMode('mang_ve')}>Mang về</button>
+        </div>
+
         <label className="field-wrap">
           <label>Chi nhánh</label>
-          <span className="field" style={{ borderColor: resErrors.branch ? 'var(--danger)' : undefined }}>
-            <select value={branch} onChange={e => setBranch(e.target.value)}>
-              {BRANCHES.map(b => <option key={b} value={b}>{b}</option>)}
-            </select>
-          </span>
-          {resErrors.branch && <span className="err-msg">{resErrors.branch}</span>}
+          <span className="field"><select value={branch} onChange={e => setBranch(e.target.value)}>
+            {BRANCHES.map(b => <option key={b} value={b}>{b}</option>)}
+          </select></span>
         </label>
-      </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, maxHeight: 280, overflowY: 'auto' }}>
+          {cart.length === 0 ? (
+            <p style={{ fontSize: 13, color: 'var(--text-subtle)', textAlign: 'center', margin: '16px 0' }}>Chưa chọn món nào — bấm "Thêm" ở món bên trái.</p>
+          ) : cart.map(it => {
+            const Art = pickDishArt(it);
+            return (
+              <div key={it.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: '1px solid var(--border-soft)' }}>
+                <div className="photo-card" style={{ width: 36, height: 36, flex: '0 0 auto', padding: 6 }}><Art /></div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 13.5, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{it.name}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(it.price)}</div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <button type="button" className="icon-btn" style={{ width: 24, height: 24 }} onClick={() => updateCartQty(it.id, it.quantity - 1)}>−</button>
+                  <span style={{ width: 18, textAlign: 'center', fontSize: 12.5, fontVariantNumeric: 'tabular-nums' }}>{it.quantity}</span>
+                  <button type="button" className="icon-btn" style={{ width: 24, height: 24 }} onClick={() => updateCartQty(it.id, it.quantity + 1)}>+</button>
+                </div>
+                <button type="button" className="icon-btn" style={{ width: 24, height: 24 }} onClick={() => removeFromCart(it.id)}><TrashIcon size={13} /></button>
+              </div>
+            );
+          })}
+        </div>
+
+        <label className="field-wrap">
+          <label>Ghi chú</label>
+          <span className="field"><input placeholder="Ví dụ: ít cay, không hành..." value={note} onChange={e => setNote(e.target.value)} /></span>
+        </label>
+        <label className="field-wrap">
+          <label>Thanh toán</label>
+          <span className="field"><select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
+            <option value="tien_mat">Tiền mặt khi nhận</option>
+            <option value="chuyen_khoan">Chuyển khoản</option>
+            <option value="the">Quẹt thẻ khi nhận</option>
+          </select></span>
+        </label>
+
+        {paymentMethod === 'chuyen_khoan' && cartTotal > 0 && (
+          <BankTransferInfo amount={cartTotal} content={`DUYEN PHAN ${loggedPhone || loggedName || ''}`} />
+        )}
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 15, fontWeight: 600, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+          <span>Tổng cộng</span>
+          <span style={{ fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(cartTotal)}</span>
+        </div>
+        <button type="button" className="btn btn-primary btn-lg btn-block" onClick={submitOrder} disabled={submitting}>{submitting ? 'Đang đặt…' : 'Đặt món'}</button>
+      </section>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Tab 2 — Đặt bàn: form đặt bàn + danh sách các lượt đặt bàn của khách.
+// Lịch chọn ngày dạng tháng — thay cho <input type="date"> mặc định của trình duyệt.
+// ---------------------------------------------------------------------------
+function MiniCalendar({ value, onChange, errored }) {
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10);
+  const initial = value ? new Date(value + 'T00:00:00') : today;
+  const [view, setView] = useState({ y: initial.getFullYear(), m: initial.getMonth() });
+
+  const first = new Date(view.y, view.m, 1);
+  const startWeekday = first.getDay();
+  const daysInMonth = new Date(view.y, view.m + 1, 0).getDate();
+  const cells = [...Array(startWeekday).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
+  const monthLabel = first.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' });
+  const fmt = d => `${view.y}-${String(view.m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+        <button type="button" className="icon-btn" style={{ width: 28, height: 28 }} onClick={() => setView(v => (v.m === 0 ? { y: v.y - 1, m: 11 } : { y: v.y, m: v.m - 1 }))}><ChevronLeft size={14} /></button>
+        <span style={{ fontWeight: 600, fontSize: 14, textTransform: 'capitalize' }}>{monthLabel}</span>
+        <button type="button" className="icon-btn" style={{ width: 28, height: 28 }} onClick={() => setView(v => (v.m === 11 ? { y: v.y + 1, m: 0 } : { y: v.y, m: v.m + 1 }))}><ChevronRight size={14} /></button>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, fontSize: 11, color: 'var(--text-subtle)', textAlign: 'center', marginBottom: 4 }}>
+        {['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'].map(w => <span key={w}>{w}</span>)}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, border: errored ? '1px solid var(--danger)' : 'none', borderRadius: 8, padding: errored ? 4 : 0 }}>
+        {cells.map((d, i) => {
+          if (d === null) return <span key={i} />;
+          const dateStr = fmt(d);
+          const isPast = dateStr < todayStr;
+          const isSelected = dateStr === value;
+          return (
+            <button key={i} type="button" disabled={isPast} onClick={() => onChange(dateStr)}
+              style={{
+                height: 32, borderRadius: 8, border: 'none', cursor: isPast ? 'not-allowed' : 'pointer',
+                background: isSelected ? 'var(--brand)' : 'transparent',
+                color: isSelected ? 'var(--text-on-brand)' : isPast ? 'var(--text-subtle)' : 'var(--text-body)',
+                fontWeight: dateStr === todayStr ? 700 : 400, fontSize: 13
+              }}>{d}</button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function minutesToHHMM(mins) {
+  return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+}
+
+// ---------------------------------------------------------------------------
+// Tab 2 — Đặt bàn: ảnh nền + lịch chọn ngày + thanh trượt chọn giờ + thông tin liên hệ,
+// cùng danh sách các lượt đặt bàn của khách.
 // ---------------------------------------------------------------------------
 function ReservationTab({ ctx }) {
   const { myReservations, setMyReservations, loggedName, loggedPhone, flash } = ctx;
 
   const [branch, setBranch] = useState(BRANCHES[0] || '');
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('18:00');
+  const [timeMinutes, setTimeMinutes] = useState(18 * 60);
   const [guests, setGuests] = useState(2);
   const [note, setNote] = useState('');
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
+  const time = minutesToHHMM(timeMinutes);
+  function pickDate(d) { setDate(d); setErrors(er => ({ ...er, date: null })); }
+
   async function submitReservation() {
     const errs = {};
     if (!branch) errs.branch = 'Chọn chi nhánh';
-    if (!date) errs.date = 'Chọn ngày';
-    if (!time) errs.time = 'Chọn giờ';
-    if (!guests || guests < 1) errs.guests = 'Nhập số khách hợp lệ';
+    if (!date) errs.date = 'Chọn ngày trên lịch';
+    if (!guests || guests < 1) errs.guests = 'Chọn số khách hợp lệ';
     if (Object.keys(errs).length) { setErrors(errs); return; }
 
     if (!supabaseEnabled) { flash('Chưa cấu hình Supabase — không thể đặt bàn lúc này.'); return; }
@@ -328,51 +366,87 @@ function ReservationTab({ ctx }) {
   }
 
   return (
-    <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-      <div className="panel" style={{ flex: '0 0 380px', padding: 24 }}>
-        <h3 style={{ fontSize: 17, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><CalendarIcon size={17} />Đặt bàn</h3>
-        <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <label className="field-wrap">
-            <label>Chi nhánh</label>
-            <span className="field" style={{ borderColor: errors.branch ? 'var(--danger)' : undefined }}>
-              <select value={branch} onChange={e => setBranch(e.target.value)}>
-                {BRANCHES.map(b => <option key={b} value={b}>{b}</option>)}
-              </select>
-            </span>
-            {errors.branch && <span className="err-msg">{errors.branch}</span>}
-          </label>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <label className="field-wrap" style={{ flex: 1 }}>
-              <label>Ngày</label>
-              <span className="field" style={{ borderColor: errors.date ? 'var(--danger)' : undefined }}>
-                <input type="date" value={date} onChange={e => setDate(e.target.value)} />
-              </span>
-              {errors.date && <span className="err-msg">{errors.date}</span>}
-            </label>
-            <label className="field-wrap" style={{ flex: 1 }}>
-              <label>Giờ</label>
-              <span className="field" style={{ borderColor: errors.time ? 'var(--danger)' : undefined }}>
-                <input type="time" value={time} onChange={e => setTime(e.target.value)} />
-              </span>
-              {errors.time && <span className="err-msg">{errors.time}</span>}
-            </label>
-          </div>
-          <label className="field-wrap">
-            <label>Số khách</label>
-            <span className="field" style={{ borderColor: errors.guests ? 'var(--danger)' : undefined }}>
-              <input type="number" min={1} value={guests} onChange={e => setGuests(e.target.value)} />
-            </span>
-            {errors.guests && <span className="err-msg">{errors.guests}</span>}
-          </label>
-          <label className="field-wrap">
-            <label>Yêu cầu đặc biệt (không bắt buộc)</label>
-            <span className="field"><input placeholder="Ví dụ: bàn gần cửa sổ, có trẻ nhỏ..." value={note} onChange={e => setNote(e.target.value)} /></span>
-          </label>
-          <button type="button" className="btn btn-primary btn-lg btn-block" onClick={submitReservation} disabled={submitting}>{submitting ? 'Đang gửi…' : 'Gửi yêu cầu đặt bàn'}</button>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+      {/* Ảnh nền + tiêu đề */}
+      <div style={{ position: 'relative', borderRadius: 'var(--radius-card)', overflow: 'hidden', minHeight: 180, display: 'flex', alignItems: 'center' }}>
+        <img src={heroQuanPhoto} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(46,42,34,.55)' }} />
+        <div style={{ position: 'relative', padding: '32px 36px' }}>
+          <p style={{ fontSize: 12.5, fontWeight: 600, letterSpacing: '.04em', textTransform: 'uppercase', color: 'rgba(248,249,247,.8)' }}>Đặt bàn trực tuyến</p>
+          <h2 style={{ marginTop: 6, fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 600, color: '#F8F9F7' }}>Giữ bàn tại Duyên Phần chỉ trong một phút</h2>
         </div>
       </div>
 
-      <div style={{ flex: 1, minWidth: 320 }}>
+      <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        {/* Lịch + giờ + số khách + chi nhánh */}
+        <div className="panel" style={{ flex: '1 1 360px', padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <MiniCalendar value={date} onChange={pickDate} errored={!!errors.date} />
+          {errors.date && <span className="err-msg">{errors.date}</span>}
+
+          <div>
+            <label style={{ display: 'block', fontSize: 'var(--fs-label)', fontWeight: 500, color: 'var(--text-body)', marginBottom: 8 }}>Giờ đặt bàn</label>
+            <input type="range" min={360} max={1290} step={30} value={timeMinutes} onChange={e => setTimeMinutes(Number(e.target.value))} style={{ width: '100%', accentColor: 'var(--brand)' }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 4 }}>
+              <span style={{ fontSize: 12, color: 'var(--text-subtle)' }}>06:00</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-brand)', fontVariantNumeric: 'tabular-nums' }}>{time}</span>
+              <span style={{ fontSize: 12, color: 'var(--text-subtle)' }}>21:30</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: 12 }}>
+            <label className="field-wrap" style={{ flex: 1 }}>
+              <label>Số khách</label>
+              <span className="field" style={{ borderColor: errors.guests ? 'var(--danger)' : undefined }}>
+                <select value={guests} onChange={e => setGuests(Number(e.target.value))}>
+                  {[1, 2, 3, 4, 5, 6, 7].map(n => <option key={n} value={n}>{n} khách</option>)}
+                  <option value={8}>8 khách trở lên</option>
+                </select>
+              </span>
+              {errors.guests && <span className="err-msg">{errors.guests}</span>}
+            </label>
+            <label className="field-wrap" style={{ flex: 1 }}>
+              <label>Chi nhánh</label>
+              <span className="field" style={{ borderColor: errors.branch ? 'var(--danger)' : undefined }}>
+                <select value={branch} onChange={e => setBranch(e.target.value)}>
+                  {BRANCHES.map(b => <option key={b} value={b}>{b}</option>)}
+                </select>
+              </span>
+              {errors.branch && <span className="err-msg">{errors.branch}</span>}
+            </label>
+          </div>
+        </div>
+
+        {/* Thông tin liên hệ + xác nhận + chính sách */}
+        <div className="panel" style={{ flex: '0 0 320px', padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <h3 style={{ fontSize: 15, fontWeight: 600 }}>Thông tin liên hệ</h3>
+          <div style={{ padding: '10px 14px', background: 'var(--surface-page)', border: '1px solid var(--border-soft)', borderRadius: 'var(--radius-control)' }}>
+            <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>Người đặt</div>
+            <div style={{ fontSize: 14, fontWeight: 600, marginTop: 2 }}>{loggedName || 'Khách hàng'}</div>
+            <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2 }}>{loggedPhone || 'Chưa cập nhật số điện thoại'}</div>
+          </div>
+          <label className="field-wrap">
+            <label>Yêu cầu đặc biệt (không bắt buộc)</label>
+            <textarea rows={3} placeholder="Ví dụ: bàn gần cửa sổ, có trẻ nhỏ..." value={note} onChange={e => setNote(e.target.value)}
+              style={{ width: '100%', resize: 'vertical', padding: '10px 12px', borderRadius: 'var(--radius-control)', border: '1px solid var(--border-strong)', fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-body-sm)', color: 'var(--text-body)', background: 'var(--surface-card)' }} />
+          </label>
+          <button type="button" className="btn btn-primary btn-lg btn-block" onClick={submitReservation} disabled={submitting}>
+            <CalendarIcon size={16} />{submitting ? 'Đang gửi…' : 'Xác nhận đặt bàn'}
+          </button>
+
+          <div style={{ borderTop: '1px solid var(--border-soft)', paddingTop: 14, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600 }}>Chính sách đặt bàn</div>
+              <p style={{ marginTop: 4, fontSize: 12, lineHeight: 1.6, color: 'var(--text-muted)' }}>Chi nhánh giữ bàn 15 phút kể từ giờ đã đặt. Vui lòng gọi trước cho chi nhánh nếu cần đổi giờ hoặc huỷ.</p>
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600 }}>Đặt bàn theo nhóm</div>
+              <p style={{ marginTop: 4, fontSize: 12, lineHeight: 1.6, color: 'var(--text-muted)' }}>Từ 8 khách trở lên, nhân viên chi nhánh sẽ gọi lại xác nhận trước khi giữ bàn.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
         <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Các lượt đặt bàn của tôi</h3>
         {myReservations.length === 0 ? (
           <div className="panel" style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>Bạn chưa có lượt đặt bàn nào.</div>
@@ -449,6 +523,11 @@ function MyOrdersTab({ ctx }) {
               <span>Tổng cộng</span>
               <span style={{ fontVariantNumeric: 'tabular-nums' }}>{fmtVnd(o.total)}</span>
             </div>
+            {o.paymentMethod === 'chuyen_khoan' && o.paymentStatus === 'chua_thanh_toan' && o.status !== 'cancelled' && (
+              <div style={{ marginTop: 14 }}>
+                <BankTransferInfo amount={o.total} content={`DH ${o.code}`} />
+              </div>
+            )}
           </div>
         );
       })}

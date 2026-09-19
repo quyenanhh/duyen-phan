@@ -47,7 +47,7 @@ function menuShowcase(records) {
 const LEAF_D = 'M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 1 5 1 6 0 8.7-8 12-9 12Z';
 
 export default function Landing({ ctx }) {
-  const { theme, goMenu, goBranchesPublic, menuRecords } = ctx;
+  const { theme, goMenu, goReservation, goOrderFood, menuRecords } = ctx;
   const themeClass = theme === 'dark' ? 'dark-mode' : '';
 
   return (
@@ -79,7 +79,7 @@ export default function Landing({ ctx }) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M4 2v8a2 2 0 0 0 2 2v10" /><path d="M4 2v4" /><path d="M7 2v4" /><path d="M20 2c-2 1-3 3-3 6 0 2 1 3 2 3v11" /></svg>
                 Xem thực đơn
               </a>
-              <a href="#dat-ban" className="btn btn-secondary btn-lg">
+              <a onClick={goReservation} className="btn btn-secondary btn-lg" style={{ cursor: 'pointer' }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4" /><path d="M8 2v4" /><path d="M3 10h18" /></svg>
                 Đặt bàn ngay
               </a>
@@ -239,12 +239,18 @@ export default function Landing({ ctx }) {
 
       <section id="dat-ban" style={{ padding: '0 0 96px', textAlign: 'center' }}>
         <Reveal className="wrap" style={{ maxWidth: 560, margin: '0 auto' }}>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 34, fontWeight: 600, letterSpacing: '-0.01em' }}>Đặt bàn cho hôm nay</h2>
-          <p style={{ marginTop: 14, fontSize: 'var(--fs-body-lg)', lineHeight: 1.6, color: 'var(--text-muted)' }}>Chọn chi nhánh gần bạn, giữ bàn chỉ trong một phút.</p>
-          <a onClick={goBranchesPublic} className="btn btn-primary btn-lg" style={{ marginTop: 28, cursor: 'pointer' }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4" /><path d="M8 2v4" /><path d="M3 10h18" /></svg>
-            Đặt bàn ngay
-          </a>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 34, fontWeight: 600, letterSpacing: '-0.01em' }}>Đặt bàn hoặc đặt món cho hôm nay</h2>
+          <p style={{ marginTop: 14, fontSize: 'var(--fs-body-lg)', lineHeight: 1.6, color: 'var(--text-muted)' }}>Giữ bàn hoặc đặt món mang về, chỉ trong một phút.</p>
+          <div style={{ display: 'flex', gap: 12, marginTop: 28, justifyContent: 'center' }}>
+            <a onClick={goReservation} className="btn btn-primary btn-lg" style={{ cursor: 'pointer' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4" /><path d="M8 2v4" /><path d="M3 10h18" /></svg>
+              Đặt bàn ngay
+            </a>
+            <a onClick={goOrderFood} className="btn btn-secondary btn-lg" style={{ cursor: 'pointer' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M4 2v8a2 2 0 0 0 2 2v10" /><path d="M4 2v4" /><path d="M7 2v4" /><path d="M20 2c-2 1-3 3-3 6 0 2 1 3 2 3v11" /></svg>
+              Đặt món ngay
+            </a>
+          </div>
         </Reveal>
       </section>
 

@@ -161,6 +161,14 @@ export const STAFF_CHECKIN_STYLE = { true: ['#E7ECE5', '#2E3B35', 'Đã chấm c
 export const STAFF_ROLES = ['Quản lý', 'Nhân viên', 'Bếp', 'Thu ngân'];
 export const CONTRACT_TYPES = ['Toàn thời gian', 'Bán thời gian', 'Thời vụ'];
 
+// Tài khoản ngân hàng nhận chuyển khoản của khách — hiện QR VietQR (miễn phí, không cần
+// đăng ký cổng thanh toán) khi khách chọn "Chuyển khoản" lúc đặt món. Thêm phần tử vào mảng
+// này nếu cần nhận qua nhiều ngân hàng — khách sẽ thấy tab chọn khi có từ 2 tài khoản trở lên.
+// bankCode dùng đúng mã ngân hàng ngắn của VietQR (xem https://api.vietqr.io/v2/banks).
+export const BANK_ACCOUNTS = [
+  { bank: 'MB Bank (Ngân hàng Quân đội)', bankCode: 'mbbank', accountNumber: '0764210726', accountName: 'NGUYEN THI NGOC ANH' }
+];
+
 export const VIET_MAP = {
   'à':'a','á':'a','ạ':'a','ả':'a','ã':'a','â':'a','ầ':'a','ấ':'a','ậ':'a','ẩ':'a','ẫ':'a','ă':'a','ằ':'a','ắ':'a','ặ':'a','ẳ':'a','ẵ':'a',
   'è':'e','é':'e','ẹ':'e','ẻ':'e','ẽ':'e','ê':'e','ề':'e','ế':'e','ệ':'e','ể':'e','ễ':'e',

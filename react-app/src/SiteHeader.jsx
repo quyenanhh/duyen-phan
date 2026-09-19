@@ -3,7 +3,7 @@ import { LeafIcon, ChevronRight, LoginArrowIcon } from './icons.jsx';
 
 export default function SiteHeader({ ctx, active }) {
   const {
-    theme, toggleTheme, isLoggedIn, goAuth, goLanding, goMenu, goBranchesPublic, goAbout, goContact, userInitials, userName, loggedAvatarUrl,
+    theme, toggleTheme, isLoggedIn, goAuth, goLanding, goMenu, goBranchesPublic, goAbout, goContact, goReservation, goOrderFood, userInitials, userName, loggedAvatarUrl,
     landingAcctMenuOpen, setLandingAcctMenuOpen, userRoleLabel,
     openProfileFromLanding, openSecurityFromLanding, switchAccount, logout,
     isCustomerLoggedIn
@@ -29,6 +29,8 @@ export default function SiteHeader({ ctx, active }) {
         <nav className="site-nav">
           <a className="nav-link" onClick={goLanding} style={{ cursor: 'pointer', color: active === 'landing' ? 'var(--text-brand)' : undefined }}>Trang chủ</a>
           <a className="nav-link" onClick={goMenu} style={{ cursor: 'pointer', color: active === 'menu' ? 'var(--text-brand)' : undefined }}>Thực đơn</a>
+          <a className="nav-link" onClick={goReservation} style={{ cursor: 'pointer', color: active === 'account' ? 'var(--text-brand)' : undefined }}>Đặt bàn</a>
+          <a className="nav-link" onClick={goOrderFood} style={{ cursor: 'pointer', color: active === 'account' ? 'var(--text-brand)' : undefined }}>Đặt món</a>
           <a className="nav-link" onClick={goBranchesPublic} style={{ cursor: 'pointer', color: active === 'branches' ? 'var(--text-brand)' : undefined }}>Chi nhánh</a>
           <a className="nav-link" onClick={goAbout} style={{ cursor: 'pointer', color: active === 'about' ? 'var(--text-brand)' : undefined }}>Về chúng tôi</a>
           <a className="nav-link" onClick={goContact} style={{ cursor: 'pointer', color: active === 'contact' ? 'var(--text-brand)' : undefined }}>Liên hệ</a>
