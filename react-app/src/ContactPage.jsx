@@ -97,13 +97,13 @@ function ContactForm({ ctx }) {
   const borderFor = k => (errors[k] ? 'var(--danger)' : 'var(--border-strong)');
   return (
     <form onSubmit={submit} className="panel" style={{ padding: 28, display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'flex', gap: 12 }}>
-        <label className="field-wrap" style={{ flex: 1 }}>
+      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <label className="field-wrap" style={{ flex: '1 1 200px' }}>
           <label>Họ và tên</label>
           <span className="field" style={{ borderColor: borderFor('name') }}><input value={name} onChange={e => setName(e.target.value)} placeholder="Nguyễn Thị An" /></span>
           {errors.name && <span className="err-msg">{errors.name}</span>}
         </label>
-        <label className="field-wrap" style={{ flex: 1 }}>
+        <label className="field-wrap" style={{ flex: '1 1 160px' }}>
           <label>Số điện thoại</label>
           <span className="field" style={{ borderColor: borderFor('phone') }}><input value={phone} onChange={e => setPhone(e.target.value)} placeholder="09xx xxx xxx" /></span>
         </label>

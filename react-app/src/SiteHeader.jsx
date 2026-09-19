@@ -19,6 +19,10 @@ export default function SiteHeader({ ctx, active }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Menu di động — dưới 860px, .site-nav (CSS) tự ẩn nên cần thay bằng danh sách xổ xuống này.
+  const [mobileOpen, setMobileOpen] = useState(false);
+  function goMobile(fn) { return e => { fn(e); setMobileOpen(false); }; }
+
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 20, background: 'var(--header-bg)', backdropFilter: 'blur(10px)', borderBottom: '1px solid var(--border)', boxShadow: scrolled ? 'var(--shadow-card)' : 'none', transition: 'background var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out)' }}>
       <div className="wrap" style={{ height: 76, display: 'flex', alignItems: 'center', gap: 36 }}>
@@ -107,8 +111,36 @@ export default function SiteHeader({ ctx, active }) {
               Đăng nhập / Đăng ký
             </a>
           )}
+          <button type="button" className="icon-btn mobile-nav-toggle" style={{ width: 36, height: 36 }} aria-label="Mở menu" onClick={() => setMobileOpen(v => !v)}>
+            {mobileOpen ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+            )}
+          </button>
         </span>
       </div>
+
+      {mobileOpen && (
+        <>
+          <div style={{ position: 'fixed', inset: 0, top: 76, zIndex: 19 }} onClick={() => setMobileOpen(false)} />
+          <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: 'var(--surface-card)', borderBottom: '1px solid var(--border)', boxShadow: 'var(--shadow-modal)', padding: '12px 20px 20px', display: 'flex', flexDirection: 'column', gap: 2, zIndex: 20 }}>
+            <a className="nav-link" style={{ padding: '10px 4px', cursor: 'pointer' }} onClick={goMobile(goLanding)}>Trang chủ</a>
+            <a className="nav-link" style={{ padding: '10px 4px', cursor: 'pointer' }} onClick={goMobile(goMenu)}>Thực đơn</a>
+            <a className="nav-link" style={{ padding: '10px 4px', cursor: 'pointer' }} onClick={goMobile(goReservation)}>Đặt bàn</a>
+            <a className="nav-link" style={{ padding: '10px 4px', cursor: 'pointer' }} onClick={goMobile(goOrderFood)}>Đặt món</a>
+            <a className="nav-link" style={{ padding: '10px 4px', cursor: 'pointer' }} onClick={goMobile(goBranchesPublic)}>Chi nhánh</a>
+            <a className="nav-link" style={{ padding: '10px 4px', cursor: 'pointer' }} onClick={goMobile(goAbout)}>Về chúng tôi</a>
+            <a className="nav-link" style={{ padding: '10px 4px', cursor: 'pointer' }} onClick={goMobile(goContact)}>Liên hệ</a>
+            {isLoggedOut && (
+              <a onClick={goMobile(goAuth)} className="btn btn-primary btn-md" style={{ marginTop: 10, cursor: 'pointer' }}>
+                <LoginArrowIcon />
+                Đăng nhập / Đăng ký
+              </a>
+            )}
+          </div>
+        </>
+      )}
     </header>
   );
 }

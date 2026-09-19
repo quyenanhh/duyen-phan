@@ -31,9 +31,9 @@ export default function AboutPage({ ctx }) {
       </section>
 
       <section style={{ padding: '64px 0' }}>
-        <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'center' }}>
+        <div className="wrap grid-2">
           <Reveal>
-            <div className="photo-card" style={{ height: 380, padding: 24 }}><KitchenArt /></div>
+            <div className="photo-card hero-photo" style={{ padding: 24 }}><KitchenArt /></div>
           </Reveal>
           <Reveal delay={.1}>
             <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 30, fontWeight: 600, letterSpacing: '-0.01em' }}>Triết lý ẩm thực</h2>
@@ -50,7 +50,7 @@ export default function AboutPage({ ctx }) {
       <section style={{ background: 'var(--surface-accent-soft)', padding: '80px 0' }}>
         <div className="wrap">
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 30, fontWeight: 600, letterSpacing: '-0.01em', textAlign: 'center' }}>Giá trị cốt lõi</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 28, marginTop: 40 }}>
+          <div className="grid-3" style={{ marginTop: 40 }}>
             <ValueCard icon={<LeafIcon size={20} />} title="Theo mùa" desc="Rau củ chọn theo vụ, không ép trái nghịch mùa, đặt trực tiếp từ nông trại." />
             <ValueCard icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z" /><path d="M7 8V5a1 1 0 0 1 1-1" /><path d="M12 7V4" /><path d="M17 8V5a1 1 0 0 0-1-1" /></svg>} title="Vừa đủ" desc="Mỗi bếp nấu theo số phần đã đặt, hạn chế thức ăn dư mỗi ngày." />
             <ValueCard icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z" /></svg>} title="Tử tế" desc="Không bột ngọt, không rút ngắn công đoạn nấu để tiết kiệm thời gian." />

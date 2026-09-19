@@ -110,7 +110,7 @@ export default function MenuPage({ ctx }) {
                 {loading ? 'Đang tải danh sách món…' : `${totalCount} món chay đang phục vụ, cập nhật trực tiếp từ hệ thống.`}
               </p>
             </div>
-            <label className="field-wrap" style={{ width: 320 }}>
+            <label className="field-wrap" style={{ width: '100%', maxWidth: 320 }}>
               <span className="field" style={{ borderRadius: 'var(--radius-pill)', height: 48, padding: '0 18px' }}>
                 <SearchIcon style={{ color: 'var(--text-subtle)', flex: '0 0 auto' }} />
                 <input placeholder="Tìm món, ví dụ: canh chua, trà đào…" value={query} onChange={e => setQuery(e.target.value)} />
@@ -121,8 +121,8 @@ export default function MenuPage({ ctx }) {
       </section>
 
       <section style={{ padding: '0 0 96px' }}>
-        <div className="wrap" style={{ display: 'flex', gap: 32, alignItems: 'flex-start' }}>
-          <aside style={{ flex: '0 0 260px', position: 'sticky', top: 96 }}>
+        <div className="wrap menu-layout">
+          <aside>
             <div className="panel" style={{ padding: 22 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <h3 style={{ fontSize: 15, fontWeight: 600 }}>Bộ lọc</h3>

@@ -156,7 +156,7 @@ function OrderFoodTab({ ctx }) {
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 360px', gap: 24, alignItems: 'start' }}>
+    <div className="order-layout">
       {/* Lưới thực đơn */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
@@ -198,7 +198,7 @@ function OrderFoodTab({ ctx }) {
       </div>
 
       {/* Giỏ hàng — dính bên phải, giống panel "Order" trong mẫu */}
-      <section className="panel" style={{ position: 'sticky', top: 96, padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <section className="panel order-cart" style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
         <h3 style={{ fontSize: 16, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><CartIcon size={16} />Đơn của bạn</h3>
 
         <div style={{ display: 'flex', gap: 4, padding: 4, background: 'var(--surface-sunken)', borderRadius: 999 }}>
@@ -377,9 +377,9 @@ function ReservationTab({ ctx }) {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+      <div className="reserve-layout">
         {/* Lịch + giờ + số khách + chi nhánh */}
-        <div className="panel" style={{ flex: '1 1 360px', padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div className="panel reserve-form-panel" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
           <MiniCalendar value={date} onChange={pickDate} errored={!!errors.date} />
           {errors.date && <span className="err-msg">{errors.date}</span>}
 
@@ -417,7 +417,7 @@ function ReservationTab({ ctx }) {
         </div>
 
         {/* Thông tin liên hệ + xác nhận + chính sách */}
-        <div className="panel" style={{ flex: '0 0 320px', padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div className="panel reserve-contact-panel" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <h3 style={{ fontSize: 15, fontWeight: 600 }}>Thông tin liên hệ</h3>
           <div style={{ padding: '10px 14px', background: 'var(--surface-page)', border: '1px solid var(--border-soft)', borderRadius: 'var(--radius-control)' }}>
             <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>Người đặt</div>

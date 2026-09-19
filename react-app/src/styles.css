@@ -131,6 +131,47 @@ a:hover{color:var(--text-link-hover)}
   .foot-grid{grid-template-columns:1fr;gap:32px}
 }
 
+/* — mobile nav dropdown (site header, ≤860px) — */
+.mobile-nav-toggle{display:none}
+@media (max-width:860px){
+  .mobile-nav-toggle{display:inline-flex}
+}
+
+/* — reusable responsive grids (landing/about sections, dashboard 2-panel layouts) — */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.hero-title{font-size:56px}
+.hero-photo{height:420px}
+.collage-photo{height:440px}
+.order-layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start}
+.order-cart{position:sticky;top:96px}
+.menu-layout{display:flex;gap:32px;align-items:flex-start}
+.menu-layout>aside{flex:0 0 260px;position:sticky;top:96px}
+.menu-layout>aside+div{flex:1;min-width:0}
+.reserve-layout{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+.reserve-form-panel{flex:1 1 360px;min-width:0}
+.reserve-contact-panel{flex:1 1 320px;min-width:0}
+@media (max-width:860px){
+  .order-layout{grid-template-columns:1fr}
+  .order-cart{position:static}
+  .menu-layout{flex-direction:column}
+  .menu-layout>aside{position:static;width:100%}
+}
+@media (max-width:760px){
+  .grid-2{grid-template-columns:1fr;gap:32px}
+  .grid-3{grid-template-columns:1fr;gap:16px}
+  .grid-4{grid-template-columns:repeat(2,1fr);gap:16px}
+  .hero-title{font-size:38px}
+  .hero-photo{height:260px}
+  .collage-photo{height:280px}
+  .reserve-form-panel,.reserve-contact-panel{flex-basis:100%}
+}
+@media (max-width:480px){
+  .grid-4{grid-template-columns:1fr}
+  .hero-title{font-size:32px}
+}
+
 /* — shared panels / toolbar (admin + generic cards) — */
 .panel{background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-card)}
 .panel-flush{overflow:hidden}

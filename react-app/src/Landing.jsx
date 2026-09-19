@@ -68,13 +68,13 @@ export default function Landing({ ctx }) {
               <span style={{ width: 24, height: 24, flex: '0 0 auto', borderRadius: '50%', background: 'var(--surface-card)', color: 'var(--brand)', display: 'grid', placeItems: 'center' }}><LeafIcon size={13} /></span>
               <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-brand)' }}>Cơm chay thuần Việt · phục vụ từ 2016</span>
             </span>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 56, lineHeight: 1.1, letterSpacing: '-0.02em', fontWeight: 600, marginTop: 26, color: 'var(--text-brand)', textWrap: 'balance', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto', opacity: 0, animation: 'riseIn .6s .08s var(--ease-out) both' }}>
+            <h1 className="hero-title" style={{ fontFamily: 'var(--font-serif)', lineHeight: 1.1, letterSpacing: '-0.02em', fontWeight: 600, marginTop: 26, color: 'var(--text-brand)', textWrap: 'balance', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto', opacity: 0, animation: 'riseIn .6s .08s var(--ease-out) both' }}>
               Cơm chay lành mạnh, trọn vị yêu thương
             </h1>
             <p style={{ marginTop: 20, fontSize: 'var(--fs-body-lg)', lineHeight: 1.65, color: 'var(--text-muted)', maxWidth: '48ch', marginLeft: 'auto', marginRight: 'auto', opacity: 0, animation: 'riseIn .6s .14s var(--ease-out) both' }}>
               Rau củ theo mùa, gạo lứt và đậu hũ làm mỗi sáng. Vừa đủ cho một ngày, không dư thừa.
             </p>
-            <div style={{ display: 'flex', gap: 12, marginTop: 32, justifyContent: 'center', opacity: 0, animation: 'riseIn .6s .2s var(--ease-out) both' }}>
+            <div style={{ display: 'flex', gap: 12, marginTop: 32, justifyContent: 'center', flexWrap: 'wrap', opacity: 0, animation: 'riseIn .6s .2s var(--ease-out) both' }}>
               <a onClick={goMenu} className="btn btn-primary btn-lg" style={{ cursor: 'pointer' }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M4 2v8a2 2 0 0 0 2 2v10" /><path d="M4 2v4" /><path d="M7 2v4" /><path d="M20 2c-2 1-3 3-3 6 0 2 1 3 2 3v11" /></svg>
                 Xem thực đơn
@@ -88,7 +88,7 @@ export default function Landing({ ctx }) {
 
           <Reveal delay={.24} style={{ position: 'relative', marginTop: 56 }}>
             <div className="wrap" style={{ position: 'relative' }}>
-              <div className="photo-card" style={{ height: 420, padding: 0 }}>
+              <div className="photo-card hero-photo" style={{ padding: 0 }}>
                 <img src={heroQuanPhoto} alt="Không gian quán Duyên Phần" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div className="float-badge" style={{ position: 'absolute', left: 40, bottom: 20 }}>
@@ -126,7 +126,7 @@ export default function Landing({ ctx }) {
             <path transform="translate(60,400) rotate(200) scale(1.3)" d={LEAF_D} />
           </g>
         </svg>
-        <div className="wrap" style={{ position: 'relative', display: 'grid', gridTemplateColumns: '.95fr 1.05fr', gap: 64, alignItems: 'center' }}>
+        <div className="wrap grid-2" style={{ position: 'relative' }}>
           <Reveal>
             <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 38, fontWeight: 600, letterSpacing: '-0.01em', textWrap: 'balance' }}>Một bữa cơm chay, nấu bằng sự tử tế</h2>
             <p style={{ marginTop: 16, fontSize: 'var(--fs-body-lg)', lineHeight: 1.65, color: 'var(--text-muted)', maxWidth: '42ch' }}>
@@ -139,7 +139,7 @@ export default function Landing({ ctx }) {
             </div>
             <a onClick={goMenu} className="btn btn-primary btn-lg" style={{ marginTop: 32, cursor: 'pointer' }}>Xem thực đơn</a>
           </Reveal>
-          <Reveal delay={.12} style={{ position: 'relative', height: 440 }}>
+          <Reveal delay={.12} className="collage-photo" style={{ position: 'relative' }}>
             <div style={{ position: 'absolute', width: '64%', height: 260, left: 0, top: 6, transform: 'rotate(-3deg)' }}>
               <div className="photo-card" style={{ height: '100%', padding: 0 }}>
                 <img src={rauCu2Photo} alt="Rau củ tươi theo mùa" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -161,7 +161,7 @@ export default function Landing({ ctx }) {
       <section id="cach-dat-mon" style={{ padding: '96px 0' }}>
         <div className="wrap">
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 34, fontWeight: 600, letterSpacing: '-0.01em', textAlign: 'center', textWrap: 'balance' }}>Đặt một phần cơm chay chỉ trong bốn bước</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 28, marginTop: 48 }}>
+          <div className="grid-4" style={{ marginTop: 48 }}>
             <Reveal delay={0}><Step index="01" icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M8 6h13" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M3 6h.01" /><path d="M3 12h.01" /><path d="M3 18h.01" /></svg>} title="Xem thực đơn" desc="Món chay theo ngày, cập nhật mỗi sáng sớm." /></Reveal>
             <Reveal delay={.08}><Step index="02" icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="m9 12 2 2 4-4" /></svg>} title="Chọn món" desc="Ghép phần theo khẩu vị, từ canh đến món chính." /></Reveal>
             <Reveal delay={.16}><Step index="03" icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" /></svg>} title="Đặt bàn hoặc đặt món" desc="Gọi trực tiếp chi nhánh hoặc nhờ nhân viên đặt giúp." /></Reveal>
@@ -191,9 +191,9 @@ export default function Landing({ ctx }) {
       </section>
 
       <section id="cau-chuyen" style={{ padding: '96px 0' }}>
-        <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '.9fr 1.1fr', gap: 64, alignItems: 'center' }}>
+        <div className="wrap grid-2">
           <Reveal style={{ position: 'relative' }}>
-            <div className="photo-card" style={{ height: 420, padding: 24 }}>
+            <div className="photo-card hero-photo" style={{ padding: 24 }}>
               <KitchenArt />
             </div>
             <div className="float-badge" style={{ position: 'absolute', right: -16, top: -16 }}>
@@ -211,7 +211,7 @@ export default function Landing({ ctx }) {
             <p style={{ marginTop: 16, fontSize: 'var(--fs-body-lg)', lineHeight: 1.65, color: 'var(--text-muted)' }}>
               Không mở rộng vội, không thêm món cho có. Mỗi chi nhánh mới chỉ ra đời khi bếp cũ đã vững.
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginTop: 32 }}>
+            <div className="grid-3" style={{ marginTop: 32 }}>
               <CoreValue title="Theo mùa" desc="Rau củ chọn theo vụ, không ép trái nghịch mùa." />
               <CoreValue title="Vừa đủ" desc="Nấu theo số phần đã đặt, không dư để bỏ." />
               <CoreValue title="Tử tế" desc="Không bột ngọt, không rút ngắn công đoạn nấu." />
@@ -241,7 +241,7 @@ export default function Landing({ ctx }) {
         <Reveal className="wrap" style={{ maxWidth: 560, margin: '0 auto' }}>
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 34, fontWeight: 600, letterSpacing: '-0.01em' }}>Đặt bàn hoặc đặt món cho hôm nay</h2>
           <p style={{ marginTop: 14, fontSize: 'var(--fs-body-lg)', lineHeight: 1.6, color: 'var(--text-muted)' }}>Giữ bàn hoặc đặt món mang về, chỉ trong một phút.</p>
-          <div style={{ display: 'flex', gap: 12, marginTop: 28, justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: 12, marginTop: 28, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a onClick={goReservation} className="btn btn-primary btn-lg" style={{ cursor: 'pointer' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4" /><path d="M8 2v4" /><path d="M3 10h18" /></svg>
               Đặt bàn ngay
